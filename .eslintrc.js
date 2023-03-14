@@ -22,6 +22,7 @@ module.exports = {
   settings: {},
   plugins: ['react', 'react-hooks', '@typescript-eslint', 'import'],
   rules: {
+    // ⚠️ Import Rules, Don't edit this.
     'import/order': [
       'error',
       {
