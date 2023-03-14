@@ -1,4 +1,5 @@
-import { Html, Head, Main, NextScript } from 'next/document'
+import styled from '@emotion/styled';
+import { Html, Head, Main, NextScript } from 'next/document';
 
 export default function Document() {
   return (
@@ -9,5 +10,10 @@ export default function Document() {
         <NextScript />
       </body>
     </Html>
-  )
+  );
 }
+
+const styledTest = styled.div`
+  display: flex;
+  align-items: center;
+`;
