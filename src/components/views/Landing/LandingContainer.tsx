@@ -1,7 +1,7 @@
-import Logo from '@/components/common/Logo'
+import Logo from '@/components/common/Logo';
 
 const LandingContainer = () => {
-  return <Logo />
-}
+  return <Logo />;
+};
 
-export default LandingContainer
+export default LandingContainer;
