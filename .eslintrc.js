@@ -9,6 +9,7 @@ module.exports = {
     'plugin:react/recommended',
     'airbnb-base',
     'plugin:@typescript-eslint/recommended',
+    'plugin:import/recommended',
     'next/core-web-vitals',
     'prettier',
   ],
@@ -18,7 +19,8 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  plugins: ['react', 'react-hooks', '@typescript-eslint'],
+  settings: {},
+  plugins: ['react', 'react-hooks', '@typescript-eslint', 'import'],
   rules: {
     'import/order': [
       'error',
