@@ -42,5 +42,23 @@ module.exports = {
         'newlines-between': 'always',
       },
     ],
+    'import/extensions': [
+      'error',
+      'ignorePackages',
+      {
+        js: 'never',
+        jsx: 'never',
+        ts: 'never',
+        tsx: 'never',
+      },
+    ],
+    'import/no-extraneous-dependencies': [
+      'off',
+      { devDependencies: true, optionalDependencies: false, peerDependencies: false },
+    ],
+    'no-restricted-exports': ['off'],
+    // JavaScript Rules
+    'arrow-body-style': ['off'],
+    'no-use-before-define': ['warn'],
   },
-};
+}
