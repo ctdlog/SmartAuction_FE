@@ -1,1 +1,1 @@
-export { default } from './LandingContainer';
+export { default } from './LandingContainer'
