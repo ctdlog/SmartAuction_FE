@@ -7,7 +7,7 @@ const LandingContainer = () => {
     <S.Layout>
       <Header />
       <S.Main>
-        <h1>Smart Auction 1</h1>
+        <h1>Smart Auction</h1>
       </S.Main>
     </S.Layout>
   )
