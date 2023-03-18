@@ -1,6 +1,6 @@
-import Head from 'next/head';
+import Head from 'next/head'
 
-import LandingContainerView from '@/components/views/Landing';
+import LandingContainerView from '@/components/views/Landing'
 
 const Landing = () => {
   return (
@@ -12,7 +12,7 @@ const Landing = () => {
       </Head>
       <LandingContainerView />
     </>
-  );
-};
+  )
+}
 
-export default Landing;
+export default Landing
