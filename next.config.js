@@ -12,6 +12,9 @@ const withTwin = require('./withTwin')
 const nextConfig = withTwin({
   reactStrictMode: true,
   swcMinify: true,
+  images: {
+    domains: ['blockchain-lighthouse.s3.ap-northeast-2.amazonaws.com'],
+  },
 })
 
 module.exports = withSentryConfig(nextConfig, { silent: true }, { hideSourcemaps: true })
