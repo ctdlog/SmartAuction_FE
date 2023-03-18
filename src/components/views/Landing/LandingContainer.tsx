@@ -8,6 +8,7 @@ const LandingContainer = () => {
       <Header />
       <S.Main>
         <h1>Smart Auction</h1>
+        <h2>Deploy</h2>
       </S.Main>
     </S.Layout>
   )
