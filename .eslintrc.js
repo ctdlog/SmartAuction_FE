@@ -12,6 +12,7 @@ module.exports = {
     'plugin:import/recommended',
     'next/core-web-vitals',
     'prettier',
+    'plugin:storybook/recommended',
   ],
   overrides: [],
   parser: '@typescript-eslint/parser',
@@ -54,8 +55,13 @@ module.exports = {
     ],
     'import/no-extraneous-dependencies': [
       'off',
-      { devDependencies: true, optionalDependencies: false, peerDependencies: false },
+      {
+        devDependencies: true,
+        optionalDependencies: false,
+        peerDependencies: false,
+      },
     ],
+    'import/prefer-default-export': ['off'],
     'no-restricted-exports': ['off'],
     // JavaScript Rules
     'arrow-body-style': ['off'],
