@@ -1,10 +1,7 @@
 {
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true,
-    "source.fixAll.stylelint": true
+    "source.fixAll.eslint": true
   },
-  "stylelint.enable": true,
-  "stylelint.validate": ["css", "less", "postcss", "javascript", "typescriptreact"],
   "editor.quickSuggestions": {
     "strings": true
   },
