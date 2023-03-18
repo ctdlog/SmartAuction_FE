@@ -1,16 +1,16 @@
 import * as Sentry from '@sentry/nextjs'
 import type { AppProps } from 'next/app'
 
-import { SENTRY_INIT } from '@/envs'
+import { SENTRY_DSN, SENTRY_INIT } from '@/envs'
 import GlobalStyles from '@/styles/GlobalStyles'
 
 import '@/styles/app.css'
 import '@/styles/reset.css'
 import 'remixicon/fonts/remixicon.css'
 
-if (SENTRY_INIT) {
+if (SENTRY_INIT === 'enabled') {
   Sentry.init({
-    dsn: 'https://3c19309a3dc7445991cd088471e20d5b@o4504858053509120.ingest.sentry.io/4504858080837632',
+    dsn: SENTRY_DSN,
 
     // Set tracesSampleRate to 1.0 to capture 100%
     // of transactions for performance monitoring.
