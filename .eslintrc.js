@@ -12,6 +12,7 @@ module.exports = {
     'plugin:import/recommended',
     'next/core-web-vitals',
     'prettier',
+    'plugin:storybook/recommended',
   ],
   overrides: [],
   parser: '@typescript-eslint/parser',
@@ -42,5 +43,28 @@ module.exports = {
         'newlines-between': 'always',
       },
     ],
+    'import/extensions': [
+      'error',
+      'ignorePackages',
+      {
+        js: 'never',
+        jsx: 'never',
+        ts: 'never',
+        tsx: 'never',
+      },
+    ],
+    'import/no-extraneous-dependencies': [
+      'off',
+      {
+        devDependencies: true,
+        optionalDependencies: false,
+        peerDependencies: false,
+      },
+    ],
+    'import/prefer-default-export': ['off'],
+    'no-restricted-exports': ['off'],
+    // JavaScript Rules
+    'arrow-body-style': ['off'],
+    'no-use-before-define': ['warn'],
   },
-};
+}
