@@ -39,5 +39,5 @@
 
 ### 🔒 env
 ```
-
+NEXT_PUBLIC_SENTRY_DSN=<your_sentry_dsn>
 ```
