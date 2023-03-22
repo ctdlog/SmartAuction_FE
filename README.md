@@ -1,4 +1,4 @@
-## SmartMatch Front-end
+## SmartAuction Front-end
 
 ---
 
