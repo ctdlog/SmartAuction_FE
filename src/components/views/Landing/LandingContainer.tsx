@@ -1,6 +1,7 @@
 import { useRef, WheelEvent } from 'react'
 
 import Header from '@/components/common/Header'
+import About from '@/components/views/Landing/About'
 
 import * as S from './Landing.styled'
 
@@ -25,13 +26,7 @@ const LandingContainer = () => {
     <S.Layout>
       <Header />
       <S.ScrollBlock ref={scrollableDivRef} onWheel={handleWheel}>
-        <section
-          style={{
-            background: '#ff8787',
-          }}
-        >
-          <h1>Page 1</h1>
-        </section>
+        <About />
         <section
           style={{
             background: '#9775fa',
