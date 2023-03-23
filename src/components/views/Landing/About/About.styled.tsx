@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import tw from 'twin.macro'
 
 const Section = styled.section`
-  ${tw`flex h-screen items-center justify-between px-36`}
+  ${tw`flex h-screen items-center justify-between bg-black px-36`}
 `
 
 const Block = styled.div`
@@ -10,16 +10,15 @@ const Block = styled.div`
   font-family: 'Poppins';
 
   h1 {
-    ${tw`font-extrabold text-6xl text-stone-800`}
-    font-family: "Poppins"
-    font-we
+    ${tw`font-extrabold text-6xl text-stone-100`}
+    font-family: "Poppins";
   }
 
   strong {
     ${tw`text-7xl`}
     font-weight: bold;
     background: linear-gradient(to right, #78cccf 26%, #5542cf 100%);
-    -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-top: 6px;
   }
@@ -29,7 +28,7 @@ const Block = styled.div`
   }
 
   button {
-    ${tw`mt-16 rounded-3xl bg-slate-400 px-8 py-4 font-bold text-lg text-stone-900`}
+    ${tw`mt-16 rounded-3xl bg-gray-100 px-12 py-4 font-bold text-lg text-stone-900`}
   }
 `
 
