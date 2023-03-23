@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-import TradeImage from '@/assets/images/trade.jpeg'
+import SmartAuctionImage from '@/assets/images/smart-auction.png'
 
 import * as S from './About.styled'
 
@@ -17,7 +17,7 @@ const About = () => {
         <button>Learn More</button>
       </S.Block>
       <S.ImageWrapper>
-        <Image src={TradeImage} width={924} height={1368} alt='trade' />
+        <Image src={SmartAuctionImage} width={924} height={1368} alt='trade' />
       </S.ImageWrapper>
     </S.Section>
   )
