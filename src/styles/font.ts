@@ -1,14 +1,14 @@
 import tw, { TwStyle } from 'twin.macro'
 
-type Language = 'korean' | 'english'
+import { Language } from '@/types/common/font'
 
-interface FontStyles {
+export interface FontStyles {
   fontFamily: string
   fontSize: TwStyle
   [key: number]: TwStyle | string
 }
 
-interface FontSizes {
+export interface FontSizes {
   [key: string]: {
     [key in Language]: {
       [key: string]: TwStyle
@@ -16,10 +16,10 @@ interface FontSizes {
   }
 }
 
-interface FontStylesConfig {
+export interface FontStylesConfig {
   size: string
   language: Language
-  style: string
+  style: 'title' | 'subtitle' | 'text' | 'heading'
 }
 
 const fontFamilies: Record<Language, string> = {
