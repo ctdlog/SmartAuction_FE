@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/react'
 import type { AppProps } from 'next/app'
 
 import GlobalStyles from '@/styles/GlobalStyles'
@@ -11,6 +12,7 @@ const App = ({ Component, pageProps }: AppProps) => {
     <>
       <GlobalStyles />
       <Component {...pageProps} />
+      <Analytics />
     </>
   )
 }

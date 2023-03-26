@@ -1,22 +1,23 @@
 import Header from '@/components/common/Header'
 import About from '@/components/views/Landing/About'
+import Description from '@/components/views/Landing/Description'
 import Event from '@/components/views/Landing/Event'
 import useScroll from '@/components/views/Landing/hooks/useScroll'
+import Roadmap from '@/components/views/Landing/Roadmap'
 
 import * as S from './Landing.styled'
 
 const LandingContainer = () => {
-  const { containerRef } = useScroll()
+  const { containerRef, scrollToIndex } = useScroll()
 
   return (
     <S.Layout>
-      <Header />
+      <Header scrollToIndex={scrollToIndex} />
       <S.ScrollBlock ref={containerRef}>
         <About />
+        <Description />
         <Event />
-        <section>
-          <h1>Page 3</h1>
-        </section>
+        <Roadmap />
       </S.ScrollBlock>
     </S.Layout>
   )
