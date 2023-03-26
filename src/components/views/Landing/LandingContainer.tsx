@@ -5,6 +5,7 @@ import Event from '@/components/views/Landing/Event'
 import useScroll from '@/components/views/Landing/hooks/useScroll'
 
 import * as S from './Landing.styled'
+import Roadmap from './Roadmap'
 
 const LandingContainer = () => {
   const { containerRef } = useScroll()
@@ -16,6 +17,7 @@ const LandingContainer = () => {
         <About />
         <Description />
         <Event />
+        <Roadmap />
       </S.ScrollBlock>
     </S.Layout>
   )

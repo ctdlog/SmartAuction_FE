@@ -9,6 +9,7 @@ const EventTitle = styled.h1`
   background: linear-gradient(to right, #78cccf 26%, #5542cf 100%);
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  font-family: 'Alkatra';
 `
 
 const EventStep = styled.div`
