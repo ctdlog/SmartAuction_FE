@@ -2,7 +2,11 @@ import Image from 'next/image'
 
 import * as S from './Header.styled'
 
-const Header = () => {
+interface Props {
+  scrollToIndex: (index: number) => void
+}
+
+const Header = ({ scrollToIndex }: Props) => {
   return (
     <S.Header>
       <Image
@@ -13,18 +17,21 @@ const Header = () => {
       />
       <S.Nav>
         <ul>
-          <li>
-            <a href='#'>About</a>
+          <li onClick={() => scrollToIndex(0)}>
+            <span>About</span>
           </li>
-          <li>
-            <a href='#'>Event</a>
+          <li onClick={() => scrollToIndex(1)}>
+            <span>Description</span>
           </li>
-          <li>
-            <a href='#'>Roadmap</a>
+          <li onClick={() => scrollToIndex(2)}>
+            <span>Event</span>
           </li>
-          <li>
+          <li onClick={() => scrollToIndex(3)}>
+            <span>Roadmap</span>
+          </li>
+          {/* <li>
             <a href='#'>Contact</a>
-          </li>
+          </li> */}
         </ul>
       </S.Nav>
       <S.AuthWrapper>

@@ -2,8 +2,13 @@ import { useEffect, useRef, useState } from 'react'
 
 const useScroll = () => {
   const containerRef = useRef<HTMLDivElement>(null)
+  const [currentIndex, setCurrentIndex] = useState(0)
   const [isScrollDisabled, setIsScrollDisabled] = useState(false)
   const SCROLL_DISABLED_TIMEOUT = 1000
+
+  const calculateCurrentIndex = (scrollTop: number, pageHeight: number): number => {
+    return Math.floor(scrollTop / pageHeight)
+  }
 
   const calculateDeltaY = (event: WheelEvent | TouchEvent): number => {
     return 'deltaY' in event ? event.deltaY : event.touches[1].clientY - event.touches[0].clientY
@@ -13,6 +18,10 @@ const useScroll = () => {
     const isScrollingDown = deltaY > 0
     const scrollDirection = isScrollingDown ? 1 : -1
     return pageHeight * (Math.floor(scrollTop / pageHeight) + scrollDirection)
+  }
+
+  const scrollToIndex = (index: number) => {
+    setCurrentIndex(index)
   }
 
   useEffect(() => {
@@ -50,9 +59,19 @@ const useScroll = () => {
       // scrollDivCurrent.removeEventListener('touchstart', handleScroll);
       // scrollDivCurrent.removeEventListener('touchmove', handleScroll);
     }
-  }, [isScrollDisabled])
+  }, [currentIndex, isScrollDisabled])
 
-  return { containerRef }
+  useEffect(() => {
+    const pageHeight = window.innerHeight
+    const nextPageTop = pageHeight * currentIndex
+
+    containerRef.current?.scrollTo({
+      top: nextPageTop,
+      behavior: 'smooth',
+    })
+  }, [currentIndex])
+
+  return { containerRef, scrollToIndex }
 }
 
 export default useScroll
