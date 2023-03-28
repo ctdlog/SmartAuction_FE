@@ -1,4 +1,7 @@
 import Image from 'next/image'
+import Link from 'next/link'
+
+import ROUTE from '@/constants/route'
 
 import * as S from './Header.styled'
 
@@ -37,11 +40,11 @@ const Header = ({ scrollToIndex }: Props) => {
       <S.AuthWrapper>
         <S.Button>
           <i className='ri-login-box-line'></i>
-          <span>Sign In</span>
+          <Link href={ROUTE.SIGN_IN}>Sign In</Link>
         </S.Button>
         <S.Button>
           <i className='ri-user-add-line'></i>
-          <span>Sign Up</span>
+          <Link href={ROUTE.SIGN_UP}>Sign Up</Link>
         </S.Button>
       </S.AuthWrapper>
     </S.Header>

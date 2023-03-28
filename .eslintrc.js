@@ -66,5 +66,6 @@ module.exports = {
     // JavaScript Rules
     'arrow-body-style': ['off'],
     'no-use-before-define': ['warn'],
+    'no-underscore-dangle': ['off'],
   },
 }
