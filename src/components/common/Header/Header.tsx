@@ -38,14 +38,18 @@ const Header = ({ scrollToIndex }: Props) => {
         </ul>
       </S.Nav>
       <S.AuthWrapper>
-        <S.Button>
-          <i className='ri-login-box-line'></i>
-          <Link href={ROUTE.SIGN_IN}>Sign In</Link>
-        </S.Button>
-        <S.Button>
-          <i className='ri-user-add-line'></i>
-          <Link href={ROUTE.SIGN_UP}>Sign Up</Link>
-        </S.Button>
+        <Link href={ROUTE.SIGN_IN}>
+          <S.Button>
+            <i className='ri-login-box-line'></i>
+            <span>Sign In</span>
+          </S.Button>
+        </Link>
+        <Link href={ROUTE.SIGN_UP}>
+          <S.Button>
+            <i className='ri-user-add-line'></i>
+            <span>Sign Up</span>
+          </S.Button>
+        </Link>
       </S.AuthWrapper>
     </S.Header>
   )
