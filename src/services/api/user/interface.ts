@@ -23,3 +23,7 @@ export interface UserInformation {
   registeredAt: string
   updatedAt: string
 }
+
+export interface GenerateRandomMnemonicResponse {
+  mnemonic: string
+}

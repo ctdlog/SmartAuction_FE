@@ -1,4 +1,4 @@
-import SignInContainerView from '@/components/views/SignIn/SignInContainer'
+import SignInContainerView from '@/components/views/SignIn'
 
 const SignIn = () => {
   return <SignInContainerView />

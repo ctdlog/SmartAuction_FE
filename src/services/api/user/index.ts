@@ -1,5 +1,11 @@
 import api from '@/services/api'
-import { SignUpResponse, SignInResponse, EmailVerifyResponse, UserInformation } from '@/services/api/user/interface'
+import {
+  SignUpResponse,
+  SignInResponse,
+  EmailVerifyResponse,
+  UserInformation,
+  GenerateRandomMnemonicResponse,
+} from '@/services/api/user/interface'
 
 export const signUp = (email: string, password: string) => {
   return api.post<SignUpResponse>('/users/sign-up', { email, password })
@@ -19,4 +25,12 @@ export const resendEmailVerify = (email: string, code: number) => {
 
 export const getUserInfo = () => {
   return api.get<UserInformation>('/users')
+}
+
+export const generateRandomMnemonic = () => {
+  return api.post<GenerateRandomMnemonicResponse>('/users/wallet/mnemonic')
+}
+
+export const verifyMnemonic = (mnemonic: string, password: string) => {
+  return api.post('/users/mnemonic/verify', { mnemonic, password })
 }
