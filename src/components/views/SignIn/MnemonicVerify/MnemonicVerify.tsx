@@ -12,9 +12,9 @@ import ROUTE from '@/constants/route'
 import { verifyMnemonic } from '@/services/api/user'
 
 interface FormValues {
+  mnemonic0: string
   mnemonic1: string
   mnemonic2: string
-  mnemonic3: string
   password: string
 }
 
@@ -24,14 +24,14 @@ const MnemonicVerify = () => {
   const { mnemonic } = useContext(MnemonicContext)
   const randomNumbers = pickRandomNumbers(1, 12)
 
-  const onSubmit = async ({ mnemonic1, mnemonic2, mnemonic3, password }: FormValues) => {
+  const onSubmit = async ({ mnemonic0, mnemonic1, mnemonic2, password }: FormValues) => {
     if (!mnemonic) {
       throw new Error('mnemonic이 존재하지 않습니다.')
     }
 
     const selectedMnemonic = randomNumbers.map((number) => mnemonic.split(' ')[number]).join(' ')
 
-    if (selectedMnemonic !== [mnemonic1, mnemonic2, mnemonic3].join(' ')) {
+    if (selectedMnemonic !== [mnemonic0, mnemonic1, mnemonic2].join(' ')) {
       alert('입력하신 단어가 mnemonic과 일치하지 않습니다.')
       return
     }
@@ -54,18 +54,21 @@ const MnemonicVerify = () => {
       <S.Form onSubmit={handleSubmit(onSubmit)}>
         <Title size='4'>Mnemonic과 로그인 시 입력했던 패스워드를 입력해주세요</Title>
         <S.MnemonicBlockWrapper>
-          {randomNumbers.map((number, index) => (
-            <S.MnemonicInputBlock key={number}>
-              <span key={number}>{number + 1}번째 단어</span>
-              <input
-                type='text'
-                placeholder='mnemonic'
-                {...register(`mnemonic${index}`, {
-                  required: true,
-                })}
-              />
-            </S.MnemonicInputBlock>
-          ))}
+          {randomNumbers.map((number, index) => {
+            const mnemonicIndex = `mnemonic${index}` as keyof FormValues
+            return (
+              <S.MnemonicInputBlock key={number}>
+                <span key={number}>{number + 1}번째 단어</span>
+                <input
+                  type='text'
+                  placeholder='mnemonic'
+                  {...register(mnemonicIndex, {
+                    required: true,
+                  })}
+                />
+              </S.MnemonicInputBlock>
+            )
+          })}
         </S.MnemonicBlockWrapper>
         <S.Input
           type='password'
