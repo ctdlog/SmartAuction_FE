@@ -7,6 +7,10 @@ const Header = styled.header`
 
   ul {
     ${tw`flex items-center gap-8`}
+
+    li {
+      cursor: pointer;
+    }
   }
 `
 

@@ -5,7 +5,7 @@ const Roadmap = () => {
     <S.Section>
       <S.RoadmapTitle>Our Roadmap</S.RoadmapTitle>
       <S.RoadmapBlockWrapper>
-        <S.RoadmapBlock backgroundColor='#d0ebff'>
+        <S.RoadmapBlock>
           <h1>2023 - Q1</h1>
           <ul>
             <li>BLK 토큰 런칭</li>
@@ -14,7 +14,7 @@ const Roadmap = () => {
             <li>테스트넷 기반 클로즈 베타 1.0 오픈</li>
           </ul>
         </S.RoadmapBlock>
-        <S.RoadmapBlock backgroundColor='#d3f9d8'>
+        <S.RoadmapBlock>
           <h1>2023 - Q2</h1>
           <ul>
             <li>라이트하우스 월렛 출시</li>
@@ -23,7 +23,7 @@ const Roadmap = () => {
             <li>테스트넷 기반 클로즈 베타 2.0 오픈</li>
           </ul>
         </S.RoadmapBlock>
-        <S.RoadmapBlock backgroundColor='#fff3bf'>
+        <S.RoadmapBlock>
           <h1>2023 - Q3</h1>
           <ul>
             <li>서비스 백서 작성</li>
@@ -32,7 +32,7 @@ const Roadmap = () => {
             <li>서비스 정식 오픈</li>
           </ul>
         </S.RoadmapBlock>
-        <S.RoadmapBlock backgroundColor='#ffe8cc'>
+        <S.RoadmapBlock>
           <h1>2023 - Q4</h1>
           <ul>
             <li>실시간 매칭 서비스 적용</li>
