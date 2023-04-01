@@ -4,8 +4,11 @@ import GenerateMnemonic from '@/components/views/SignIn/GenerateMnemonic'
 import LoginForm from '@/components/views/SignIn/LoginForm'
 import MnemonicVerify from '@/components/views/SignIn/MnemonicVerify'
 
+import { MnemonicContext } from './SignInContainer.context'
+
 const SignInContainer = () => {
   const [signInState, setSignInState] = useState<'login' | 'generate' | 'verify'>('login')
+  const [mnemonic, setMnemonic] = useState<string | null>(null)
 
   const setSignInStateToGenerate = () => {
     setSignInState('generate')
@@ -16,11 +19,29 @@ const SignInContainer = () => {
   }
 
   if (signInState === 'generate') {
-    return <GenerateMnemonic setSignInStateToVerify={setSignInStateToVerify} />
+    return (
+      <MnemonicContext.Provider
+        value={{
+          mnemonic,
+          setMnemonic,
+        }}
+      >
+        <GenerateMnemonic setSignInStateToVerify={setSignInStateToVerify} />
+      </MnemonicContext.Provider>
+    )
   }
 
   if (signInState === 'verify') {
-    return <MnemonicVerify />
+    return (
+      <MnemonicContext.Provider
+        value={{
+          mnemonic,
+          setMnemonic,
+        }}
+      >
+        <MnemonicVerify />
+      </MnemonicContext.Provider>
+    )
   }
 
   return <LoginForm setSignInStateToGenerate={setSignInStateToGenerate} />

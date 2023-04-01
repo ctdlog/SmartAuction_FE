@@ -19,7 +19,9 @@ const WalletRegister = ({ setSignInStateToVerify }: Props) => {
     <S.Container>
       <Title size='4'>Mnemonic 문구가 생성되었습니다.</Title>
       <Subtitle size='4'>아래 문구를 메모장에 저장해주세요.</Subtitle>
-      <span>{mnemonic}</span>
+      <S.Wrapper>
+        <span>{mnemonic}</span>
+      </S.Wrapper>
       <span>문구를 저장하셨나요?</span>
       <S.Button onClick={handleClick}>지갑 등록하러 가기</S.Button>
     </S.Container>

@@ -1,19 +1,14 @@
-import styled from '@emotion/styled';
-import { Html, Head, Main, NextScript } from 'next/document';
+import { Html, Head, Main, NextScript } from 'next/document'
 
 export default function Document() {
   return (
-    <Html lang="en">
+    <Html lang='en'>
       <Head />
       <body>
+        <div id='modal-root' />
         <Main />
         <NextScript />
       </body>
     </Html>
-  );
+  )
 }
-
-const styledTest = styled.div`
-  display: flex;
-  align-items: center;
-`;

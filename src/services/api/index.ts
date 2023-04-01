@@ -13,16 +13,17 @@ export const createApi = () => {
     },
   })
 
-  _api.interceptors.response.use(
-    (response) => response,
-    (error) => {
-      return Promise.reject(error)
-    }
-  )
-
   _api.interceptors.request.use((config) => {
     return config
   })
+
+  _api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      console.error(error)
+      return Promise.reject(error)
+    }
+  )
 
   return _api
 }

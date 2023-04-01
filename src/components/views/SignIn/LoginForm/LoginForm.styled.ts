@@ -6,7 +6,7 @@ const Container = styled.div`
 `
 
 const Form = styled.form`
-  ${tw`flex w-1/4 flex-col items-center justify-center gap-8 rounded-lg border border-gray-300 px-8 py-12 shadow-lg`}
+  ${tw`flex w-96 flex-col items-center justify-center gap-8 rounded-lg border border-gray-300 px-8 py-12 shadow-lg`}
 
   label {
     ${tw`flex w-full flex-col items-start gap-2`}
@@ -14,6 +14,10 @@ const Form = styled.form`
 
   input {
     ${tw`w-full rounded-lg border border-gray-300 px-4 py-2 outline-none`}
+  }
+
+  small {
+    ${tw`text-red-500`}
   }
 `
 

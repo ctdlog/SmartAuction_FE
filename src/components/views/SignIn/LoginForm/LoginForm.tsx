@@ -21,7 +21,11 @@ interface Props {
 }
 
 const LoginForm = ({ setSignInStateToGenerate }: Props) => {
-  const { register, handleSubmit } = useForm<FormValues>()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>()
   const { push } = useRouter()
   const [isRequiredEmailVerification, setIsRequiredEmailVerification] = useState(false)
   const [verificationCode, setVerificationCode] = useState<number | null>(null)
@@ -68,7 +72,21 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
         <h1>Sign In</h1>
         <label>
           <Subtitle size='4'>Email</Subtitle>
-          <input type='text' placeholder='email' {...register('email', { required: true, pattern: /^\S+@\S+$/i })} />
+          <input
+            type='text'
+            placeholder='email'
+            {...register('email', {
+              required: {
+                value: true,
+                message: '이메일을 입력해주세요.',
+              },
+              pattern: {
+                value: /^([a-zA-Z0-9.]+)@([a-zA-Z0-9]+)\.([a-zA-Z]{2,})$/,
+                message: '이메일 형식이 올바르지 않습니다.',
+              },
+            })}
+          />
+          <small>{errors.email?.message}</small>
         </label>
         {isRequiredEmailVerification && (
           <S.VerificationCodeBlock>
@@ -87,8 +105,22 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
           <input
             type='password'
             placeholder='password'
-            {...register('password', { required: true, minLength: 6, maxLength: 20 })}
+            {...register('password', {
+              required: {
+                value: true,
+                message: '비밀번호를 입력해주세요.',
+              },
+              minLength: {
+                value: 6,
+                message: '비밀번호는 6자 이상이어야 합니다.',
+              },
+              maxLength: {
+                value: 20,
+                message: '비밀번호는 20자 이하여야 합니다.',
+              },
+            })}
           />
+          <small>{errors.password?.message}</small>
         </label>
         <S.Button type='submit'>Sign In</S.Button>
       </S.Form>

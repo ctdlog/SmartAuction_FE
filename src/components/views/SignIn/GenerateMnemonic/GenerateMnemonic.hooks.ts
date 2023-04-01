@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect } from 'react'
 
+import { MnemonicContext } from '@/components/views/SignIn/SignInContainer.context'
 import { generateRandomMnemonic } from '@/services/api/user'
 
 const useMnemonic = () => {
-  const [mnemonic, setMnemonic] = useState('')
+  const { mnemonic, setMnemonic } = useContext(MnemonicContext)
 
   useEffect(() => {
     const generateRandomMnemonicfromAPI = async () => {
@@ -14,7 +15,7 @@ const useMnemonic = () => {
     }
 
     generateRandomMnemonicfromAPI()
-  }, [])
+  }, [setMnemonic])
 
   return { mnemonic }
 }
