@@ -1,5 +1,6 @@
 import { useState } from 'react'
 
+import { AxiosError } from 'axios'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 
@@ -31,26 +32,37 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
   const [verificationCode, setVerificationCode] = useState<number | null>(null)
 
   const onSubmit = async ({ email, password }: FormValues) => {
-    const {
-      statusCode,
-      payload: { acToken },
-    } = await signIn(email, password)
-    if (statusCode === 201) {
-      setAccessTokenToLocalStorage(acToken)
+    try {
       const {
-        payload: { role },
-      } = await getUserInfo()
-      if (role === emailNotVerifiedRole) {
-        setIsRequiredEmailVerification(true)
-        return
-      }
+        statusCode,
+        payload: { acToken },
+      } = await signIn(email, password)
+      if (statusCode === 201) {
+        setAccessTokenToLocalStorage(acToken)
+        const {
+          payload: { role },
+        } = await getUserInfo()
+        if (role === emailNotVerifiedRole) {
+          setIsRequiredEmailVerification(true)
+          return
+        }
 
-      if (role === walletNotRegisteredRole) {
-        setSignInStateToGenerate()
-        return
-      }
+        if (role === walletNotRegisteredRole) {
+          setSignInStateToGenerate()
+          return
+        }
 
-      push(ROUTE.HOME)
+        push(ROUTE.HOME)
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error.response?.data.message === 'USER NOT EXIST') {
+          alert('존재하지 않는 이메일입니다. 회원가입을 시도해주세요.')
+        }
+        if (error.response?.data.message === 'PASSWORD NOT MATCH') {
+          alert('비밀번호가 일치하지 않습니다.')
+        }
+      }
     }
   }
 
@@ -62,7 +74,7 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
     const { statusCode } = await emailVerify(code)
     if (statusCode === 201) {
       alert('이메일 인증이 완료되었습니다.')
-      push(ROUTE.HOME)
+      setSignInStateToGenerate()
     }
   }
 
