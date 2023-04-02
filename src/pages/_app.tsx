@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Analytics } from '@vercel/analytics/react'
 import type { AppProps } from 'next/app'
+import Head from 'next/head'
 
 import GlobalStyles from '@/styles/GlobalStyles'
 
@@ -15,6 +16,9 @@ const App = ({ Component, pageProps }: AppProps) => {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <Head>
+        <title>Smart Auction</title>
+      </Head>
       <Hydrate state={pageProps.dehydratedState}>
         <GlobalStyles />
         <Component {...pageProps} />

@@ -1,4 +1,5 @@
 import { AxiosError } from 'axios'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 
@@ -43,12 +44,12 @@ const SignUpContainer = () => {
   return (
     <S.Container>
       <S.Form onSubmit={handleSubmit(onSubmit)}>
-        <Title size='4'>Sign Up</Title>
+        <Title size='4'>회원가입</Title>
         <label>
-          <Subtitle size='4'>Email</Subtitle>
+          <Subtitle size='4'>이메일</Subtitle>
           <input
             type='text'
-            placeholder='email'
+            placeholder='이메일을 입력해주세요.'
             {...register('email', {
               required: {
                 value: true,
@@ -63,10 +64,10 @@ const SignUpContainer = () => {
           <small role='alert'>{errors.email?.message}</small>
         </label>
         <label>
-          <Subtitle size='4'>Password</Subtitle>
+          <Subtitle size='4'>비밀번호</Subtitle>
           <input
             type='password'
-            placeholder='password'
+            placeholder='비밀번호를 입력해주세요.'
             {...register('password', {
               required: {
                 value: true,
@@ -85,10 +86,10 @@ const SignUpContainer = () => {
           <small role='alert'>{errors.password?.message}</small>
         </label>
         <label>
-          <Subtitle size='4'>Password Confirm</Subtitle>
+          <Subtitle size='4'>비밀번호 확인</Subtitle>
           <input
             type='password'
-            placeholder='re-enter password'
+            placeholder='비밀번호를 다시 입력해주세요.'
             {...register('passwordConfirm', {
               required: {
                 value: true,
@@ -107,7 +108,10 @@ const SignUpContainer = () => {
           />
           <small role='alert'>{errors.passwordConfirm?.message}</small>
         </label>
-        <S.Button type='submit'>Sign Up</S.Button>
+        <S.Button type='submit'>회원가입</S.Button>
+        <S.LinkWrapper>
+          이미 계정이 있으신가요? <Link href={ROUTE.SIGN_IN}>로그인</Link>
+        </S.LinkWrapper>
       </S.Form>
     </S.Container>
   )
