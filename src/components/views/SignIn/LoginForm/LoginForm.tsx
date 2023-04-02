@@ -1,10 +1,12 @@
 import { useState } from 'react'
 
 import { AxiosError } from 'axios'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 
 import Subtitle from '@/components/common/Subtitle'
+import Title from '@/components/common/Title'
 import * as S from '@/components/views/SignIn/LoginForm/LoginForm.styled'
 import { emailNotVerifiedRole, walletNotRegisteredRole } from '@/components/views/SignIn/SignInContainer.constants'
 import ROUTE from '@/constants/route'
@@ -44,6 +46,7 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
         } = await getUserInfo()
         if (role === emailNotVerifiedRole) {
           setIsRequiredEmailVerification(true)
+          alert('이메일 인증번호를 입력해주세요.')
           return
         }
 
@@ -81,12 +84,12 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
   return (
     <S.Container>
       <S.Form onSubmit={handleSubmit(onSubmit)}>
-        <h1>Sign In</h1>
+        <Title size='4'>로그인</Title>
         <label>
-          <Subtitle size='4'>Email</Subtitle>
+          <Subtitle size='4'>이메일</Subtitle>
           <input
             type='text'
-            placeholder='email'
+            placeholder='이메일을 입력해주세요.'
             {...register('email', {
               required: {
                 value: true,
@@ -104,7 +107,7 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
           <S.VerificationCodeBlock>
             <input
               type='number'
-              placeholder='인증번호'
+              placeholder='이메일 인증번호를 입력해주세요.'
               onChange={(e) => {
                 setVerificationCode(Number(e.target.value))
               }}
@@ -113,10 +116,10 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
           </S.VerificationCodeBlock>
         )}
         <label>
-          <Subtitle size='4'>Password</Subtitle>
+          <Subtitle size='4'>비밀번호</Subtitle>
           <input
             type='password'
-            placeholder='password'
+            placeholder='비밀번호를 입력해주세요.'
             {...register('password', {
               required: {
                 value: true,
@@ -134,7 +137,10 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
           />
           <small>{errors.password?.message}</small>
         </label>
-        <S.Button type='submit'>Sign In</S.Button>
+        <S.Button type='submit'>로그인</S.Button>
+        <S.LinkWrapper>
+          계정이 없으신가요?<Link href={ROUTE.SIGN_UP}>회원가입</Link>
+        </S.LinkWrapper>
       </S.Form>
     </S.Container>
   )

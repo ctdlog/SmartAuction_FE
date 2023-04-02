@@ -24,7 +24,7 @@ export interface FontStylesConfig {
 
 const fontFamilies: Record<Language, string> = {
   korean: 'Noto Sans KR, sans-serif',
-  english: 'Inter, sans-serif',
+  english: 'Poppins, sans-serif',
 }
 
 const fontSizes: FontSizes = {

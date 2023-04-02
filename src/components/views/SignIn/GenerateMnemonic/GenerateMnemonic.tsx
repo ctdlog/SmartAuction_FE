@@ -17,13 +17,17 @@ const WalletRegister = ({ setSignInStateToVerify }: Props) => {
 
   return (
     <S.Container>
-      <Title size='4'>Mnemonic 문구가 생성되었습니다.</Title>
-      <Subtitle size='4'>아래 문구를 메모장에 저장해주세요.</Subtitle>
-      <S.Wrapper>
-        <span>{mnemonic}</span>
-      </S.Wrapper>
-      <span>문구를 저장하셨나요?</span>
-      <S.Button onClick={handleClick}>지갑 등록하러 가기</S.Button>
+      <S.Block>
+        <Title size='4'>Mnemonic 문구가 생성되었습니다.</Title>
+        <Subtitle size='4'>아래 문구를 메모장에 저장해주세요.</Subtitle>
+        <S.Wrapper>
+          <span>{mnemonic}</span>
+        </S.Wrapper>
+        <S.ButtonWrapper>
+          <span>문구를 저장하셨나요?</span>
+          <button onClick={handleClick}>지갑 등록하러 가기</button>
+        </S.ButtonWrapper>
+      </S.Block>
     </S.Container>
   )
 }

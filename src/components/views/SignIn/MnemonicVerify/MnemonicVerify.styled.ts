@@ -2,11 +2,11 @@ import styled from '@emotion/styled'
 import tw from 'twin.macro'
 
 const Container = styled.div`
-  ${tw`flex h-screen flex-col items-center justify-center`}
+  ${tw`flex h-screen flex-col items-center justify-center bg-gray-200`}
 `
 
 const Form = styled.form`
-  ${tw`flex w-1/2 flex-col items-center justify-center gap-8 rounded-lg border border-gray-300 px-8 py-12 shadow-lg`}
+  ${tw`flex w-1/2 flex-col items-center justify-center gap-8 rounded-xl bg-white px-8 py-12`}
 `
 
 const MnemonicBlockWrapper = styled.div`
@@ -16,17 +16,29 @@ const MnemonicBlockWrapper = styled.div`
 const MnemonicInputBlock = styled.div`
   ${tw`flex w-full items-center justify-center gap-4`}
 
+  h2 {
+    ${tw`w-24`}
+  }
+
   input {
-    ${tw`w-64 rounded-lg border border-gray-300 px-4 py-2 outline-none`}
+    ${tw`w-64 rounded-md border border-gray-300 px-4 py-2 outline-none`}
+  }
+`
+
+const PasswordInputWrapper = styled.div`
+  ${tw`flex w-full items-center justify-center gap-4`}
+
+  h2 {
+    ${tw`w-24`}
   }
 `
 
 const Input = styled.input`
-  ${tw`w-80 rounded-lg border border-gray-300 px-4 py-2 outline-none`}
+  ${tw`w-64 rounded-md border border-gray-300 px-4 py-2 outline-none`}
 `
 
 const Button = styled.button`
-  ${tw`rounded-lg bg-blue-500 px-4 py-2 text-white`}
+  ${tw`w-96 rounded-lg bg-blue-500 px-4 py-2 text-white`}
 `
 
-export { Container, Form, MnemonicBlockWrapper, MnemonicInputBlock, Input, Button }
+export { Container, Form, MnemonicBlockWrapper, MnemonicInputBlock, PasswordInputWrapper, Input, Button }
