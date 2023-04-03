@@ -21,4 +21,8 @@ const ButtonWrapper = styled.div`
   }
 `
 
-export { Container, Block, Wrapper, ButtonWrapper }
+const Button = styled.button`
+  ${tw`rounded-lg bg-blue-500 py-2 px-4 font-bold text-white`}
+`
+
+export { Container, Block, Wrapper, ButtonWrapper, Button }

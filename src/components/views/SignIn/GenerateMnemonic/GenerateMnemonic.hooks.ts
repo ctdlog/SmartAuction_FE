@@ -17,6 +17,10 @@ const useMnemonic = () => {
     generateRandomMnemonicfromAPI()
   }, [setMnemonic])
 
+  if (!mnemonic) {
+    throw new Error('Mnemonic is not defined')
+  }
+
   return { mnemonic }
 }
 
