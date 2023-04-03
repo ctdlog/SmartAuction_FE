@@ -8,7 +8,7 @@ import { MnemonicContext } from './SignInContainer.context'
 
 const SignInContainer = () => {
   const [signInState, setSignInState] = useState<'login' | 'generate' | 'verify'>('login')
-  const [mnemonic, setMnemonic] = useState<string | null>(null)
+  const [mnemonic, setMnemonic] = useState<string>(null as unknown as string)
 
   const setSignInStateToGenerate = () => {
     setSignInState('generate')
