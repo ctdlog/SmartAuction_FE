@@ -21,6 +21,7 @@ const SignUpContainer = () => {
     register,
     handleSubmit,
     watch,
+    setError,
     formState: { errors },
   } = useForm<FormValues>()
   const { push } = useRouter()
@@ -35,8 +36,11 @@ const SignUpContainer = () => {
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response?.data.message === 'USER EXIST') {
-          alert('이미 존재하는 이메일입니다. 로그인을 시도해주세요.')
+          setError('email', { type: 'manual', message: '이미 존재하는 이메일입니다. 로그인을 시도해주세요.' })
+          return
         }
+
+        setError('email', { type: 'manual', message: error.response?.data.message })
       }
     }
   }

@@ -41,7 +41,7 @@ const MnemonicVerify = () => {
       const { statusCode } = await verifyMnemonic(mnemonic, password)
       if (statusCode === 201) {
         alert('지갑이 등록되었습니다.')
-        push(ROUTE.HOME)
+        push(ROUTE.AUCTION)
       }
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -53,7 +53,8 @@ const MnemonicVerify = () => {
   return (
     <S.Container>
       <S.Form onSubmit={handleSubmit(onSubmit)}>
-        <Title size='4'>Mnemonic과 로그인 시 입력했던 패스워드를 입력해주세요.</Title>
+        <Title size='4'>Mnemonic 인증</Title>
+        <Subtitle size='2'>지갑 등록을 위해 Mnemonic과 로그인 시 입력했던 패스워드를 입력해주세요.</Subtitle>
         <S.MnemonicBlockWrapper>
           {randomNumbers.map((number, index) => {
             const mnemonicIndex = `mnemonic${index}` as keyof FormValues

@@ -28,6 +28,7 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<FormValues>()
   const { push } = useRouter()
   const [isRequiredEmailVerification, setIsRequiredEmailVerification] = useState(false)
@@ -55,17 +56,32 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
           return
         }
 
-        push(ROUTE.HOME)
+        push(ROUTE.AUCTION)
       }
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response?.data.message === 'USER NOT EXIST') {
-          alert('존재하지 않는 이메일입니다. 회원가입을 시도해주세요.')
+          setError('email', {
+            type: 'manual',
+            message: '존재하지 않는 이메일입니다.',
+          })
+          return
         }
         if (error.response?.data.message === 'PASSWORD NOT MATCH') {
-          alert('비밀번호가 일치하지 않습니다.')
+          setError('password', {
+            type: 'manual',
+            message: '비밀번호가 일치하지 않습니다.',
+          })
+          return
         }
+
+        setError('email', {
+          type: 'manual',
+          message: error.response?.data.message,
+        })
       }
+
+      alert('알 수 없는 에러가 발생했습니다.')
     }
   }
 
