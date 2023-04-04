@@ -7,16 +7,18 @@ import { useForm } from 'react-hook-form'
 
 import Subtitle from '@/components/common/Subtitle'
 import Title from '@/components/common/Title'
+import { useTimer } from '@/components/views/SignIn/LoginForm/LoginForm.hooks'
 import * as S from '@/components/views/SignIn/LoginForm/LoginForm.styled'
 import { emailNotVerifiedRole, walletNotRegisteredRole } from '@/components/views/SignIn/SignInContainer.constants'
 import ROUTE from '@/constants/route'
 import { setAccessTokenToLocalStorage } from '@/features/auth/token'
-import { emailVerify, getUserInfo, signIn } from '@/services/api/user'
+import { emailVerify, getUserInfo, resendEmailVerify, signIn } from '@/services/api/user'
 
 interface FormValues {
   email: string
   password: string
   passwordConfirm: string
+  verificationCode: number
 }
 
 interface Props {
@@ -27,12 +29,13 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     setError,
+    getValues,
   } = useForm<FormValues>()
   const { push } = useRouter()
   const [isRequiredEmailVerification, setIsRequiredEmailVerification] = useState(false)
-  const [verificationCode, setVerificationCode] = useState<number | null>(null)
+  const { timeLeft, timerEnded, startTimer } = useTimer(3)
 
   const onSubmit = async ({ email, password }: FormValues) => {
     try {
@@ -87,13 +90,25 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
 
   const handleClickVerifyEmail = async (code: number | null) => {
     if (!code) {
-      throw new Error('인증번호가 입력되지 않았습니다.')
+      setError('verificationCode', {
+        type: 'manual',
+        message: '인증번호를 입력해주세요.',
+      })
+      return
     }
 
     const { statusCode } = await emailVerify(code)
     if (statusCode === 201) {
       alert('이메일 인증이 완료되었습니다.')
       setSignInStateToGenerate()
+    }
+  }
+
+  const handleClickResendEmail = async () => {
+    const { statusCode } = await resendEmailVerify()
+    if (statusCode === 201) {
+      startTimer()
+      alert('이메일이 재전송되었습니다.')
     }
   }
 
@@ -106,6 +121,7 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
           <input
             type='text'
             placeholder='이메일을 입력해주세요.'
+            readOnly={isRequiredEmailVerification}
             {...register('email', {
               required: {
                 value: true,
@@ -121,14 +137,28 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
         </label>
         {isRequiredEmailVerification && (
           <S.VerificationCodeBlock>
-            <input
-              type='number'
-              placeholder='이메일 인증번호를 입력해주세요.'
-              onChange={(e) => {
-                setVerificationCode(Number(e.target.value))
-              }}
-            />
-            <button onClick={() => handleClickVerifyEmail(verificationCode)}>확인</button>
+            <S.VerificationCodeInputWrapper>
+              <input
+                type='number'
+                placeholder='이메일 인증번호를 입력해주세요.'
+                {...register('verificationCode', {
+                  minLength: {
+                    value: 6,
+                    message: '이메일 인증번호는 6자리입니다.',
+                  },
+                })}
+              />
+              <button type='button' onClick={() => handleClickVerifyEmail(getValues('verificationCode'))}>
+                확인
+              </button>
+            </S.VerificationCodeInputWrapper>
+            <small>{errors.verificationCode?.message}</small>
+            <S.ResendEmailWrapper>
+              <span>이메일이 도착하지 않으셨나요?</span>
+              <button type='button' disabled={!timerEnded} onClick={handleClickResendEmail}>
+                {timerEnded ? '재전송' : timeLeft}
+              </button>
+            </S.ResendEmailWrapper>
           </S.VerificationCodeBlock>
         )}
         <label>
@@ -136,6 +166,7 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
           <input
             type='password'
             placeholder='비밀번호를 입력해주세요.'
+            readOnly={isRequiredEmailVerification}
             {...register('password', {
               required: {
                 value: true,
@@ -153,7 +184,9 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
           />
           <small>{errors.password?.message}</small>
         </label>
-        <S.Button type='submit'>로그인</S.Button>
+        <S.Button type='submit' disabled={isSubmitting || isRequiredEmailVerification}>
+          로그인
+        </S.Button>
         <S.LinkWrapper>
           계정이 없으신가요?<Link href={ROUTE.SIGN_UP}>회원가입</Link>
         </S.LinkWrapper>

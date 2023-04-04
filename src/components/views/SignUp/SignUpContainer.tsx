@@ -22,7 +22,7 @@ const SignUpContainer = () => {
     handleSubmit,
     watch,
     setError,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<FormValues>()
   const { push } = useRouter()
 
@@ -112,7 +112,9 @@ const SignUpContainer = () => {
           />
           <small role='alert'>{errors.passwordConfirm?.message}</small>
         </label>
-        <S.Button type='submit'>회원가입</S.Button>
+        <S.Button type='submit' disabled={isSubmitting}>
+          회원가입
+        </S.Button>
         <S.LinkWrapper>
           이미 계정이 있으신가요? <Link href={ROUTE.SIGN_IN}>로그인</Link>
         </S.LinkWrapper>
