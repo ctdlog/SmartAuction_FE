@@ -2,11 +2,11 @@ import styled from '@emotion/styled'
 import tw from 'twin.macro'
 
 const Container = styled.div`
-  ${tw`flex h-screen flex-col items-center justify-center bg-gray-200`}
+  ${tw`flex h-screen flex-col items-center justify-center bg-background text-gray-100`}
 `
 
 const Form = styled.form`
-  ${tw`flex w-1/2 flex-col items-center justify-center gap-8 rounded-xl bg-white px-8 py-12`}
+  ${tw`flex w-1/2 flex-col items-center justify-center gap-8 rounded-xl bg-zinc-800 px-8 py-12`}
 `
 
 const MnemonicBlockWrapper = styled.div`
@@ -21,7 +21,7 @@ const MnemonicInputBlock = styled.div`
   }
 
   input {
-    ${tw`w-64 rounded-md border border-gray-300 px-4 py-2 outline-none`}
+    ${tw`w-64 rounded-md bg-zinc-700 px-4 py-2 outline-none`}
   }
 `
 
@@ -34,7 +34,7 @@ const PasswordInputWrapper = styled.div`
 `
 
 const Input = styled.input`
-  ${tw`w-64 rounded-md border border-gray-300 px-4 py-2 outline-none`}
+  ${tw`w-64 rounded-md bg-zinc-700 px-4 py-2 outline-none`}
 `
 
 const Button = styled.button`

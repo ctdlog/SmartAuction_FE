@@ -23,7 +23,7 @@ const MnemonicVerify = () => {
   const { push } = useRouter()
   const { register, handleSubmit } = useForm<FormValues>()
   const { mnemonic } = useContext(MnemonicContext)
-  const randomNumbers = pickRandomNumbers(1, 12)
+  const randomNumbers = pickRandomNumbers(1, 11)
 
   const onSubmit = async ({ mnemonic0, mnemonic1, mnemonic2, password }: FormValues) => {
     if (!mnemonic) {

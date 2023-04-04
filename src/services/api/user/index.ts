@@ -19,8 +19,8 @@ export const emailVerify = (verificationCode: number) => {
   return api.post<EmailVerifyResponse>('users/sign-up/verify', { verificationCode })
 }
 
-export const resendEmailVerify = (email: string, code: number) => {
-  return api.post<EmailVerifyResponse>('users/sign-up/resend', { email, code })
+export const resendEmailVerify = () => {
+  return api.post<EmailVerifyResponse>('users/sign-up/resend')
 }
 
 export const getUserInfo = () => {
