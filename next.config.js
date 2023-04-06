@@ -13,7 +13,7 @@ const nextConfig = withTwin({
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['blockchain-lighthouse.s3.ap-northeast-2.amazonaws.com'],
+    domains: ['blockchain-lighthouse.s3.ap-northeast-2.amazonaws.com', 'placekitten.com'],
   },
 })
 
