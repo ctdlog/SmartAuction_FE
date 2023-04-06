@@ -3,6 +3,7 @@ const ROUTE = {
   SIGN_UP: '/signup',
   SIGN_IN: '/signin',
   AUCTION: '/auction',
-}
+  AUCTION_WRITE: '/auction/write',
+} as const
 
 export default ROUTE

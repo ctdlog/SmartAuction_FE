@@ -1,11 +1,11 @@
 import api from '@/services/api'
-import {
+import type {
   SignUpResponse,
   SignInResponse,
   EmailVerifyResponse,
   UserInformation,
   GenerateRandomMnemonicResponse,
-} from '@/services/api/user/interface'
+} from '@/services/api/user/types'
 
 export const signUp = (email: string, password: string) => {
   return api.post<SignUpResponse>('/users/sign-up', { email, password })
