@@ -33,15 +33,27 @@ export const WriterWrapper = styled.div`
 `
 
 export const Menu = styled.div`
-  ${tw`flex flex-col gap-4`}
+  ${tw`mb-4 flex h-fit flex-col gap-4 rounded-lg border border-zinc-700 bg-zinc-800 p-4`}
 `
 
 export const MenuButtonWrapper = styled.div`
-  ${tw`flex items-center gap-4`}
+  ${tw`flex items-center justify-between gap-4`}
+
+  h2 {
+    ${tw`w-36`}
+  }
 `
 
 export const MenuButton = styled.button`
   ${tw`flex items-center gap-2 rounded-md bg-zinc-700 px-4 py-2 text-xl`}
+`
+
+export const BiddersBlock = styled.div`
+  ${tw`flex flex-col gap-4 rounded-lg border border-zinc-700 bg-zinc-800 p-4`}
+`
+
+export const BidderInformation = styled.div`
+  ${tw`flex items-center gap-4`}
 `
 
 export const Modal = styled.div`
