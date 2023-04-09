@@ -20,6 +20,6 @@ export const getAuctionDetail = (id: number) => {
   return api.get<AuctionDetail>(`/auctions/${id}`)
 }
 
-export const bidAuction = (auctionId: number, password: number, bidAmount: number) => {
+export const bidAuction = (auctionId: number, password: string, bidAmount: number) => {
   return api.post(`/auctions/bid`, { auctionId, password, bidAmount })
 }

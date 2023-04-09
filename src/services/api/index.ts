@@ -1,97 +1,100 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios'
 
 import { getApiEndpoint } from '@/envs'
-import { getAccessTokenFromLocalStorage } from '@/features/auth/token'
-
-export interface RegenerateAccessTokenByRefreshTokenResponse {
-  acToken: string
-  acTokenExpiresAt: number
-}
-
-// export const regenerateAccessTokenByRefreshToken = () => {
-//   return api.post<RegenerateAccessTokenByRefreshTokenResponse>('/users/refresh')
-// }
-
-export const createApi = () => {
-  const accessToken = getAccessTokenFromLocalStorage()
-
-  const _api = axios.create({
-    baseURL: getApiEndpoint(),
-    headers: {
-      ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
-    },
-  })
-
-  _api.interceptors.request.use((config) => {
-    // eslint-disable-next-line no-param-reassign
-    config.headers.Authorization = `Bearer ${accessToken}`
-    return config
-  })
-
-  // TODO: Refresh Token 1회만 요청하도록 기능 구현
-  // type SubScribers = ((token: string) => void)[]
-
-  // let isRefreshing = false
-  // let refreshSubscribers: SubScribers = []
-
-  // _api.interceptors.response.use(
-  //   (response) => response,
-  //   async (error) => {
-  //     const {
-  //       config,
-  //       response: { status },
-  //     } = error
-
-  //     const originalRequest = config
-  //     if (status === 401 && !originalRequest._retry) {
-  //       if (isRefreshing) {
-  //         return new Promise((resolve) => {
-  //           // eslint-disable-next-line no-shadow
-  //           refreshSubscribers.push((accessToken) => {
-  //             originalRequest.headers.Authorization = `Bearer ${accessToken}`
-  //             console.log(originalRequest)
-  //             resolve(_api(originalRequest))
-  //           })
-  //         })
-  //       }
-
-  //       originalRequest._retry = true
-  //       isRefreshing = true
-
-  //       return (
-  //         new Promise((resolve, reject) => {
-  //           regenerateAccessTokenByRefreshToken().then(({ payload: { acToken } }) => {
-  //             originalRequest.headers.Authorization = `Bearer ${acToken}`
-
-  //             refreshSubscribers.forEach((subscriber) => subscriber(acToken))
-  //             refreshSubscribers = []
-  //             console.log('resolved')
-  //             resolve(_api(originalRequest))
-  //           })
-  //         })
-  //           // eslint-disable-next-line no-shadow
-  //           .catch((error: AxiosError) => {
-  //             return Promise.reject(error)
-  //           })
-  //           .finally(() => {
-  //             isRefreshing = false
-  //           })
-  //       )
-  //     }
-
-  //     return Promise.reject(error)
-  //   }
-  // )
-
-  return _api
-}
+import {
+  getAccessTokenFromLocalStorage,
+  getRefreshTokenFromLocalStorage,
+  setAccessTokenToLocalStorage,
+} from '@/features/auth/token'
 
 export interface ServerResponse<T> {
   statusCode: number
   payload: T
 }
 
-const _api = createApi()
+const accessToken = getAccessTokenFromLocalStorage()
+
+const _api = axios.create({
+  baseURL: getApiEndpoint(),
+  headers: {
+    ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
+  },
+})
+
+_api.interceptors.request.use(
+  (config) => {
+    // eslint-disable-next-line no-param-reassign
+    config.headers.Authorization = `Bearer ${getAccessTokenFromLocalStorage()}`
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
+  }
+)
+
+type SubScribers = ((token: string) => void)[]
+
+let isRefreshing = false
+let refreshSubscribers: SubScribers = []
+
+interface RegenerateAccessTokenByRefreshTokenResponse {
+  payload: {
+    acToken: string
+    acTokenExpiresAt: number
+  }
+}
+
+_api.interceptors.response.use(
+  (response) => {
+    return response
+  },
+  async (error) => {
+    const {
+      config,
+      response: { status },
+    } = error
+
+    const originalRequest = config
+    if (status === 401 && !originalRequest._retry) {
+      if (isRefreshing) {
+        return new Promise((resolve) => {
+          refreshSubscribers.push((_accessToken) => {
+            originalRequest.headers.Authorization = `Bearer ${_accessToken}`
+            resolve(_api(originalRequest))
+          })
+        })
+      }
+
+      originalRequest._retry = true
+      isRefreshing = true
+
+      return new Promise((resolve) => {
+        axios
+          .post<RegenerateAccessTokenByRefreshTokenResponse>(
+            `${getApiEndpoint()}/users/refresh`,
+            {},
+            { headers: { Authorization: `Bearer ${getRefreshTokenFromLocalStorage()}` } }
+          )
+          .then(({ data }) => {
+            const { acToken } = data.payload
+            setAccessTokenToLocalStorage(acToken)
+            originalRequest.headers.Authorization = `Bearer ${acToken}`
+            refreshSubscribers.forEach((subscriber) => subscriber(acToken))
+            refreshSubscribers = []
+            resolve(_api(originalRequest))
+          })
+      })
+        .catch((_error: AxiosError) => {
+          return Promise.reject(_error)
+        })
+        .finally(() => {
+          isRefreshing = false
+        })
+    }
+
+    return Promise.reject(error)
+  }
+)
 
 const api = {
   get: <T>(url: string, config?: AxiosRequestConfig) =>

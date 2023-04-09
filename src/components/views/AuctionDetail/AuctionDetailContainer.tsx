@@ -26,9 +26,10 @@ const AuctionDetailContainer = () => {
   const { register, handleSubmit, watch } = useForm<FormValues>()
   const [isOpenPasswordInputModal, setIsOpenPasswordInputModal] = useState(false)
 
-  const { mutate } = useMutation(() => bidAuction(Number(id), Number(watch('password')), watch('bidPrice')), {
+  const { mutate } = useMutation(() => bidAuction(Number(id), watch('password'), Number(watch('bidPrice'))), {
     onSuccess: () => {
       toast.success('입찰에 성공했습니다.')
+
       queryClient.invalidateQueries(['auction', id])
     },
     onError: (error) => {

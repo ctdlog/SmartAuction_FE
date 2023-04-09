@@ -11,7 +11,7 @@ import { useTimer } from '@/components/views/SignIn/LoginForm/LoginForm.hooks'
 import * as S from '@/components/views/SignIn/LoginForm/LoginForm.styled'
 import { emailNotVerifiedRole, walletNotRegisteredRole } from '@/components/views/SignIn/SignInContainer.constants'
 import ROUTE from '@/constants/route'
-import { setAccessTokenToLocalStorage } from '@/features/auth/token'
+import { setAccessTokenToLocalStorage, setRefreshTokenToLocalStorage } from '@/features/auth/token'
 import { emailVerify, getUserInfo, resendEmailVerify, signIn } from '@/services/api/user'
 
 interface FormValues {
@@ -41,10 +41,11 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
     try {
       const {
         statusCode,
-        payload: { acToken },
+        payload: { acToken, rfToken },
       } = await signIn(email, password)
       if (statusCode === 201) {
         setAccessTokenToLocalStorage(acToken)
+        setRefreshTokenToLocalStorage(rfToken)
         const {
           payload: { role },
         } = await getUserInfo()
