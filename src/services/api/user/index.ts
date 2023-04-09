@@ -4,7 +4,6 @@ import type {
   SignInResponse,
   EmailVerifyResponse,
   GenerateRandomMnemonicResponse,
-  RegenerateAccessTokenByRefreshTokenResponse,
 } from '@/services/api/user/types'
 import { User } from '@/types/common/auth'
 
