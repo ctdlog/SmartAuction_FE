@@ -24,8 +24,7 @@ const AuctionContainer = () => {
         </Link>
         <S.AuctionWrapper>
           {auctions?.auctions.map((auction) => {
-            const randomNumber = Math.floor(Math.random() * 1000)
-            const imageUrl = `https://source.unsplash.com/random/288x200?sig=${randomNumber}`
+            const imageUrl = `https://source.unsplash.com/random/288x200`
             return (
               <Link href={`${ROUTE.AUCTION}/${auction.id}`} key={auction.id}>
                 <S.AuctionBlock key={auction.id}>
