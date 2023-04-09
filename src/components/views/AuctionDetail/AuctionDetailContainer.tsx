@@ -8,7 +8,7 @@ import { toast } from 'react-toastify'
 
 import Layout from '@/components/common/Layout/Layout'
 import Subtitle from '@/components/common/Subtitle/Subtitle'
-import { bidAuction, getAuctionDetail } from '@/services/api/auction'
+import { bidAuction, getAuctionBidders, getAuctionDetail } from '@/services/api/auction'
 
 import * as S from './AuctionDetailContainer.styled'
 
@@ -19,11 +19,18 @@ interface FormValues {
 
 const AuctionDetailContainer = () => {
   const { id } = useRouter().query
-  const { data: auction } = useQuery(['auction', id], () => getAuctionDetail(Number(id)), {
-    select: (data) => data.payload,
-  })
   const queryClient = useQueryClient()
   const { register, handleSubmit, watch } = useForm<FormValues>()
+  const { data: auction } = useQuery(['auction', id], () => getAuctionDetail(Number(id)), {
+    select: (data) => data.payload,
+    enabled: !!id,
+  })
+  // TODO: remove as string
+  const { data: bidders } = useQuery(['bidders', id], () => getAuctionBidders(auction?.contract as string), {
+    select: (data) => data?.payload.bidders,
+    enabled: !!auction?.contract,
+  })
+
   const [isOpenPasswordInputModal, setIsOpenPasswordInputModal] = useState(false)
 
   const { mutate } = useMutation(() => bidAuction(Number(id), watch('password'), Number(watch('bidPrice'))), {
@@ -70,25 +77,39 @@ const AuctionDetailContainer = () => {
             <S.AuctionTitle>{auction?.title}</S.AuctionTitle>
             <S.Writer size='2'>작성자: {auction?.writerEmail}</S.Writer>
           </S.TitleWrapper>
-          {/* TODO: remove as string  */}
+          {/* TODO: remove as string */}
           <S.Description dangerouslySetInnerHTML={{ __html: auction?.description as string }} />
         </S.Wrapper>
-        <S.Menu>
-          <S.MenuButtonWrapper>
-            <Subtitle size='3'>입찰시작가: {auction?.initPrice}</Subtitle>
-            <S.MenuButton
-              onClick={() => {
-                setIsOpenPasswordInputModal(true)
-              }}
-            >
-              입찰하기
-            </S.MenuButton>
-          </S.MenuButtonWrapper>
-          <S.MenuButtonWrapper>
-            <Subtitle size='3'>즉시낙찰가: {auction?.maxPrice}</Subtitle>
-            <S.MenuButton>즉시 구매</S.MenuButton>
-          </S.MenuButtonWrapper>
-        </S.Menu>
+        <div>
+          <S.Menu>
+            <S.MenuButtonWrapper>
+              <Subtitle size='3'>입찰시작가: {auction?.initPrice}</Subtitle>
+              <S.MenuButton
+                onClick={() => {
+                  setIsOpenPasswordInputModal(true)
+                }}
+              >
+                입찰하기
+              </S.MenuButton>
+            </S.MenuButtonWrapper>
+            <S.MenuButtonWrapper>
+              <Subtitle size='3'>즉시낙찰가: {auction?.maxPrice}</Subtitle>
+              <S.MenuButton>즉시 구매</S.MenuButton>
+            </S.MenuButtonWrapper>
+          </S.Menu>
+          <S.BiddersBlock>
+            <Subtitle size='4'>입찰기록</Subtitle>
+            <div>
+              {bidders?.map((bidder) => (
+                <S.BidderInformation key={bidder.biddedAt}>
+                  <span>{bidder.bidder}</span>
+                  <span>{bidder.price} MATIC</span>
+                  <span>{new Date(Number(bidder.biddedAt) * 1000).toLocaleDateString()}</span>
+                </S.BidderInformation>
+              ))}
+            </div>
+          </S.BiddersBlock>
+        </div>
       </S.Container>
       {isOpenPasswordInputModal && (
         <S.Modal>

@@ -34,3 +34,9 @@ export interface AuctionParams {
   ipfsUrl: string
   expiredAt: string
 }
+
+export interface Bidder {
+  bidder: string
+  price: number
+  biddedAt: string
+}
