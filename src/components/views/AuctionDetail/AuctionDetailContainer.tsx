@@ -105,7 +105,7 @@ const AuctionDetailContainer = () => {
                 {...register('bidPrice', {
                   required: '입찰가를 입력해주세요.',
                   min: {
-                    value: auction?.initPrice,
+                    value: auction?.initPrice as number,
                     message: '입찰가는 시작가보다 높아야 합니다.',
                   },
                 })}
