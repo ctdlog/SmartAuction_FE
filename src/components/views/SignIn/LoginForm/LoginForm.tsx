@@ -35,7 +35,7 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
   } = useForm<FormValues>()
   const { push } = useRouter()
   const [isRequiredEmailVerification, setIsRequiredEmailVerification] = useState(false)
-  const { timeLeft, timerEnded, startTimer } = useTimer(3)
+  const { timeLeft, timerEnded, startTimer } = useTimer(180)
 
   const onSubmit = async ({ email, password }: FormValues) => {
     try {

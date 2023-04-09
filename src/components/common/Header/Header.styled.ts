@@ -1,8 +1,8 @@
 import styled from '@emotion/styled'
 import tw from 'twin.macro'
 
-const Header = styled.header`
-  ${tw`fixed flex h-24 w-full items-center justify-between bg-black px-12 py-4 font-bold text-stone-100 text-lg`}
+export const Header = styled.header`
+  ${tw`fixed top-0 flex h-24 w-full items-center justify-between bg-black px-12 py-4 font-bold text-stone-100 text-lg`}
   font-family: 'Poppins';
 
   ul {
@@ -14,14 +14,21 @@ const Header = styled.header`
   }
 `
 
-const Nav = styled.div([tw`flex`])
+export const Nav = styled.div`
+  ${tw`flex items-center gap-4`}
+`
 
-const AuthWrapper = styled.div`
+export const NavItem = styled.div`
+  /* ${tw`flex items-center gap-2`} */
+`
+export const AuthWrapper = styled.div`
   ${tw`flex items-center gap-2`}
 `
 
-const Button = styled.button`
-  ${tw`flex items-center gap-2 rounded-md bg-stone-600 px-4 py-2 text-sm text-stone-100`}
+export const UserInfoBlock = styled.div`
+  ${tw`flex items-center gap-2 text-white`}
 `
 
-export { Header, Nav, AuthWrapper, Button }
+export const Button = styled.button`
+  ${tw`flex items-center gap-2 rounded-md bg-stone-600 px-4 py-2 text-sm text-stone-100`}
+`

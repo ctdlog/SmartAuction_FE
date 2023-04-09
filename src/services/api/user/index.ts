@@ -3,9 +3,10 @@ import type {
   SignUpResponse,
   SignInResponse,
   EmailVerifyResponse,
-  UserInformation,
   GenerateRandomMnemonicResponse,
+  RegenerateAccessTokenByRefreshTokenResponse,
 } from '@/services/api/user/types'
+import { User } from '@/types/common/auth'
 
 export const signUp = (email: string, password: string) => {
   return api.post<SignUpResponse>('/users/sign-up', { email, password })
@@ -24,7 +25,7 @@ export const resendEmailVerify = () => {
 }
 
 export const getUserInfo = () => {
-  return api.get<UserInformation>('/users')
+  return api.get<User>('/users')
 }
 
 export const generateRandomMnemonic = () => {

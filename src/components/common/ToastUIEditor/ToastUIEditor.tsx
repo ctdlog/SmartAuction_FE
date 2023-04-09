@@ -2,19 +2,24 @@
 import '@toast-ui/editor/dist/toastui-editor.css'
 import '@toast-ui/editor/dist/theme/toastui-editor-dark.css'
 
-import { useRef } from 'react'
+import { Dispatch, SetStateAction, useRef } from 'react'
 
 import { Editor } from '@toast-ui/react-editor'
 
-const ToastUIEditor = () => {
+interface Props {
+  setContent: Dispatch<SetStateAction<string>>
+}
+
+const ToastUIEditor = ({ setContent }: Props) => {
   const editorRef = useRef<Editor>(null)
 
   const handleChange = () => {
-    if (!editorRef.current) {
+    const content = editorRef.current?.getInstance().getHTML()
+    if (!content) {
       return
     }
 
-    const contentHtml = editorRef.current.getInstance().getHTML()
+    setContent(content)
   }
 
   return (
@@ -22,7 +27,6 @@ const ToastUIEditor = () => {
       ref={editorRef}
       onChange={handleChange}
       placeholder='내용을 입력해주세요.'
-      // initialValue='내용을 입력해주세요.'
       previewStyle='vertical'
       height='600px'
       initialEditType='wysiwyg'

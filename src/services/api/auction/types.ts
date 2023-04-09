@@ -11,3 +11,26 @@ export interface Auction {
   createdAt: string
   expiredAt: string
 }
+
+export interface AuctionDetail {
+  title: string
+  description: string
+  writerEoa: string
+  writerEmail: string
+  status: 1
+  initPrice: number
+  maxPrice: number
+  ipfsUrl: string
+  contract: string
+  createdAt: string
+  expiredAt: string
+}
+
+export interface AuctionParams {
+  title: string
+  description: string
+  initPrice: number
+  maxPrice: number
+  ipfsUrl: string
+  expiredAt: string
+}

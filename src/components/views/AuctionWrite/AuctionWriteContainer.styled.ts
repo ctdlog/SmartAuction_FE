@@ -6,7 +6,7 @@ const Container = styled.div`
 `
 
 const ButtonWrapper = styled.div`
-  ${tw`flex justify-between`}
+  ${tw`mb-6 flex justify-between`}
   width: 715px;
 `
 
@@ -32,6 +32,12 @@ const PriceWrapper = styled.div`
 
 const Input = styled.input`
   ${tw`mb-2 h-12 w-1/2 rounded-md bg-zinc-800 px-4 text-xl`}
+
+  &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 `
 
 export { Container, GoBackButton, WriteButton, ButtonWrapper, TitleInput, PriceWrapper, Input }

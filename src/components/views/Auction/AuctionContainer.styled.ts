@@ -2,19 +2,23 @@ import styled from '@emotion/styled'
 import tw from 'twin.macro'
 
 export const Container = styled.div`
-  ${tw`flex h-full w-full flex-col items-center justify-center gap-4 py-12 text-gray-100`}
+  ${tw`flex h-full w-full flex-col items-center justify-center gap-4 py-12 px-4 text-gray-100`}
 
   h1 {
-    ${tw`text-4xl`}
+    ${tw`mb-12 text-4xl`}
+  }
+
+  a {
+    ${tw`flex w-full justify-end`}
   }
 `
 
 export const Button = styled.button`
-  ${tw`fixed top-8 right-8 flex items-center gap-2 rounded-md bg-blue-500 px-4 py-2 text-xl`}
+  ${tw`flex gap-2 rounded-md bg-blue-500 px-4 py-2 text-xl`}
 `
 
 export const AuctionWrapper = styled.div`
-  ${tw`mt-12 grid w-full max-w-screen-2xl grid-cols-3 gap-8 rounded-md px-4 py-8 text-gray-100`}
+  ${tw`grid w-full max-w-screen-2xl grid-cols-3 gap-8 rounded-md py-4 text-gray-100`}
 `
 
 export const AuctionBlock = styled.div`

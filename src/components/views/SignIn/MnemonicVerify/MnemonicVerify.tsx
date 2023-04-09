@@ -10,6 +10,7 @@ import * as S from '@/components/views/SignIn/MnemonicVerify/MnemonicVerify.styl
 import { pickRandomNumbers } from '@/components/views/SignIn/MnemonicVerify/MnemonicVerify.utils'
 import { MnemonicContext } from '@/components/views/SignIn/SignInContainer.context'
 import ROUTE from '@/constants/route'
+import { setAccessTokenToLocalStorage } from '@/features/auth/token'
 import { verifyMnemonic } from '@/services/api/user'
 
 interface FormValues {
