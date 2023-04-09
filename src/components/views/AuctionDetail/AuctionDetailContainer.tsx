@@ -99,15 +99,13 @@ const AuctionDetailContainer = () => {
           </S.Menu>
           <S.BiddersBlock>
             <Subtitle size='4'>입찰기록</Subtitle>
-            <div>
-              {bidders?.map((bidder) => (
-                <S.BidderInformation key={bidder.biddedAt}>
-                  <span>{bidder.bidder}</span>
-                  <span>{bidder.price} MATIC</span>
-                  <span>{new Date(Number(bidder.biddedAt) * 1000).toLocaleDateString()}</span>
-                </S.BidderInformation>
-              ))}
-            </div>
+            {bidders?.map((bidder) => (
+              <S.BidderInformation key={bidder.biddedAt}>
+                <span>{bidder.bidder}</span>
+                <span>{bidder.price} MATIC</span>
+                <span>{new Date(Number(bidder.biddedAt) * 1000).toLocaleDateString()}</span>
+              </S.BidderInformation>
+            ))}
           </S.BiddersBlock>
         </div>
       </S.Container>

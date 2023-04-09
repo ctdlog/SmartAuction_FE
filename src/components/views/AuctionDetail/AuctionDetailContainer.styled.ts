@@ -50,6 +50,10 @@ export const MenuButton = styled.button`
 
 export const BiddersBlock = styled.div`
   ${tw`flex flex-col gap-4 rounded-lg border border-zinc-700 bg-zinc-800 p-4`}
+
+  h2 {
+    ${tw`mb-2`}
+  }
 `
 
 export const BidderInformation = styled.div`
