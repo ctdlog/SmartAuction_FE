@@ -4,6 +4,7 @@ import { AxiosError } from 'axios'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 
 import Subtitle from '@/components/common/Subtitle'
 import Title from '@/components/common/Title'
@@ -51,7 +52,7 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
         } = await getUserInfo()
         if (role === emailNotVerifiedRole) {
           setIsRequiredEmailVerification(true)
-          alert('이메일 인증번호를 입력해주세요.')
+          toast.info('이메일로 인증번호가 전송되었습니다. 이메일 입력 칸 아래에 인증번호를 입력해주세요.')
           return
         }
 
@@ -85,7 +86,7 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
         })
       }
 
-      alert('알 수 없는 에러가 발생했습니다.')
+      toast.error('알 수 없는 에러가 발생했습니다.')
     }
   }
 
@@ -100,7 +101,7 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
 
     const { statusCode } = await emailVerify(code)
     if (statusCode === 201) {
-      alert('이메일 인증이 완료되었습니다.')
+      toast.success('이메일 인증이 완료되었습니다.')
       setSignInStateToGenerate()
     }
   }
@@ -109,7 +110,7 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
     const { statusCode } = await resendEmailVerify()
     if (statusCode === 201) {
       startTimer()
-      alert('이메일이 재전송되었습니다.')
+      toast.info('이메일로 인증번호가 전송되었습니다.')
     }
   }
 

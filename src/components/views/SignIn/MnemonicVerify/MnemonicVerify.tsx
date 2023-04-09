@@ -3,6 +3,7 @@ import { useContext } from 'react'
 import { AxiosError } from 'axios'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 
 import Subtitle from '@/components/common/Subtitle'
 import Title from '@/components/common/Title'
@@ -34,20 +35,22 @@ const MnemonicVerify = () => {
     const selectedMnemonic = randomNumbers.map((number) => mnemonic.split(' ')[number]).join(' ')
 
     if (selectedMnemonic !== [mnemonic0, mnemonic1, mnemonic2].join(' ')) {
-      alert('입력하신 단어가 mnemonic과 일치하지 않습니다.')
+      toast.error('입력하신 단어가 mnemonic과 일치하지 않습니다.')
       return
     }
 
     try {
       const { statusCode } = await verifyMnemonic(mnemonic, password)
       if (statusCode === 201) {
-        alert('지갑이 등록되었습니다.')
+        toast.success('지갑이 등록되었습니다.')
         push(ROUTE.AUCTION)
       }
     } catch (error) {
       if (error instanceof AxiosError) {
-        alert(error.response?.data.message)
+        toast.error(error.response?.data.message)
       }
+
+      toast.error('지갑 등록에 실패했습니다.')
     }
   }
 

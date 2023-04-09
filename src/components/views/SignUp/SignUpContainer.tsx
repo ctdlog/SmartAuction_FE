@@ -2,6 +2,7 @@ import { AxiosError } from 'axios'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 
 import Subtitle from '@/components/common/Subtitle'
 import Title from '@/components/common/Title'
@@ -30,7 +31,7 @@ const SignUpContainer = () => {
     try {
       const { statusCode } = await signUp(email, password)
       if (statusCode === 201) {
-        alert('회원가입이 완료되었습니다.')
+        toast.success('회원가입에 성공했습니다. 로그인을 시도해주세요.')
         push(ROUTE.SIGN_IN)
       }
     } catch (error) {
