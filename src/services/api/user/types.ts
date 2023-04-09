@@ -15,15 +15,6 @@ export interface EmailVerifyResponse {
   role: number
 }
 
-export interface UserInformation {
-  id: number
-  email: string
-  nickname: string
-  role: number
-  registeredAt: string
-  updatedAt: string
-}
-
 export interface GenerateRandomMnemonicResponse {
   mnemonic: string
 }

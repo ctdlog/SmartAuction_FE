@@ -1,15 +1,30 @@
+import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import Link from 'next/link'
 
 import ROUTE from '@/constants/route'
+import { removeAccessTokenFromLocalStorage } from '@/features/auth/token'
+import useLocalStorage from '@/features/auth/useLocalStorage'
+import { getUserInfo } from '@/services/api/user'
 
 import * as S from './Header.styled'
 
-interface Props {
-  scrollToIndex: (index: number) => void
-}
+const Header = () => {
+  const { accessToken, setAccessToken } = useLocalStorage()
+  const { data: user } = useQuery(['user'], () => getUserInfo(), {
+    select: (data) => data.payload,
+    enabled: !!accessToken,
+    onError: () => {
+      setAccessToken('')
+      removeAccessTokenFromLocalStorage()
+    },
+  })
 
-const Header = ({ scrollToIndex }: Props) => {
+  const handleClickLogout = () => {
+    setAccessToken('')
+    removeAccessTokenFromLocalStorage()
+  }
+
   return (
     <S.Header>
       <Image
@@ -19,37 +34,34 @@ const Header = ({ scrollToIndex }: Props) => {
         alt='logo'
       />
       <S.Nav>
-        <ul>
-          <li onClick={() => scrollToIndex(0)}>
-            <span>About</span>
-          </li>
-          <li onClick={() => scrollToIndex(1)}>
-            <span>Description</span>
-          </li>
-          <li onClick={() => scrollToIndex(2)}>
-            <span>Event</span>
-          </li>
-          <li onClick={() => scrollToIndex(3)}>
-            <span>Roadmap</span>
-          </li>
-          {/* <li>
-            <a href='#'>Contact</a>
-          </li> */}
-        </ul>
+        <Link href={ROUTE.AUCTION}>
+          <S.NavItem>Auction</S.NavItem>
+        </Link>
       </S.Nav>
       <S.AuthWrapper>
-        <Link href={ROUTE.SIGN_IN}>
-          <S.Button>
-            <i className='ri-login-box-line'></i>
-            <span>Sign In</span>
-          </S.Button>
-        </Link>
-        <Link href={ROUTE.SIGN_UP}>
-          <S.Button>
-            <i className='ri-user-add-line'></i>
-            <span>Sign Up</span>
-          </S.Button>
-        </Link>
+        {accessToken ? (
+          <S.UserInfoBlock>
+            <S.Button onClick={handleClickLogout}>
+              <i className='ri-logout-box-line'></i>
+              <span>Log out</span>
+            </S.Button>
+          </S.UserInfoBlock>
+        ) : (
+          <>
+            <Link href={ROUTE.SIGN_IN}>
+              <S.Button>
+                <i className='ri-login-box-line'></i>
+                <span>Sign In</span>
+              </S.Button>
+            </Link>
+            <Link href={ROUTE.SIGN_UP}>
+              <S.Button>
+                <i className='ri-user-add-line'></i>
+                <span>Sign Up</span>
+              </S.Button>
+            </Link>
+          </>
+        )}
       </S.AuthWrapper>
     </S.Header>
   )
