@@ -86,11 +86,11 @@ const AuctionDetailContainer = () => {
           <S.Menu>
             <S.PriceWrapper>
               <Subtitle size='4'>입찰시작가</Subtitle>
-              <Subtitle>{auction?.initPrice}</Subtitle>
+              <Subtitle>{auction?.initPrice} MATIC</Subtitle>
             </S.PriceWrapper>
             <S.PriceWrapper>
               <Subtitle size='4'>즉시낙찰가</Subtitle>
-              <Subtitle> {auction?.maxPrice}</Subtitle>
+              <Subtitle> {auction?.maxPrice} MATIC</Subtitle>
             </S.PriceWrapper>
             <S.MenuButton
               onClick={() => {
