@@ -8,7 +8,8 @@ import { toast } from 'react-toastify'
 
 import Layout from '@/components/common/Layout/Layout'
 import Subtitle from '@/components/common/Subtitle/Subtitle'
-import { bidAuction, getAuctionBidders, getAuctionDetail } from '@/services/api/auction'
+import Bidders from '@/components/views/AuctionDetail/Bidders'
+import { bidAuction, getAuctionDetail } from '@/services/api/auction'
 
 import * as S from './AuctionDetailContainer.styled'
 
@@ -24,11 +25,6 @@ const AuctionDetailContainer = () => {
   const { data: auction } = useQuery(['auction', id], () => getAuctionDetail(Number(id)), {
     select: (data) => data.payload,
     enabled: !!id,
-  })
-  // TODO: remove as string
-  const { data: bidders } = useQuery(['bidders', id], () => getAuctionBidders(auction?.contract as string), {
-    select: (data) => data?.payload.bidders,
-    enabled: !!auction?.contract,
   })
 
   const [isOpenPasswordInputModal, setIsOpenPasswordInputModal] = useState(false)
@@ -97,16 +93,7 @@ const AuctionDetailContainer = () => {
               <S.MenuButton>즉시 구매</S.MenuButton>
             </S.MenuButtonWrapper>
           </S.Menu>
-          <S.BiddersBlock>
-            <Subtitle size='4'>입찰기록</Subtitle>
-            {bidders?.map((bidder) => (
-              <S.BidderInformation key={bidder.biddedAt}>
-                <span>{bidder.bidder}</span>
-                <span>{bidder.price} MATIC</span>
-                <span>{new Date(Number(bidder.biddedAt) * 1000).toLocaleDateString()}</span>
-              </S.BidderInformation>
-            ))}
-          </S.BiddersBlock>
+          <Bidders contract={auction?.contract || ''} />
         </div>
       </S.Container>
       {isOpenPasswordInputModal && (

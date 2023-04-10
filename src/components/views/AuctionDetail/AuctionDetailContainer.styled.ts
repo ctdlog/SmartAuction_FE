@@ -48,18 +48,6 @@ export const MenuButton = styled.button`
   ${tw`flex items-center gap-2 rounded-md bg-zinc-700 px-4 py-2 text-xl`}
 `
 
-export const BiddersBlock = styled.div`
-  ${tw`flex flex-col gap-4 rounded-lg border border-zinc-700 bg-zinc-800 p-4`}
-
-  h2 {
-    ${tw`mb-2`}
-  }
-`
-
-export const BidderInformation = styled.div`
-  ${tw`flex items-center gap-4`}
-`
-
 export const Modal = styled.div`
   ${tw`fixed top-0 left-0 flex h-full w-full items-center justify-center bg-black bg-opacity-50`}
 `
