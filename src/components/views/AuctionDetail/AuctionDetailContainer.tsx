@@ -21,13 +21,19 @@ interface FormValues {
 const AuctionDetailContainer = () => {
   const { id } = useRouter().query
   const queryClient = useQueryClient()
-  const { register, handleSubmit, watch } = useForm<FormValues>()
+  const {
+    register,
+    handleSubmit,
+    watch,
+
+    formState: { isLoading },
+  } = useForm<FormValues>()
   const { data: auction } = useQuery(['auction', id], () => getAuctionDetail(Number(id)), {
     select: (data) => data.payload,
     enabled: !!id,
   })
 
-  const [isOpenPasswordInputModal, setIsOpenPasswordInputModal] = useState(false)
+  const [isOpenBidModal, setIsOpenBidModal] = useState(false)
 
   const { mutate } = useMutation(() => bidAuction(Number(id), watch('password'), Number(watch('bidPrice'))), {
     onSuccess: () => {
@@ -61,7 +67,7 @@ const AuctionDetailContainer = () => {
   }
 
   const handleClick = () => {
-    setIsOpenPasswordInputModal(true)
+    setIsOpenBidModal(true)
     mutate()
   }
 
@@ -78,54 +84,68 @@ const AuctionDetailContainer = () => {
         </S.Wrapper>
         <div>
           <S.Menu>
-            <S.MenuButtonWrapper>
-              <Subtitle size='3'>입찰시작가: {auction?.initPrice}</Subtitle>
-              <S.MenuButton
-                onClick={() => {
-                  setIsOpenPasswordInputModal(true)
-                }}
-              >
-                입찰하기
-              </S.MenuButton>
-            </S.MenuButtonWrapper>
-            <S.MenuButtonWrapper>
-              <Subtitle size='3'>즉시낙찰가: {auction?.maxPrice}</Subtitle>
-              <S.MenuButton>즉시 구매</S.MenuButton>
-            </S.MenuButtonWrapper>
+            <S.PriceWrapper>
+              <Subtitle size='4'>입찰시작가</Subtitle>
+              <Subtitle>{auction?.initPrice}</Subtitle>
+            </S.PriceWrapper>
+            <S.PriceWrapper>
+              <Subtitle size='4'>즉시낙찰가</Subtitle>
+              <Subtitle> {auction?.maxPrice}</Subtitle>
+            </S.PriceWrapper>
+            <S.MenuButton
+              onClick={() => {
+                setIsOpenBidModal(true)
+              }}
+            >
+              입찰하기
+            </S.MenuButton>
           </S.Menu>
           <Bidders contract={auction?.contract || ''} />
         </div>
       </S.Container>
-      {isOpenPasswordInputModal && (
+      {isOpenBidModal && (
         <S.Modal>
           <S.ModalWrapper>
             <i
               className='ri-close-line'
               onClick={() => {
-                setIsOpenPasswordInputModal(false)
+                setIsOpenBidModal(false)
               }}
             />
-            <form onSubmit={handleSubmit(onSumbit, onError)}>
-              <S.ModalInput
-                type='number'
-                placeholder='입찰가를 입력해주세요.'
-                {...register('bidPrice', {
-                  required: '입찰가를 입력해주세요.',
-                  min: {
-                    value: auction?.initPrice as number,
-                    message: '입찰가는 시작가보다 높아야 합니다.',
-                  },
-                })}
-              />
-              <S.ModalInput
-                type='password'
-                placeholder='비밀번호를 입력해주세요.'
-                {...register('password', {
-                  required: '비밀번호를 입력해주세요.',
-                })}
-              />
-            </form>
-            <S.ModalButton onClick={handleClick}>입찰하기</S.ModalButton>
+            <S.ModalForm onSubmit={handleSubmit(onSumbit, onError)}>
+              <label>
+                <Subtitle size='4'>입찰가</Subtitle>
+                <S.ModalInput
+                  type='number'
+                  placeholder='입찰가를 입력해주세요.'
+                  {...register('bidPrice', {
+                    required: '입찰가를 입력해주세요.',
+                    min: {
+                      value: auction?.initPrice as number,
+                      message: '입찰가는 시작가보다 높아야 합니다.',
+                    },
+                    max: {
+                      value: auction?.maxPrice as number,
+                      message: '입찰가는 최대가보다 낮아야 합니다.',
+                    },
+                  })}
+                />
+                <span>입찰가가 최대가를 넘는 경우 즉시 낙찰됩니다.</span>
+              </label>
+              <label>
+                <Subtitle size='4'>비밀번호</Subtitle>
+                <S.ModalInput
+                  type='password'
+                  placeholder='비밀번호를 입력해주세요.'
+                  {...register('password', {
+                    required: '비밀번호를 입력해주세요.',
+                  })}
+                />
+              </label>
+            </S.ModalForm>
+            <S.ModalButton onClick={handleClick} disabled={isLoading}>
+              입찰하기
+            </S.ModalButton>
           </S.ModalWrapper>
         </S.Modal>
       )}

@@ -6,7 +6,7 @@ const Container = styled.div`
 `
 
 const ButtonWrapper = styled.div`
-  ${tw`mb-6 flex justify-between`}
+  ${tw`mb-6 flex items-center justify-between`}
   width: 715px;
 `
 

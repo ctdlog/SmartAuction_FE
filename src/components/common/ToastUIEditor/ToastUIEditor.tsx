@@ -39,8 +39,12 @@ const ToastUIEditor = ({ setContent }: Props) => {
         ['hr', 'quote'],
         ['ul', 'ol', 'task', 'indent', 'outdent'],
         ['table', 'image', 'link'],
-        // ['code', 'codeblock'],
       ]}
+      hooks={{
+        addImageBlobHook: (blob, callback) => {
+          // SEND BLOB TO SERVER
+        },
+      }}
     />
   )
 }

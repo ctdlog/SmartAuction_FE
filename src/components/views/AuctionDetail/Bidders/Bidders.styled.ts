@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import tw from 'twin.macro'
 
 export const BiddersBlock = styled.div`
-  ${tw`flex flex-col gap-4 rounded-lg border border-zinc-700 bg-zinc-800 p-4`}
+  ${tw`flex flex-col gap-4 rounded-lg border border-zinc-700 bg-zinc-800 p-6`}
 
   h2 {
     ${tw`mb-2`}

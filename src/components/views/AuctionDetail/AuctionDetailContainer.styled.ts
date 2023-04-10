@@ -33,7 +33,11 @@ export const WriterWrapper = styled.div`
 `
 
 export const Menu = styled.div`
-  ${tw`mb-4 flex h-fit flex-col gap-4 rounded-lg border border-zinc-700 bg-zinc-800 p-4`}
+  ${tw`mb-4 flex h-fit flex-col gap-4 rounded-lg border border-zinc-700 bg-zinc-800 p-6`}
+`
+
+export const PriceWrapper = styled.div`
+  ${tw`flex justify-between border border-zinc-700 p-6`}
 `
 
 export const MenuButtonWrapper = styled.div`
@@ -45,7 +49,7 @@ export const MenuButtonWrapper = styled.div`
 `
 
 export const MenuButton = styled.button`
-  ${tw`flex items-center gap-2 rounded-md bg-zinc-700 px-4 py-2 text-xl`}
+  ${tw`mt-4 rounded-md bg-blue-500 p-2 text-center text-xl`}
 `
 
 export const Modal = styled.div`
@@ -53,10 +57,27 @@ export const Modal = styled.div`
 `
 
 export const ModalWrapper = styled.div`
-  ${tw`flex w-96 flex-col gap-4 rounded-lg bg-zinc-800 p-8`}
+  ${tw`flex flex-col gap-4 rounded-lg bg-zinc-800 p-8 text-gray-100`}
+  width: 512px;
 
   i {
-    ${tw`self-end text-2xl text-gray-100`}
+    ${tw`self-end text-2xl text-gray-200`}
+  }
+`
+
+export const ModalForm = styled.form`
+  ${tw`flex flex-col gap-4`}
+
+  h2 {
+    ${tw`ml-2`}
+  }
+
+  label {
+    ${tw`mb-4 flex flex-col gap-2`}
+
+    span {
+      ${tw`text-sm text-red-400`}
+    }
   }
 `
 
@@ -70,5 +91,9 @@ export const ModalInput = styled.input`
 `
 
 export const ModalButton = styled.button`
-  ${tw`flex items-center justify-center gap-2 rounded-md bg-zinc-700 px-4 py-2 text-xl text-gray-100`}
+  ${tw`flex items-center justify-center gap-2 rounded-md bg-blue-500 px-4 py-2 text-xl text-gray-100`}
+
+  &:disabled {
+    ${tw`pointer-events-none bg-gray-500`}
+  }
 `

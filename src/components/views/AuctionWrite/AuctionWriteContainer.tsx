@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 import { FieldErrors, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
+import Layout from '@/components/common/Layout'
 import Subtitle from '@/components/common/Subtitle'
 import * as S from '@/components/views/AuctionWrite/AuctionWriteContainer.styled'
 import ROUTE from '@/constants/route'
@@ -67,61 +68,63 @@ const AuctionWriteContainer = () => {
   }
 
   return (
-    <S.Container>
-      <form onSubmit={handleSubmit(onSubmit, onError)}>
-        <S.ButtonWrapper>
-          <Link href={ROUTE.AUCTION}>
-            <S.GoBackButton>
-              <i className='ri-arrow-left-line'></i>
-            </S.GoBackButton>
-          </Link>
-          <S.WriteButton type='submit'>
-            <i className='ri-pencil-line'></i>
-            <span>
-              <Subtitle size='2'>경매 등록</Subtitle>
-            </span>
-          </S.WriteButton>
-        </S.ButtonWrapper>
-        <S.TitleInput
-          placeholder='제목을 입력해주세요.'
-          {...register('title', {
-            required: '제목을 입력해주세요.',
-            maxLength: {
-              value: 20,
-              message: '제목은 20자 이내로 입력해주세요.',
-            },
-          })}
-        />
-        <S.PriceWrapper>
-          <label>
-            <span>판매 시작가</span>
-            <S.Input
-              placeholder='판매 시작가를 입력해주세요.'
-              type='number'
-              step='0.001'
-              {...register('initPrice', {
-                required: '판매 시작가를 입력해주세요.',
-              })}
-            />
-          </label>
-          <label>
-            <span>즉시 낙찰가</span>
-            <S.Input
-              placeholder='즉시 낙찰가를 입력해주세요.'
-              type='number'
-              step='0.001'
-              {...register('maxPrice', {
-                required: '즉시 낙찰가를 입력해주세요.',
-                validate: (value) =>
-                  Number(value) > watch('initPrice') || '즉시 낙찰가는 판매 시작가보다 높아야 합니다.',
-              })}
-            />
-          </label>
-        </S.PriceWrapper>
-        {/* <S.Input placeholder='경매 종료일을 입력해주세요.' /> */}
-        <ToastUIEditor setContent={setContent} />
-      </form>
-    </S.Container>
+    <Layout>
+      <S.Container>
+        <form onSubmit={handleSubmit(onSubmit, onError)}>
+          <S.ButtonWrapper>
+            <Link href={ROUTE.AUCTION}>
+              <S.GoBackButton>
+                <i className='ri-arrow-left-line'></i>
+              </S.GoBackButton>
+            </Link>
+            <S.WriteButton type='submit'>
+              <i className='ri-pencil-line'></i>
+              <span>
+                <Subtitle size='2'>경매 등록</Subtitle>
+              </span>
+            </S.WriteButton>
+          </S.ButtonWrapper>
+          <S.TitleInput
+            placeholder='제목을 입력해주세요.'
+            {...register('title', {
+              required: '제목을 입력해주세요.',
+              maxLength: {
+                value: 20,
+                message: '제목은 20자 이내로 입력해주세요.',
+              },
+            })}
+          />
+          <S.PriceWrapper>
+            <label>
+              <span>판매 시작가</span>
+              <S.Input
+                placeholder='판매 시작가를 입력해주세요.'
+                type='number'
+                step='0.001'
+                {...register('initPrice', {
+                  required: '판매 시작가를 입력해주세요.',
+                })}
+              />
+            </label>
+            <label>
+              <span>즉시 낙찰가</span>
+              <S.Input
+                placeholder='즉시 낙찰가를 입력해주세요.'
+                type='number'
+                step='0.001'
+                {...register('maxPrice', {
+                  required: '즉시 낙찰가를 입력해주세요.',
+                  validate: (value) =>
+                    Number(value) > watch('initPrice') || '즉시 낙찰가는 판매 시작가보다 높아야 합니다.',
+                })}
+              />
+            </label>
+          </S.PriceWrapper>
+          {/* <S.Input placeholder='경매 종료일을 입력해주세요.' /> */}
+          <ToastUIEditor setContent={setContent} />
+        </form>
+      </S.Container>
+    </Layout>
   )
 }
 

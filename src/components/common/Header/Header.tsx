@@ -27,12 +27,14 @@ const Header = () => {
 
   return (
     <S.Header>
-      <Image
-        src={'https://blockchain-lighthouse.s3.ap-northeast-2.amazonaws.com/common/logo_rm.png'}
-        width={125}
-        height={100}
-        alt='logo'
-      />
+      <Link href={ROUTE.AUCTION}>
+        <Image
+          src={'https://blockchain-lighthouse.s3.ap-northeast-2.amazonaws.com/common/logo_rm.png'}
+          width={125}
+          height={100}
+          alt='logo'
+        />
+      </Link>
       <S.Nav>
         <Link href={ROUTE.AUCTION}>
           <S.NavItem>Auction</S.NavItem>

@@ -44,17 +44,17 @@ export const Status = styled.span<{ status: AuctionStatus }>`
   ${({ status }) => {
     switch (status) {
       case 1:
-        return tw`bg-gray-200`
+        return tw`bg-green-200`
       case 2:
         return tw`bg-green-200`
       case 3:
-        return tw`bg-yellow-200`
+        return tw`bg-red-200`
       case 4:
-        return tw`bg-blue-200`
+        return tw`bg-red-200`
       case 5:
         return tw`bg-zinc-700 text-gray-100`
       default:
-        return tw`bg-blue-200`
+        return tw`bg-zinc-700 text-gray-100`
     }
   }}
 `
