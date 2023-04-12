@@ -17,9 +17,14 @@ const MyContainer = () => {
 
   // 관심목록
   const getMyFavorite = async () => {
-    const result = await myFavoriteAuctions()
-    setMyFavorite(result.payload.auctions)
-    setMenuFlag(1)
+    if (user) {
+      const result = await myFavoriteAuctions()
+      setMyFavorite(result.payload.auctions)
+      setMenuFlag(1)
+      console.log(result)
+    } else {
+      console.log(`유저없음 에러처리`)
+    }
   }
 
   // 내가 쓴 옥션
@@ -92,8 +97,8 @@ const MyContainer = () => {
         {/* 여기 컨텐츠 (My Favorite) */}
         <div>
           {MenuFlag == 1 &&
-            MyAuction &&
-            MyAuction.map((item, idx) => (
+            MyFavorite &&
+            MyFavorite.map((item, idx) => (
               <div key={idx}>
                 <div>{item.id}</div>
                 <div>{item.title}</div>
