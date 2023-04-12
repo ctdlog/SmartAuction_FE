@@ -40,3 +40,7 @@ export interface Bidder {
   price: number
   biddedAt: string
 }
+
+export interface GetMyAuction {
+  auctions: Auction[]
+}
