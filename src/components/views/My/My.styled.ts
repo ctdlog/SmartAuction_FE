@@ -50,4 +50,44 @@ const UserBoard_Menu_Content = styled.div`
   }
 `
 
-export { Layout, Title, Table, TableRow, TableRow_Name, UserBoard, UserBoard_Menu, UserBoard_Menu_Content }
+const ContentBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 0.1px solid lightgray;
+  padding-bottom: 2px;
+  user-select: none;
+  &:hover {
+    cursor: pointer;
+    font-weight: 600;
+  }
+  & > div:nth-child(1) {
+    width: 35px;
+  }
+
+  & > div:nth-child(2) {
+    width: 200px;
+  }
+
+  & > div:nth-child(3) {
+    width: 80px;
+  }
+
+  & > div:nth-child(4) {
+    width: 82px;
+  }
+`
+
+const ContentRow = styled.div``
+
+export {
+  Layout,
+  Title,
+  Table,
+  TableRow,
+  TableRow_Name,
+  UserBoard,
+  UserBoard_Menu,
+  UserBoard_Menu_Content,
+  ContentBox,
+  ContentRow,
+}

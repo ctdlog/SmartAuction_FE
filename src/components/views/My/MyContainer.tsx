@@ -4,12 +4,12 @@ import * as S from './My.styled'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { getBiddedAuctionApi, getMyAuction } from '@/services/api/auction'
 import { Auction } from '@/services/api/auction/types'
+import Link from 'next/link'
+import ROUTE from '@/constants/route'
 
 const MyContainer = () => {
   const [MenuFlag, setMenuFlag] = useState(0)
-  const [MyAuction, setMyAuction] = useState<Auction[]>([])
-  const [MyFavorite, setMyFavorite] = useState<Auction[]>([])
-  const [Bidded, setBidded] = useState<Auction[]>([])
+  const [Content, setContent] = useState<Auction[]>([])
 
   const { data: user } = useQuery(['user'], () => getUserInfo(), {
     select: (data) => data.payload,
@@ -19,7 +19,7 @@ const MyContainer = () => {
   const getMyFavorite = async () => {
     if (user) {
       const result = await myFavoriteAuctions()
-      setMyFavorite(result.payload.auctions)
+      setContent(result.payload.auctions)
       setMenuFlag(1)
       console.log(result)
     } else {
@@ -31,12 +31,11 @@ const MyContainer = () => {
   const getAuction = async () => {
     if (user) {
       const result = await getMyAuction(user.id, 0, 0)
-      setMyAuction(result.payload.auctions)
+      setContent(result.payload.auctions)
       setMenuFlag(2)
     } else {
       console.log(`유저없음_에러처리`)
     }
-    console.log(MyAuction)
   }
 
   // 입찰목록
@@ -44,7 +43,7 @@ const MyContainer = () => {
     if (user) {
       const result = await getBiddedAuctionApi(user.id, 0, 0)
       console.log(result)
-      setBidded(result.payload.auctions)
+      setContent(result.payload.auctions)
       setMenuFlag(3)
     } else {
       console.log(`유저없음_에러처리`)
@@ -53,8 +52,6 @@ const MyContainer = () => {
 
   return (
     <S.Layout>
-      {/* <button onClick={test}>tt</button> */}
-
       {/* User Information Box */}
       <S.Title>유저 프로필</S.Title>
 
@@ -97,36 +94,78 @@ const MyContainer = () => {
         {/* 여기 컨텐츠 (My Favorite) */}
         <div>
           {MenuFlag == 1 &&
-            MyFavorite &&
-            MyFavorite.map((item, idx) => (
-              <div key={idx}>
-                <div>{item.id}</div>
-                <div>{item.title}</div>
-              </div>
+            Content &&
+            Content.map((item, idx) => (
+              <Link href={`${ROUTE.AUCTION}/${item.id}`} key={item.id}>
+                <S.ContentBox>
+                  <div>{item.id}</div>
+                  <div>{item.title}</div>
+
+                  {item.status == 1 || item.status == 2 ? (
+                    <div>경매 진행중</div>
+                  ) : item.status == 3 ? (
+                    <div>거래중</div>
+                  ) : item.status == 4 || item.status == 5 ? (
+                    <div>경매종료</div>
+                  ) : (
+                    <div>경매사고</div>
+                  )}
+
+                  <div>{item.createdAt.split('T')[0]}</div>
+                </S.ContentBox>
+              </Link>
             ))}
         </div>
 
         {/* 여기 컨텐츠 (My Auction) */}
         <div>
           {MenuFlag == 2 &&
-            MyAuction &&
-            MyAuction.map((item, idx) => (
-              <div key={idx}>
-                <div>{item.id}</div>
-                <div>{item.title}</div>
-              </div>
+            Content &&
+            Content.map((item, idx) => (
+              <Link href={`${ROUTE.AUCTION}/${item.id}`} key={item.id}>
+                <S.ContentBox>
+                  <div>{item.id}</div>
+                  <div>{item.title}</div>
+
+                  {item.status == 1 || item.status == 2 ? (
+                    <div>경매 진행중</div>
+                  ) : item.status == 3 ? (
+                    <div>거래중</div>
+                  ) : item.status == 4 || item.status == 5 ? (
+                    <div>경매종료</div>
+                  ) : (
+                    <div>경매사고</div>
+                  )}
+
+                  <div>{item.createdAt.split('T')[0]}</div>
+                </S.ContentBox>
+              </Link>
             ))}
         </div>
 
         {/* 여기 컨텐츠 (Bidded) */}
         <div>
           {MenuFlag == 3 &&
-            MyAuction &&
-            Bidded.map((item, idx) => (
-              <div key={idx}>
-                <div>{item.id}</div>
-                <div>{item.title}</div>
-              </div>
+            Content &&
+            Content.map((item, idx) => (
+              <Link href={`${ROUTE.AUCTION}/${item.id}`} key={item.id}>
+                <S.ContentBox>
+                  <div>{item.id}</div>
+                  <div>{item.title}</div>
+
+                  {item.status == 1 || item.status == 2 ? (
+                    <div>경매중</div>
+                  ) : item.status == 3 ? (
+                    <div>거래중</div>
+                  ) : item.status == 4 || item.status == 5 ? (
+                    <div>경매종료</div>
+                  ) : (
+                    <div>경매사고</div>
+                  )}
+
+                  <div>{item.createdAt.split('T')[0]}</div>
+                </S.ContentBox>
+              </Link>
             ))}
         </div>
       </S.UserBoard>
