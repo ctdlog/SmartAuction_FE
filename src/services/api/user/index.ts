@@ -34,3 +34,7 @@ export const generateRandomMnemonic = () => {
 export const verifyMnemonic = (mnemonic: string, password: string) => {
   return api.post('/users/mnemonic/verify', { mnemonic, password })
 }
+
+export const myFavoriteAuctions = () => {
+  return api.get<any>('/users/favorites')
+}

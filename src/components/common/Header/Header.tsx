@@ -27,7 +27,7 @@ const Header = () => {
 
   return (
     <S.Header>
-      <Link href={ROUTE.AUCTION}>
+      <Link href='/'>
         <Image
           src={'https://blockchain-lighthouse.s3.ap-northeast-2.amazonaws.com/common/logo_rm.png'}
           width={125}
