@@ -104,9 +104,13 @@ const AuctionWriteContainer = () => {
               <S.Input
                 placeholder='판매 시작가를 입력해주세요.'
                 type='number'
-                step='0.001'
+                step='0.1'
                 {...register('minPrice', {
                   required: '판매 시작가를 입력해주세요.',
+                  min: {
+                    value: 0.1,
+                    message: '판매 시작가는 0.1 이상이어야 합니다.',
+                  },
                 })}
               />
             </label>
@@ -115,7 +119,7 @@ const AuctionWriteContainer = () => {
               <S.Input
                 placeholder='즉시 낙찰가를 입력해주세요.'
                 type='number'
-                step='0.001'
+                step='0.1'
                 {...register('maxPrice', {
                   required: '즉시 낙찰가를 입력해주세요.',
                   validate: (value) =>
