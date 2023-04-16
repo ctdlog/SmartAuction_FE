@@ -7,8 +7,8 @@ import type {
 } from '@/services/api/user/types'
 import { User } from '@/types/common/auth'
 
-export const signUp = (email: string, password: string) => {
-  return api.post<SignUpResponse>('/users/sign-up', { email, password })
+export const signUp = (email: string, nickname: string, password: string) => {
+  return api.post<SignUpResponse>('/users/sign-up', { email, nickname, password })
 }
 
 export const signIn = (email: string, password: string) => {
