@@ -18,7 +18,11 @@ interface FormValues {
   password: string
 }
 
-const BidModal = () => {
+interface Props {
+  writerEoa: string
+}
+
+const SignatureModal = ({ writerEoa }: Props) => {
   const { id } = useRouter().query
   const queryClient = useQueryClient()
   const {
@@ -29,7 +33,7 @@ const BidModal = () => {
   } = useForm<FormValues>()
   const { setModal } = useContext(ModalContext)
 
-  const { mutate } = useMutation(() => signature(Number(id), '0x00000000', watch('password')), {
+  const { mutate } = useMutation(() => signature(Number(id), writerEoa, watch('password')), {
     onSuccess: () => {
       toast.success('서명에 성공했습니다.')
       queryClient.invalidateQueries(['auction', id])
@@ -65,14 +69,14 @@ const BidModal = () => {
         <i className='ri-close-line' onClick={() => setModal(null)} />
         <S.ModalForm onSubmit={handleSubmit(onSumbit, onError)}>
           <label>
-            <Subtitle size='4'>Public Key</Subtitle>
+            <Subtitle size='4'>출금자</Subtitle>
             <S.ModalInput
               type='text'
               placeholder='Public Key를 입력해주세요.'
               {...register('publicKey', {
                 required: 'Public Key를 입력해주세요.',
               })}
-              value='0x00000000'
+              value={writerEoa}
               readOnly
             />
           </label>
@@ -95,4 +99,4 @@ const BidModal = () => {
   )
 }
 
-export default BidModal
+export default SignatureModal

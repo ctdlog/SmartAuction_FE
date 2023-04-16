@@ -56,7 +56,7 @@ const AuctionDetailContainer = () => {
       }}
     >
       {modal === 'bid' && <BidModal />}
-      {modal === 'signature' && <SignatureModal />}
+      {modal === 'signature' && <SignatureModal writerEoa={auction?.writerEoa} />}
       {modal === 'withdraw' && <WithdrawModal />}
       {/* {isChatAvailable && <Chat />} */}
       <Layout>
