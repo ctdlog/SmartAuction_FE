@@ -19,7 +19,7 @@ export interface AuctionDetail {
   description: string
   writerEoa: string
   writerEmail: string
-  status: 1
+  status: AuctionStatus
   initPrice: number
   maxPrice: number
   ipfsUrl: string

@@ -16,11 +16,11 @@ export const signIn = (email: string, password: string) => {
 }
 
 export const emailVerify = (verificationCode: number) => {
-  return api.post<EmailVerifyResponse>('users/sign-up/verify', { verificationCode })
+  return api.post<EmailVerifyResponse>('/users/sign-up/verify', { verificationCode })
 }
 
 export const resendEmailVerify = () => {
-  return api.post<EmailVerifyResponse>('users/sign-up/resend')
+  return api.post<EmailVerifyResponse>('/users/sign-up/resend')
 }
 
 export const getUserInfo = () => {
@@ -28,11 +28,11 @@ export const getUserInfo = () => {
 }
 
 export const generateRandomMnemonic = () => {
-  return api.post<GenerateRandomMnemonicResponse>('/users/wallet/mnemonic')
+  return api.post<GenerateRandomMnemonicResponse>('/wallets/mnemonic')
 }
 
 export const verifyMnemonic = (mnemonic: string, password: string) => {
-  return api.post('/users/mnemonic/verify', { mnemonic, password })
+  return api.post('/wallets/mnemonic/verify', { mnemonic, password })
 }
 
 export const myFavoriteAuctions = () => {

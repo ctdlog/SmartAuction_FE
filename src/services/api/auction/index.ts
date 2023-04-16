@@ -35,3 +35,7 @@ export const getMyAuction = (userId: number | undefined, page: number, limit: nu
 export const getBiddedAuctionApi = (userId: number | undefined, page: number, limit: number) => {
   return api.get<GetMyAuction>(`auctions/bids/${userId}/${page}/${limit}`)
 }
+
+export const withdrawBySeller = (auctionId: number, password: string) => {
+  return api.post(`/auctions/withdraw/seller`, { auctionId, password })
+}

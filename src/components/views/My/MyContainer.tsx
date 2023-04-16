@@ -1,11 +1,14 @@
-import { useState, useEffect } from 'react'
-import { getUserInfo, myFavoriteAuctions } from '@/services/api/user'
-import * as S from './My.styled'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useState } from 'react'
+
+import { useQuery } from '@tanstack/react-query'
+import Link from 'next/link'
+
+import ROUTE from '@/constants/route'
 import { getBiddedAuctionApi, getMyAuction } from '@/services/api/auction'
 import { Auction } from '@/services/api/auction/types'
-import Link from 'next/link'
-import ROUTE from '@/constants/route'
+import { getUserInfo, myFavoriteAuctions } from '@/services/api/user'
+
+import * as S from './My.styled'
 
 const MyContainer = () => {
   const [MenuFlag, setMenuFlag] = useState(0)
@@ -100,7 +103,6 @@ const MyContainer = () => {
                 <S.ContentBox>
                   <div>{item.id}</div>
                   <div>{item.title}</div>
-
                   {item.status == 1 || item.status == 2 ? (
                     <div>경매 진행중</div>
                   ) : item.status == 3 ? (

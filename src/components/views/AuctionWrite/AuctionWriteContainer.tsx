@@ -3,6 +3,7 @@ import { useState } from 'react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import DatePicker from 'react-datepicker'
 import { FieldErrors, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
@@ -11,6 +12,8 @@ import Subtitle from '@/components/common/Subtitle'
 import * as S from '@/components/views/AuctionWrite/AuctionWriteContainer.styled'
 import ROUTE from '@/constants/route'
 import { createAuction } from '@/services/api/auction'
+
+import 'react-datepicker/dist/react-datepicker.css'
 
 const ToastUIEditor = dynamic(() => import('@/components/common/ToastUIEditor'), {
   ssr: false,
@@ -26,6 +29,7 @@ const AuctionWriteContainer = () => {
   const { register, handleSubmit, watch } = useForm<FormValues>()
   const { push } = useRouter()
   const [content, setContent] = useState('')
+  const [endDate, setEndDate] = useState(new Date())
 
   const onSubmit = async ({ title, initPrice, maxPrice }: FormValues) => {
     if (!content) {
@@ -39,7 +43,7 @@ const AuctionWriteContainer = () => {
       maxPrice,
       description: content,
       ipfsUrl: '',
-      expiredAt: '2023-04-28T13:00:31',
+      expiredAt: `${endDate.toISOString().slice(0, 10)}T00:00:00.000Z`,
     })
     if (statusCode === 201) {
       toast.success('경매 등록이 완료되었습니다.')
@@ -119,8 +123,11 @@ const AuctionWriteContainer = () => {
                 })}
               />
             </label>
+            <S.DatePickerWrapper>
+              <span>경매 종료일</span>
+              <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} />
+            </S.DatePickerWrapper>
           </S.PriceWrapper>
-          {/* <S.Input placeholder='경매 종료일을 입력해주세요.' /> */}
           <ToastUIEditor setContent={setContent} />
         </form>
       </S.Container>
