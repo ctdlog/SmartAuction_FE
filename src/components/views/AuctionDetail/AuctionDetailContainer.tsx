@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
@@ -19,7 +19,7 @@ import { getUserInfo } from '@/services/api/user'
 const AuctionDetailContainer = () => {
   const { id } = useRouter().query
 
-  const { data: auction, isLoading: isAuctionLoading } = useQuery(['auction', id], () => getAuctionDetail(Number(id)), {
+  const { data: auction } = useQuery(['auction', id], () => getAuctionDetail(Number(id)), {
     select: (data) => data.payload,
     enabled: !!id,
   })

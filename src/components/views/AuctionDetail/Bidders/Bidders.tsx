@@ -7,12 +7,12 @@ import { getAuctionBidders } from '@/services/api/auction'
 import * as S from './Bidders.styled'
 
 interface Props {
-  contract: string
+  contract: string | undefined
 }
 
 const Bidders = ({ contract }: Props) => {
   const { id } = useRouter().query
-  const { data: bidders, isLoading } = useQuery(['bidders', id], () => getAuctionBidders(contract), {
+  const { data: bidders, isInitialLoading } = useQuery(['bidders', id], () => getAuctionBidders(contract as string), {
     select: (data) => data?.payload.bidders,
     enabled: !!contract,
   })
@@ -20,7 +20,8 @@ const Bidders = ({ contract }: Props) => {
   return (
     <S.BiddersBlock>
       <Subtitle size='4'>입찰기록</Subtitle>
-      {isLoading
+      {!contract && <Subtitle>입찰 기록이 없습니다.</Subtitle>}
+      {isInitialLoading
         ? new Array(5).fill(0).map((_, index) => (
             <S.SkeletonWrapper key={index}>
               <S.Skeleton width={374} />
