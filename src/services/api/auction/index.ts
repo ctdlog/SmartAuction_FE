@@ -5,11 +5,11 @@ export const getAuctions = (page: number, limit: number) => {
   return api.get<{ auctions: Auction[]; total: number }>(`/auctions/${page}/${limit}`)
 }
 
-export const createAuction = ({ title, description, initPrice, maxPrice, ipfsUrl, expiredAt }: AuctionParams) => {
+export const createAuction = ({ title, description, minPrice, maxPrice, ipfsUrl, expiredAt }: AuctionParams) => {
   return api.post('/auctions', {
     title,
     description,
-    initPrice,
+    minPrice,
     maxPrice,
     ipfsUrl,
     expiredAt,

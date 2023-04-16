@@ -79,10 +79,11 @@ const BidModal = () => {
             <S.ModalInput
               type='number'
               placeholder='입찰가를 입력해주세요.'
+              step='0.001'
               {...register('bidPrice', {
                 required: '입찰가를 입력해주세요.',
                 min: {
-                  value: auction?.initPrice as number,
+                  value: auction?.minPrice as number,
                   message: '입찰가는 시작가보다 높아야 합니다.',
                 },
                 max: {

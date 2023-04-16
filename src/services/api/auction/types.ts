@@ -6,7 +6,7 @@ export interface Auction {
   description: string // <div>IPHONE 파는데요 ~~<img src='www.navsv.com' /><div>
   writer: number
   status: AuctionStatus
-  initPrice: number
+  minPrice: number
   maxPrice: number
   contract: string // 0xD9168068DeABD93cbfdf1471a988029b627Ac3be
   ipfsUrl: string // ipfs://naskjldnaksjddfndksjfnkf
@@ -20,7 +20,7 @@ export interface AuctionDetail {
   writerEoa: string
   writerEmail: string
   status: AuctionStatus
-  initPrice: number
+  minPrice: number
   maxPrice: number
   ipfsUrl: string
   contract: string
@@ -31,7 +31,7 @@ export interface AuctionDetail {
 export interface AuctionParams {
   title: string
   description: string
-  initPrice: number
+  minPrice: number
   maxPrice: number
   ipfsUrl: string
   expiredAt: string

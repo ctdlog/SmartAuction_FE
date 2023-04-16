@@ -68,7 +68,7 @@ const AuctionDetailContainer = () => {
               <S.StatusTitle size='3'>{AUCTION_STATUS[auction?.status || 404]}</S.StatusTitle>
               <S.PriceWrapper>
                 <Subtitle size='4'>입찰시작가</Subtitle>
-                <Subtitle>{auction?.initPrice} MATIC</Subtitle>
+                <Subtitle>{auction?.minPrice} MATIC</Subtitle>
               </S.PriceWrapper>
               <S.PriceWrapper>
                 <Subtitle size='4'>즉시낙찰가</Subtitle>
@@ -84,7 +84,7 @@ const AuctionDetailContainer = () => {
                 <S.MenuButton onClick={() => setModal('withdraw')}>출금하기</S.MenuButton>
               )}
             </S.Menu>
-            <Bidders contract={auction?.contract || ''} />
+            <Bidders contract={auction?.contract} />
           </S.AuctionInfo>
         </S.Container>
       </Layout>

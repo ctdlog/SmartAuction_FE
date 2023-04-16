@@ -21,7 +21,7 @@ const ToastUIEditor = dynamic(() => import('@/components/common/ToastUIEditor'),
 
 interface FormValues {
   title: string
-  initPrice: number
+  minPrice: number
   maxPrice: number
 }
 
@@ -29,9 +29,9 @@ const AuctionWriteContainer = () => {
   const { register, handleSubmit, watch } = useForm<FormValues>()
   const { push } = useRouter()
   const [content, setContent] = useState('')
-  const [endDate, setEndDate] = useState(new Date())
+  const [endDate, setEndDate] = useState<Date | null>(new Date())
 
-  const onSubmit = async ({ title, initPrice, maxPrice }: FormValues) => {
+  const onSubmit = async ({ title, minPrice, maxPrice }: FormValues) => {
     if (!content) {
       toast.error('내용을 입력해주세요.')
       return
@@ -39,11 +39,11 @@ const AuctionWriteContainer = () => {
 
     const { statusCode } = await createAuction({
       title,
-      initPrice,
+      minPrice,
       maxPrice,
       description: content,
       ipfsUrl: '',
-      expiredAt: `${endDate.toISOString().slice(0, 10)}T00:00:00.000Z`,
+      expiredAt: `${endDate?.toISOString().slice(0, 10)}T00:00:00.000Z`,
     })
     if (statusCode === 201) {
       toast.success('경매 등록이 완료되었습니다.')
@@ -55,14 +55,14 @@ const AuctionWriteContainer = () => {
     }
   }
 
-  const onError = ({ title, initPrice, maxPrice }: FieldErrors<FormValues>) => {
+  const onError = ({ title, minPrice, maxPrice }: FieldErrors<FormValues>) => {
     if (title?.message) {
       toast.error(title.message)
       return
     }
 
-    if (initPrice?.message) {
-      toast.error(initPrice.message)
+    if (minPrice?.message) {
+      toast.error(minPrice.message)
       return
     }
 
@@ -105,7 +105,7 @@ const AuctionWriteContainer = () => {
                 placeholder='판매 시작가를 입력해주세요.'
                 type='number'
                 step='0.001'
-                {...register('initPrice', {
+                {...register('minPrice', {
                   required: '판매 시작가를 입력해주세요.',
                 })}
               />
@@ -119,7 +119,7 @@ const AuctionWriteContainer = () => {
                 {...register('maxPrice', {
                   required: '즉시 낙찰가를 입력해주세요.',
                   validate: (value) =>
-                    Number(value) > watch('initPrice') || '즉시 낙찰가는 판매 시작가보다 높아야 합니다.',
+                    Number(value) > watch('minPrice') || '즉시 낙찰가는 판매 시작가보다 높아야 합니다.',
                 })}
               />
             </label>
