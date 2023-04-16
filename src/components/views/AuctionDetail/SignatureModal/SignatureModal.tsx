@@ -69,7 +69,7 @@ const SignatureModal = ({ writerEoa }: Props) => {
         <i className='ri-close-line' onClick={() => setModal(null)} />
         <S.ModalForm onSubmit={handleSubmit(onSumbit, onError)}>
           <label>
-            <Subtitle size='4'>출금자</Subtitle>
+            <Subtitle size='4'>출금자 </Subtitle>
             <S.ModalInput
               type='text'
               placeholder='Public Key를 입력해주세요.'
