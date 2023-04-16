@@ -10,6 +10,7 @@ import { Modal, ModalContext } from '@/components/views/AuctionDetail/AuctionDet
 import * as S from '@/components/views/AuctionDetail/AuctionDetailContainer.styled'
 import Bidders from '@/components/views/AuctionDetail/Bidders'
 import BidModal from '@/components/views/AuctionDetail/BidModal'
+import Chat from '@/components/views/AuctionDetail/Chat'
 import SignatureModal from '@/components/views/AuctionDetail/SignatureModal'
 import WithdrawModal from '@/components/views/AuctionDetail/WithdrawModal'
 import { getAccessTokenFromLocalStorage } from '@/features/auth/token'
@@ -43,6 +44,10 @@ const AuctionDetailContainer = () => {
 
   const [modal, setModal] = useState<Modal>(null)
 
+  const isChatAvailable =
+    (auction?.status === 3 || auction?.status === 4) &&
+    (auction?.writerEoa === user?.publicKey || bidders?.at(-1)?.bidder === user?.publicKey)
+
   return (
     <ModalContext.Provider
       value={{
@@ -53,6 +58,7 @@ const AuctionDetailContainer = () => {
       {modal === 'bid' && <BidModal />}
       {modal === 'signature' && <SignatureModal />}
       {modal === 'withdraw' && <WithdrawModal />}
+      {/* {isChatAvailable && <Chat />} */}
       <Layout>
         <S.Container>
           <S.Wrapper>

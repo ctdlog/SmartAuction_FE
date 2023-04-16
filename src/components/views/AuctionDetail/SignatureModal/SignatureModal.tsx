@@ -29,7 +29,7 @@ const BidModal = () => {
   } = useForm<FormValues>()
   const { setModal } = useContext(ModalContext)
 
-  const { mutate } = useMutation(() => signature(Number(id), watch('publicKey'), watch('password')), {
+  const { mutate } = useMutation(() => signature(Number(id), '0x00000000', watch('password')), {
     onSuccess: () => {
       toast.success('서명에 성공했습니다.')
       queryClient.invalidateQueries(['auction', id])
@@ -67,11 +67,13 @@ const BidModal = () => {
           <label>
             <Subtitle size='4'>Public Key</Subtitle>
             <S.ModalInput
-              type='number'
+              type='text'
               placeholder='Public Key를 입력해주세요.'
               {...register('publicKey', {
                 required: 'Public Key를 입력해주세요.',
               })}
+              value='0x00000000'
+              readOnly
             />
           </label>
           <label>
