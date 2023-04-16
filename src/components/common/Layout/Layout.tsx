@@ -1,9 +1,18 @@
+import Header from '@/components/common/Header'
+
+import * as S from './Layout.styled'
+
 interface Props {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 const Layout = ({ children }: Props) => {
-  return <div>{children}</div>;
-};
+  return (
+    <div>
+      <Header />
+      <S.Main>{children}</S.Main>
+    </div>
+  )
+}
 
-export default Layout;
+export default Layout

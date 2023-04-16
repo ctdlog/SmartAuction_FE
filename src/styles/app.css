@@ -21,6 +21,16 @@
   src: url('../assets/fonts/Alkatra-Regular.ttf') format('truetype');
 }
 
+html,
 body {
-  font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+  height: 100%;
+  background-color: #202124;
+}
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+button {
+  background: unset;
 }
