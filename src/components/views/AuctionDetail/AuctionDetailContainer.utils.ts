@@ -1,5 +1,5 @@
 export const getTimeLeftByExpiredDate = (expiredDate: string) => {
-  const now = new Date()
+  const now = new Date(Date.now() - 9 * 60 * 60 * 1000)
 
   const target = new Date(expiredDate)
 
