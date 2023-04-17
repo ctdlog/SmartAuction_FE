@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
@@ -16,6 +16,8 @@ import WithdrawModal from '@/components/views/AuctionDetail/WithdrawModal'
 import { getAccessTokenFromLocalStorage } from '@/features/auth/token'
 import { getAuctionBidders, getAuctionDetail } from '@/services/api/auction'
 import { getUserInfo } from '@/services/api/user'
+
+import { getTimeLeftByExpiredDate } from './AuctionDetailContainer.utils'
 
 const AuctionDetailContainer = () => {
   const { id } = useRouter().query
@@ -43,10 +45,24 @@ const AuctionDetailContainer = () => {
   })
 
   const [modal, setModal] = useState<Modal>(null)
+  const [remainingTime, setRemainingTime] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
 
   const isChatAvailable =
     (auction?.status === 3 || auction?.status === 4) &&
     (auction?.writerEoa === user?.publicKey || bidders?.at(-1)?.bidder === user?.publicKey)
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (!auction?.expiredAt) {
+        return
+      }
+
+      const { days, hours, minutes, seconds } = getTimeLeftByExpiredDate(auction?.expiredAt)
+
+      setRemainingTime({ days, hours, minutes, seconds })
+    }, 1000)
+    return () => clearInterval(intervalId)
+  }, [auction?.expiredAt])
 
   return (
     <ModalContext.Provider
@@ -71,7 +87,15 @@ const AuctionDetailContainer = () => {
           </S.Wrapper>
           <S.AuctionInfo>
             <S.Menu>
-              <S.StatusTitle size='3'>{AUCTION_STATUS[auction?.status || 404]}</S.StatusTitle>
+              <S.AuctionTitleWrapper>
+                <S.StatusTitle size='4'>{AUCTION_STATUS[auction?.status || 404]}</S.StatusTitle>
+                {auction?.status && auction?.status <= 3 && (
+                  <S.RemainTime size='1'>
+                    경매 종료까지 {remainingTime.days}일 {remainingTime.hours}시간 {remainingTime.minutes}분{' '}
+                    {remainingTime.seconds}초 남았습니다.
+                  </S.RemainTime>
+                )}
+              </S.AuctionTitleWrapper>
               <S.PriceWrapper>
                 <Subtitle size='4'>입찰시작가</Subtitle>
                 <Subtitle>{auction?.minPrice} MATIC</Subtitle>

@@ -37,12 +37,20 @@ export const AuctionInfo = styled.div`
   min-width: 621px;
 `
 
+export const AuctionTitleWrapper = styled.div`
+  ${tw`mb-4 flex items-center justify-between`}
+`
+
 export const Menu = styled.div`
-  ${tw`mb-4 flex h-fit flex-col gap-4 rounded-lg border border-zinc-700 bg-zinc-800 p-6`}
+  ${tw`mb-4 flex h-fit flex-col gap-4 rounded-lg border border-zinc-700 bg-zinc-800 p-8`}
 `
 
 export const StatusTitle = styled(Title)`
-  ${tw`mb-2`}
+  ${tw`text-3xl`}
+`
+
+export const RemainTime = styled(Title)`
+  ${tw`text-green-200`}
 `
 
 export const PriceWrapper = styled.div`
