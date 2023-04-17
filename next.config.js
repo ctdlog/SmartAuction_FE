@@ -16,7 +16,7 @@ const nextConfig = withTwin({
     domains: ['blockchain-lighthouse.s3.ap-northeast-2.amazonaws.com', 'source.unsplash.com'],
   },
   sentry: {
-    hideSourcemaps: false,
+    hideSourcemaps: true,
   },
   eslint: {
     // Warning: This allows production builds to successfully complete even if

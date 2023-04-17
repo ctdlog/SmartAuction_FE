@@ -6,6 +6,8 @@ import { Dispatch, SetStateAction, useRef } from 'react'
 
 import { Editor } from '@toast-ui/react-editor'
 
+import { s3ImageUpload } from '@/services/api/aws'
+
 interface Props {
   setContent: Dispatch<SetStateAction<string>>
 }
@@ -20,6 +22,15 @@ const ToastUIEditor = ({ setContent }: Props) => {
     }
 
     setContent(content)
+  }
+
+  const onUploadImage = async (blob: File, callback) => {
+    console.log(blob)
+    const formData = new FormData()
+    formData.append('file', blob)
+    const url = await s3ImageUpload(formData)
+    callback(url, 'alt text')
+    return false
   }
 
   return (
@@ -41,9 +52,7 @@ const ToastUIEditor = ({ setContent }: Props) => {
         ['table', 'image', 'link'],
       ]}
       hooks={{
-        addImageBlobHook: (blob, callback) => {
-          // SEND BLOB TO SERVER
-        },
+        addImageBlobHook: onUploadImage,
       }}
     />
   )
