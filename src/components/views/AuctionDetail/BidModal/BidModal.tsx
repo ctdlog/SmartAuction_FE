@@ -36,8 +36,8 @@ const BidModal = () => {
   const { mutate } = useMutation(() => bidAuction(Number(id), watch('password'), Number(watch('bidPrice'))), {
     onSuccess: () => {
       toast.success('입찰에 성공했습니다.')
-
       queryClient.invalidateQueries(['auction', id])
+      setModal(null)
     },
     onError: (error) => {
       if (error instanceof AxiosError) {

@@ -1,13 +1,18 @@
 import { useEffect, useState } from 'react'
 
+import { useQuery } from '@tanstack/react-query'
+import { useRouter } from 'next/router'
 import { io } from 'socket.io-client'
 
 import * as S from '@/components/views/AuctionDetail/Chat/Chat.styled'
 import { getApiEndpoint } from '@/envs'
+import { getChats } from '@/services/api/chat'
 
 const socket = io(getApiEndpoint())
 
 const Chat = () => {
+  const { query } = useRouter()
+  const { data: chats } = useQuery(['chats', Number(query.id)], () => getChats(Number(query.id)), {})
   const [message, setMessage] = useState('')
   const [roomId, setRoomId] = useState('')
 
@@ -54,7 +59,11 @@ const Chat = () => {
         <input type='text' value={roomId} onChange={(e) => setRoomId(e.currentTarget.value)} />
         <button onClick={exitRoom}>나가기</button>
         <h2>Chats</h2>
-        <div></div>
+        <div>
+          {chats?.map((chat) => (
+            <div key={chat.id}>{chat}</div>
+          ))}
+        </div>
       </div>
     </S.Container>
   )
