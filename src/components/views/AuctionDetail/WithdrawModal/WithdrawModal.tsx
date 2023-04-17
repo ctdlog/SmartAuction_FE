@@ -33,6 +33,7 @@ const BidModal = () => {
     onSuccess: () => {
       toast.success('출금에 성공했습니다.')
       queryClient.invalidateQueries(['auction', id])
+      setModal(null)
     },
     onError: (error) => {
       if (error instanceof AxiosError) {

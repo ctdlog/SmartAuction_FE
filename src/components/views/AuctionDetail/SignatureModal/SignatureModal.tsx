@@ -37,6 +37,7 @@ const SignatureModal = ({ writerEoa }: Props) => {
     onSuccess: () => {
       toast.success('서명에 성공했습니다.')
       queryClient.invalidateQueries(['auction', id])
+      setModal(null)
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
