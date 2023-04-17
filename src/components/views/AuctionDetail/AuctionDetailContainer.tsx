@@ -89,7 +89,7 @@ const AuctionDetailContainer = () => {
             <S.Menu>
               <S.AuctionTitleWrapper>
                 <S.StatusTitle size='4'>{AUCTION_STATUS[auction?.status || 404]}</S.StatusTitle>
-                {auction?.status && auction?.status <= 3 && (
+                {auction?.status && auction?.status <= 2 && (
                   <S.RemainTime size='1'>
                     경매 종료까지 {remainingTime.days}일 {remainingTime.hours}시간 {remainingTime.minutes}분{' '}
                     {remainingTime.seconds}초 남았습니다.
