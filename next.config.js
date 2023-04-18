@@ -45,6 +45,14 @@ const nextConfig = withTwin({
       labelFormat: '[local]',
     },
   },
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    })
+
+    return config
+  },
 })
 
 module.exports = withSentryConfig(nextConfig, { silent: true }, { hideSourcemaps: true })

@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 import { FieldErrors, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
+import Icon from '@/components/common/Icon'
 import Subtitle from '@/components/common/Subtitle'
 import { signature } from '@/services/api/wallet'
 
@@ -91,7 +92,20 @@ const SignatureModal = ({ writerEoa }: Props) => {
             />
           </label>
           <S.ModalButton type='submit' disabled={isSubmitting}>
-            서명하기
+            {isSubmitting ? (
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                }}
+              >
+                <Icon iconName='blocksWave' />
+                <span>서명 진행중...</span>
+              </div>
+            ) : (
+              <span>서명하기</span>
+            )}
           </S.ModalButton>
         </S.ModalForm>
       </S.ModalWrapper>

@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 import { FieldErrors, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
+import Icon from '@/components/common/Icon/Icon'
 import Subtitle from '@/components/common/Subtitle'
 import { bidAuction, getAuctionDetail } from '@/services/api/auction'
 
@@ -105,7 +106,20 @@ const BidModal = () => {
             />
           </label>
           <S.ModalButton type='submit' disabled={isSubmitting}>
-            입찰하기
+            {isSubmitting ? (
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                }}
+              >
+                <Icon iconName='blocksWave' />
+                <span>입찰 진행중...</span>
+              </div>
+            ) : (
+              <span>입찰하기</span>
+            )}
           </S.ModalButton>
         </S.ModalForm>
       </S.ModalWrapper>
