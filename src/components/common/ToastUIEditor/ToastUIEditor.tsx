@@ -12,6 +12,8 @@ interface Props {
   setContent: Dispatch<SetStateAction<string>>
 }
 
+type HookCallback = (url: string, text?: string) => void
+
 const ToastUIEditor = ({ setContent }: Props) => {
   const editorRef = useRef<Editor>(null)
 
@@ -24,7 +26,7 @@ const ToastUIEditor = ({ setContent }: Props) => {
     setContent(content)
   }
 
-  const onUploadImage = async (blob: File, callback) => {
+  const onUploadImage = async (blob: File | Blob, callback: HookCallback) => {
     const formData = new FormData()
     formData.append('file', blob)
     const {
