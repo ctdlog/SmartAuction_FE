@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
@@ -25,31 +25,30 @@ interface Props {
 const SignatureModal = ({ writerEoa }: Props) => {
   const { id } = useRouter().query
   const queryClient = useQueryClient()
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { isSubmitting },
-  } = useForm<FormValues>()
+  const { register, handleSubmit, watch } = useForm<FormValues>()
   const { setModal } = useContext(ModalContext)
-
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const { mutate } = useMutation(() => signature(Number(id), writerEoa, watch('password')), {
     onSuccess: () => {
       toast.success('서명에 성공했습니다.')
       queryClient.invalidateQueries(['auction', id])
+      setIsSubmitting(false)
       setModal(null)
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message)
+        setIsSubmitting(false)
         return
       }
 
       toast.error('서명에 실패했습니다.')
+      setIsSubmitting(false)
     },
   })
 
   const onSumbit = () => {
+    setIsSubmitting(true)
     mutate()
   }
 

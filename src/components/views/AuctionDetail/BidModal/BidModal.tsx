@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
@@ -21,12 +21,8 @@ interface FormValues {
 const BidModal = () => {
   const { id } = useRouter().query
   const queryClient = useQueryClient()
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { isSubmitting },
-  } = useForm<FormValues>()
+  const { register, handleSubmit, watch } = useForm<FormValues>()
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const { setModal } = useContext(ModalContext)
   const { data: auction } = useQuery(['auction', id], () => getAuctionDetail(Number(id)), {
     select: (data) => data.payload,
@@ -38,18 +34,22 @@ const BidModal = () => {
       toast.success('입찰에 성공했습니다.')
       queryClient.invalidateQueries(['auction', id])
       setModal(null)
+      setIsSubmitting(false)
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message)
+        setIsSubmitting(false)
         return
       }
 
       toast.error('입찰에 실패했습니다.')
+      setIsSubmitting(false)
     },
   })
 
   const onSumbit = () => {
+    setIsSubmitting(true)
     mutate()
   }
 
