@@ -38,11 +38,9 @@ const Roadmap = () => {
         </S.RoadmapBlock>
         <S.RoadmapBlock>
           <h1>Sprint 4.0 - 보완개발 진행</h1>
-          {/* <ul>
-            <li>실시간 매칭 서비스 적용</li>
-            <li>서비스 기능 및 UI 개선</li>
-            <li>서비스 정식 오픈 2.0</li>
-          </ul> */}
+          <ul>
+            <li>미정</li>
+          </ul>
         </S.RoadmapBlock>
       </S.RoadmapBlockWrapper>
     </S.Section>

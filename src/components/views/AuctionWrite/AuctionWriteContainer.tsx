@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
@@ -14,6 +14,7 @@ import ROUTE from '@/constants/route'
 import { createAuction } from '@/services/api/auction'
 
 import 'react-datepicker/dist/react-datepicker.css'
+import { isLoggedIn } from '@/features/auth/token'
 
 const ToastUIEditor = dynamic(() => import('@/components/common/ToastUIEditor'), {
   ssr: false,
@@ -71,6 +72,13 @@ const AuctionWriteContainer = () => {
       toast.error(maxPrice.message)
     }
   }
+
+  useLayoutEffect(() => {
+    if (!isLoggedIn()) {
+      toast.error('로그인이 필요한 서비스입니다.')
+      push(ROUTE.AUCTION)
+    }
+  }, [push])
 
   return (
     <Layout>

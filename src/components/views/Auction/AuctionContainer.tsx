@@ -1,27 +1,37 @@
 import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { toast } from 'react-toastify'
 
 import Layout from '@/components/common/Layout'
 import Subtitle from '@/components/common/Subtitle'
 import * as S from '@/components/views/Auction/AuctionContainer.styled'
 import ROUTE from '@/constants/route'
+import { isLoggedIn } from '@/features/auth/token'
 import { getAuctions } from '@/services/api/auction'
 
 import { AUCTION_STATUS } from './AuctionContainer.constants'
 
 const AuctionContainer = () => {
+  const { push } = useRouter()
   const { data: auctions } = useQuery(['auctions'], () => getAuctions(15, 0), {
     select: (data) => data.payload,
   })
+
+  const moveToCreateAuction = () => {
+    if (!isLoggedIn()) {
+      toast.error('로그인이 필요한 서비스입니다.')
+      return
+    }
+    push(ROUTE.AUCTION_WRITE)
+  }
 
   return (
     <Layout>
       <S.Container>
         <h1>현재 진행중인 경매 목록</h1>
-        <Link href={ROUTE.AUCTION_WRITE}>
-          <S.Button>경매 글 작성하기</S.Button>
-        </Link>
+        <S.Button onClick={moveToCreateAuction}>경매 글 작성하기</S.Button>
         <S.AuctionWrapper>
           {auctions?.auctions.map((auction) => {
             const imageUrl = `https://source.unsplash.com/random/288x200`

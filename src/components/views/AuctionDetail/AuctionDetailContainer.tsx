@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
+import { toast } from 'react-toastify'
 
 import Layout from '@/components/common/Layout/Layout'
 import Subtitle from '@/components/common/Subtitle/Subtitle'
@@ -13,7 +14,7 @@ import BidModal from '@/components/views/AuctionDetail/BidModal'
 import Chat from '@/components/views/AuctionDetail/Chat'
 import SignatureModal from '@/components/views/AuctionDetail/SignatureModal'
 import WithdrawModal from '@/components/views/AuctionDetail/WithdrawModal'
-import { getAccessTokenFromLocalStorage } from '@/features/auth/token'
+import { getAccessTokenFromLocalStorage, isLoggedIn } from '@/features/auth/token'
 import { getAuctionBidders, getAuctionDetail } from '@/services/api/auction'
 import { getUserInfo } from '@/services/api/user'
 
@@ -105,7 +106,17 @@ const AuctionDetailContainer = () => {
                 <Subtitle> {auction?.maxPrice} MATIC</Subtitle>
               </S.PriceWrapper>
               {auction?.status && auction?.status <= 2 && (
-                <S.MenuButton onClick={() => setModal('bid')}>입찰하기</S.MenuButton>
+                <S.MenuButton
+                  onClick={() => {
+                    if (!isLoggedIn) {
+                      toast.info('로그인이 필요합니다.')
+                      return
+                    }
+                    setModal('bid')
+                  }}
+                >
+                  입찰하기
+                </S.MenuButton>
               )}
               {auction?.status === 3 && bidders?.at(-1)?.bidder === user?.publicKey && (
                 <S.MenuButton onClick={() => setModal('signature')}>서명하기</S.MenuButton>
