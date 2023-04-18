@@ -8,7 +8,6 @@ import { toast } from 'react-toastify'
 
 import Subtitle from '@/components/common/Subtitle'
 import { withdrawBySeller } from '@/services/api/auction'
-import { signature } from '@/services/api/wallet'
 
 import { ModalContext } from '../AuctionDetailContainer.context'
 
@@ -25,7 +24,7 @@ const BidModal = () => {
     register,
     handleSubmit,
     watch,
-    formState: { isLoading },
+    formState: { isSubmitting },
   } = useForm<FormValues>()
   const { setModal } = useContext(ModalContext)
 
@@ -69,7 +68,7 @@ const BidModal = () => {
             />
             <span>출금 진행을 위해 비밀번호를 입력해주세요.</span>
           </label>
-          <S.ModalButton type='submit' disabled={isLoading}>
+          <S.ModalButton type='submit' disabled={isSubmitting}>
             출금하기
           </S.ModalButton>
         </S.ModalForm>

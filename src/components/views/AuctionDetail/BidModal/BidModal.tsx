@@ -25,7 +25,7 @@ const BidModal = () => {
     register,
     handleSubmit,
     watch,
-    formState: { isLoading },
+    formState: { isSubmitting },
   } = useForm<FormValues>()
   const { setModal } = useContext(ModalContext)
   const { data: auction } = useQuery(['auction', id], () => getAuctionDetail(Number(id)), {
@@ -104,7 +104,7 @@ const BidModal = () => {
               })}
             />
           </label>
-          <S.ModalButton type='submit' disabled={isLoading}>
+          <S.ModalButton type='submit' disabled={isSubmitting}>
             입찰하기
           </S.ModalButton>
         </S.ModalForm>

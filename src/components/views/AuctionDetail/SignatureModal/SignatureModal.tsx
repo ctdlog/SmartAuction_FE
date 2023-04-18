@@ -29,7 +29,7 @@ const SignatureModal = ({ writerEoa }: Props) => {
     register,
     handleSubmit,
     watch,
-    formState: { isLoading },
+    formState: { isSubmitting },
   } = useForm<FormValues>()
   const { setModal } = useContext(ModalContext)
 
@@ -91,7 +91,7 @@ const SignatureModal = ({ writerEoa }: Props) => {
               })}
             />
           </label>
-          <S.ModalButton type='submit' disabled={isLoading}>
+          <S.ModalButton type='submit' disabled={isSubmitting}>
             서명하기
           </S.ModalButton>
         </S.ModalForm>
