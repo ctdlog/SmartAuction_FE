@@ -68,12 +68,9 @@ const BidModal = () => {
   return (
     <S.Modal>
       <S.ModalWrapper>
-        <i
-          className='ri-close-line'
-          onClick={() => {
-            setModal(null)
-          }}
-        />
+        <S.CloseButton onClick={() => setModal(null)}>
+          <i className='ri-close-line' />
+        </S.CloseButton>
         <S.ModalForm onSubmit={handleSubmit(onSumbit, onError)}>
           <label>
             <Subtitle size='4'>입찰가</Subtitle>

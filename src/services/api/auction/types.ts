@@ -12,6 +12,7 @@ export interface Auction {
   ipfsUrl: string // ipfs://naskjldnaksjddfndksjfnkf
   createdAt: string
   expiredAt: string
+  thumbnail: string
 }
 
 export interface AuctionDetail {
@@ -35,6 +36,7 @@ export interface AuctionParams {
   maxPrice: number
   ipfsUrl: string
   expiredAt: string
+  thumbnail: string
 }
 
 export interface Bidder {

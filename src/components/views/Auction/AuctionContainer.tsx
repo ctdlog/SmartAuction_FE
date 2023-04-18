@@ -34,11 +34,10 @@ const AuctionContainer = () => {
         <S.Button onClick={moveToCreateAuction}>경매 글 작성하기</S.Button>
         <S.AuctionWrapper>
           {auctions?.auctions.map((auction) => {
-            const imageUrl = `https://source.unsplash.com/random/288x200`
             return (
               <Link href={`${ROUTE.AUCTION}/${auction.id}`} key={auction.id}>
                 <S.AuctionBlock key={auction.id}>
-                  <Image src={imageUrl} width={288} height={200} alt='kitten' />
+                  <Image src={auction.thumbnail} width={288} height={200} alt='kitten' />
                   <S.Description>
                     <div>
                       <Subtitle size='4'>{auction.title}</Subtitle>

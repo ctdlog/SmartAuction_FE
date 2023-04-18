@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState } from 'react'
+import { useLayoutEffect, useState } from 'react'
 
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
@@ -11,10 +11,11 @@ import Layout from '@/components/common/Layout'
 import Subtitle from '@/components/common/Subtitle'
 import * as S from '@/components/views/AuctionWrite/AuctionWriteContainer.styled'
 import ROUTE from '@/constants/route'
+import { isLoggedIn } from '@/features/auth/token'
 import { createAuction } from '@/services/api/auction'
 
 import 'react-datepicker/dist/react-datepicker.css'
-import { isLoggedIn } from '@/features/auth/token'
+import { getThumbnailFromHTML } from './AuctionWriteContainer.utils'
 
 const ToastUIEditor = dynamic(() => import('@/components/common/ToastUIEditor'), {
   ssr: false,
@@ -46,6 +47,7 @@ const AuctionWriteContainer = () => {
       description: content,
       ipfsUrl: '',
       expiredAt: `${endDate?.toISOString().slice(0, 10)}T${time}:00.000Z`,
+      thumbnail: getThumbnailFromHTML(content),
     })
     if (statusCode === 201) {
       toast.success('경매 등록이 완료되었습니다.')

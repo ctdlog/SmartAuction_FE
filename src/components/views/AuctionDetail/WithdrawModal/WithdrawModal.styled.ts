@@ -8,10 +8,9 @@ export const Modal = styled.div`
 export const ModalWrapper = styled.div`
   ${tw`flex flex-col gap-4 rounded-lg bg-zinc-800 p-8 text-gray-100`}
   width: 512px;
-
-  i {
-    ${tw`self-end text-2xl text-gray-200`}
-  }
+`
+export const CloseButton = styled.button`
+  ${tw`self-end text-2xl text-gray-200`}
 `
 
 export const ModalForm = styled.form`

@@ -25,11 +25,12 @@ const ToastUIEditor = ({ setContent }: Props) => {
   }
 
   const onUploadImage = async (blob: File, callback) => {
-    console.log(blob)
     const formData = new FormData()
     formData.append('file', blob)
-    const url = await s3ImageUpload(formData)
-    callback(url, 'alt text')
+    const {
+      payload: { path },
+    } = await s3ImageUpload(formData)
+    callback(path, 'alt text')
     return false
   }
 
