@@ -27,7 +27,10 @@ export const AuctionBlock = styled.div`
   ${tw`flex w-full flex-col rounded-lg border border-zinc-700`}
 
   img {
-    ${tw`w-full rounded-t-lg`}
+    ${tw`rounded-t-lg`}
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 `
 
