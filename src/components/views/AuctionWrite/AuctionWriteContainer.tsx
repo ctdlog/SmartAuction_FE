@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useLayoutEffect, useState } from 'react'
 
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
@@ -11,9 +11,11 @@ import Layout from '@/components/common/Layout'
 import Subtitle from '@/components/common/Subtitle'
 import * as S from '@/components/views/AuctionWrite/AuctionWriteContainer.styled'
 import ROUTE from '@/constants/route'
+import { isLoggedIn } from '@/features/auth/token'
 import { createAuction } from '@/services/api/auction'
 
 import 'react-datepicker/dist/react-datepicker.css'
+import { getThumbnailFromHTML } from './AuctionWriteContainer.utils'
 
 const ToastUIEditor = dynamic(() => import('@/components/common/ToastUIEditor'), {
   ssr: false,
@@ -23,6 +25,7 @@ interface FormValues {
   title: string
   minPrice: number
   maxPrice: number
+  time: string
 }
 
 const AuctionWriteContainer = () => {
@@ -31,7 +34,7 @@ const AuctionWriteContainer = () => {
   const [content, setContent] = useState('')
   const [endDate, setEndDate] = useState<Date | null>(new Date())
 
-  const onSubmit = async ({ title, minPrice, maxPrice }: FormValues) => {
+  const onSubmit = async ({ title, minPrice, maxPrice, time }: FormValues) => {
     if (!content) {
       toast.error('내용을 입력해주세요.')
       return
@@ -43,7 +46,8 @@ const AuctionWriteContainer = () => {
       maxPrice,
       description: content,
       ipfsUrl: '',
-      expiredAt: `${endDate?.toISOString().slice(0, 10)}T00:00:00.000Z`,
+      expiredAt: `${endDate?.toISOString().slice(0, 10)}T${time}:00.000Z`,
+      thumbnail: getThumbnailFromHTML(content),
     })
     if (statusCode === 201) {
       toast.success('경매 등록이 완료되었습니다.')
@@ -70,6 +74,13 @@ const AuctionWriteContainer = () => {
       toast.error(maxPrice.message)
     }
   }
+
+  useLayoutEffect(() => {
+    if (!isLoggedIn()) {
+      toast.error('로그인이 필요한 서비스입니다.')
+      push(ROUTE.AUCTION)
+    }
+  }, [push])
 
   return (
     <Layout>
@@ -128,8 +139,17 @@ const AuctionWriteContainer = () => {
               />
             </label>
             <S.DatePickerWrapper>
-              <span>경매 종료일</span>
+              <span>경매 종료 날짜</span>
               <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} />
+            </S.DatePickerWrapper>
+            <S.DatePickerWrapper>
+              <span>경매 종료 시간</span>
+              <input
+                type='time'
+                {...register('time', {
+                  required: '경매 종료 시간을 입력해주세요.',
+                })}
+              />
             </S.DatePickerWrapper>
           </S.PriceWrapper>
           <ToastUIEditor setContent={setContent} />

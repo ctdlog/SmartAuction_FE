@@ -16,7 +16,7 @@ const nextConfig = withTwin({
     domains: ['blockchain-lighthouse.s3.ap-northeast-2.amazonaws.com', 'source.unsplash.com'],
   },
   sentry: {
-    hideSourcemaps: false,
+    hideSourcemaps: true,
   },
   eslint: {
     // Warning: This allows production builds to successfully complete even if
@@ -44,6 +44,14 @@ const nextConfig = withTwin({
       // For example labelFormat: "my-classname--[local]", where [local] will be replaced with the name of the variable the result is assigned to.
       labelFormat: '[local]',
     },
+  },
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    })
+
+    return config
   },
 })
 

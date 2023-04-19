@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 import { FieldErrors, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
+import Icon from '@/components/common/Icon/Icon'
 import Subtitle from '@/components/common/Subtitle'
 import { bidAuction, getAuctionDetail } from '@/services/api/auction'
 
@@ -21,12 +22,8 @@ interface FormValues {
 const BidModal = () => {
   const { id } = useRouter().query
   const queryClient = useQueryClient()
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { isLoading },
-  } = useForm<FormValues>()
+  const { register, handleSubmit, watch } = useForm<FormValues>()
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const { setModal } = useContext(ModalContext)
   const { data: auction } = useQuery(['auction', id], () => getAuctionDetail(Number(id)), {
     select: (data) => data.payload,
@@ -36,20 +33,24 @@ const BidModal = () => {
   const { mutate } = useMutation(() => bidAuction(Number(id), watch('password'), Number(watch('bidPrice'))), {
     onSuccess: () => {
       toast.success('입찰에 성공했습니다.')
-
       queryClient.invalidateQueries(['auction', id])
+      setModal(null)
+      setIsSubmitting(false)
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message)
+        setIsSubmitting(false)
         return
       }
 
       toast.error('입찰에 실패했습니다.')
+      setIsSubmitting(false)
     },
   })
 
   const onSumbit = () => {
+    setIsSubmitting(true)
     mutate()
   }
 
@@ -67,12 +68,9 @@ const BidModal = () => {
   return (
     <S.Modal>
       <S.ModalWrapper>
-        <i
-          className='ri-close-line'
-          onClick={() => {
-            setModal(null)
-          }}
-        />
+        <S.CloseButton onClick={() => setModal(null)}>
+          <i className='ri-close-line' />
+        </S.CloseButton>
         <S.ModalForm onSubmit={handleSubmit(onSumbit, onError)}>
           <label>
             <Subtitle size='4'>입찰가</Subtitle>
@@ -104,8 +102,21 @@ const BidModal = () => {
               })}
             />
           </label>
-          <S.ModalButton type='submit' disabled={isLoading}>
-            입찰하기
+          <S.ModalButton type='submit' disabled={isSubmitting}>
+            {isSubmitting ? (
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                }}
+              >
+                <Icon iconName='blocksWave' />
+                <span>입찰 진행중...</span>
+              </div>
+            ) : (
+              <span>입찰하기</span>
+            )}
           </S.ModalButton>
         </S.ModalForm>
       </S.ModalWrapper>

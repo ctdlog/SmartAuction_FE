@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
@@ -6,9 +6,9 @@ import { useRouter } from 'next/router'
 import { FieldErrors, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
+import Icon from '@/components/common/Icon'
 import Subtitle from '@/components/common/Subtitle'
 import { withdrawBySeller } from '@/services/api/auction'
-import { signature } from '@/services/api/wallet'
 
 import { ModalContext } from '../AuctionDetailContainer.context'
 
@@ -21,30 +21,30 @@ interface FormValues {
 const BidModal = () => {
   const { id } = useRouter().query
   const queryClient = useQueryClient()
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { isLoading },
-  } = useForm<FormValues>()
+  const { register, handleSubmit, watch } = useForm<FormValues>()
   const { setModal } = useContext(ModalContext)
-
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const { mutate } = useMutation(() => withdrawBySeller(Number(id), watch('password')), {
     onSuccess: () => {
       toast.success('출금에 성공했습니다.')
       queryClient.invalidateQueries(['auction', id])
+      setIsSubmitting(false)
+      setModal(null)
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
         toast.error(error.response?.data.message)
+        setIsSubmitting(false)
         return
       }
 
       toast.error('출금에 실패했습니다.')
+      setIsSubmitting(false)
     },
   })
 
   const onSumbit = () => {
+    setIsSubmitting(true)
     mutate()
   }
 
@@ -55,7 +55,9 @@ const BidModal = () => {
   return (
     <S.Modal>
       <S.ModalWrapper>
-        <i className='ri-close-line' onClick={() => setModal(null)} />
+        <S.CloseButton onClick={() => setModal(null)}>
+          <i className='ri-close-line' />
+        </S.CloseButton>
         <S.ModalForm onSubmit={handleSubmit(onSumbit, onError)}>
           <label>
             <Subtitle size='4'>비밀번호</Subtitle>
@@ -68,8 +70,21 @@ const BidModal = () => {
             />
             <span>출금 진행을 위해 비밀번호를 입력해주세요.</span>
           </label>
-          <S.ModalButton type='submit' disabled={isLoading}>
-            출금하기
+          <S.ModalButton type='submit' disabled={isSubmitting}>
+            {isSubmitting ? (
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                }}
+              >
+                <Icon iconName='blocksWave' />
+                <span>출금 진행중...</span>
+              </div>
+            ) : (
+              <span>출금하기</span>
+            )}
           </S.ModalButton>
         </S.ModalForm>
       </S.ModalWrapper>

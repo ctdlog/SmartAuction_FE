@@ -26,9 +26,9 @@ const LandingHeader = ({ scrollToIndex }: Props) => {
           <li onClick={() => scrollToIndex(1)}>
             <span>Description</span>
           </li>
-          <li onClick={() => scrollToIndex(2)}>
+          {/* <li onClick={() => scrollToIndex(2)}>
             <span>Event</span>
-          </li>
+          </li> */}
           <li onClick={() => scrollToIndex(3)}>
             <span>Roadmap</span>
           </li>

@@ -16,7 +16,7 @@ export const Container = styled.div`
 `
 
 export const Button = styled.button`
-  ${tw`flex gap-2 rounded-md bg-blue-500 px-4 py-2 text-xl`}
+  ${tw`ml-auto flex gap-2 rounded-md bg-blue-500 px-4 py-2 text-xl`}
 `
 
 export const AuctionWrapper = styled.div`
