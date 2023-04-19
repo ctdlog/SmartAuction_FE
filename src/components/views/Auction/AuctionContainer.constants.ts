@@ -7,3 +7,5 @@ export const AUCTION_STATUS = {
   6: '경매 종료',
   404: '경매 정보를 찾을 수 없습니다.',
 }
+
+export const DEFAULT_THUMBNAIL = 'https://blockchain-lighthouse.s3.ap-northeast-2.amazonaws.com/common/noimage.jpg'

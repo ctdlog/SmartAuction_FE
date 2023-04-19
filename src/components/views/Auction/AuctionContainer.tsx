@@ -6,12 +6,11 @@ import { toast } from 'react-toastify'
 
 import Layout from '@/components/common/Layout'
 import Subtitle from '@/components/common/Subtitle'
+import { AUCTION_STATUS, DEFAULT_THUMBNAIL } from '@/components/views/Auction/AuctionContainer.constants'
 import * as S from '@/components/views/Auction/AuctionContainer.styled'
 import ROUTE from '@/constants/route'
 import { isLoggedIn } from '@/features/auth/token'
 import { getAuctions } from '@/services/api/auction'
-
-import { AUCTION_STATUS } from './AuctionContainer.constants'
 
 const AuctionContainer = () => {
   const { push } = useRouter()
@@ -37,7 +36,7 @@ const AuctionContainer = () => {
             return (
               <Link href={`${ROUTE.AUCTION}/${auction.id}`} key={auction.id}>
                 <S.AuctionBlock key={auction.id}>
-                  <Image src={auction.thumbnail} width={288} height={200} alt='kitten' />
+                  <Image src={auction.thumbnail || DEFAULT_THUMBNAIL} width={288} height={200} alt='kitten' />
                   <S.Description>
                     <div>
                       <Subtitle size='4'>{auction.title}</Subtitle>
