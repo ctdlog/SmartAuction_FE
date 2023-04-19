@@ -25,7 +25,7 @@ export const Writer = styled(Subtitle)`
 `
 
 export const Description = styled.div`
-  ${tw`mt-4 flex h-full w-full rounded-lg border border-zinc-700 bg-zinc-800 p-4 font-bold text-gray-100 text-xl`}
+  ${tw`mt-4 h-full w-full rounded-lg border border-zinc-700 bg-zinc-800 p-4 font-bold text-gray-100 text-xl`}
   min-height: 768px;
 `
 
