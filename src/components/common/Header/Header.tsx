@@ -46,8 +46,13 @@ const Header = () => {
         {accessToken ? (
           <S.UserInfoBlock>
             <S.User>
-              <Text size='2'>{user?.nickname}님, 안녕하세요!</Text>
-              <Text size='1'>Balance: {Number(user?.balance).toFixed(3)} MATIC</Text>
+              <Link href={ROUTE.PROFILE}>
+                <i className='ri-account-circle-fill' />
+              </Link>
+              <div>
+                <Text size='2'>{user?.nickname}님, 안녕하세요!</Text>
+                <Text size='1'>Balance: {Number(user?.balance).toFixed(3)} MATIC</Text>
+              </div>
             </S.User>
             <S.Button onClick={handleClickLogout}>
               <i className='ri-logout-box-line'></i>

@@ -30,7 +30,11 @@ export const UserInfoBlock = styled.div`
 `
 
 export const User = styled.div`
-  ${tw`mr-6 flex flex-col`}
+  ${tw`mr-6 flex items-center gap-4`}
+
+  i {
+    ${tw`align-middle text-5xl`}
+  }
 
   span {
     ${tw`text-xl`}

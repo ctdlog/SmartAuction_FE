@@ -8,7 +8,7 @@ import { getBiddedAuctionApi, getMyAuction } from '@/services/api/auction'
 import { Auction } from '@/services/api/auction/types'
 import { getUserInfo, myFavoriteAuctions } from '@/services/api/user'
 
-import * as S from './My.styled'
+import * as S from './ProfileContainer.styled'
 
 const MyContainer = () => {
   const [MenuFlag, setMenuFlag] = useState(0)
@@ -96,18 +96,18 @@ const MyContainer = () => {
 
         {/* 여기 컨텐츠 (My Favorite) */}
         <div>
-          {MenuFlag == 1 &&
+          {MenuFlag === 1 &&
             Content &&
             Content.map((item, idx) => (
               <Link href={`${ROUTE.AUCTION}/${item.id}`} key={item.id}>
                 <S.ContentBox>
                   <div>{item.id}</div>
                   <div>{item.title}</div>
-                  {item.status == 1 || item.status == 2 ? (
+                  {item.status === 1 || item.status === 2 ? (
                     <div>경매 진행중</div>
-                  ) : item.status == 3 ? (
+                  ) : item.status === 3 ? (
                     <div>거래중</div>
-                  ) : item.status == 4 || item.status == 5 ? (
+                  ) : item.status === 4 || item.status === 5 ? (
                     <div>경매종료</div>
                   ) : (
                     <div>경매사고</div>
