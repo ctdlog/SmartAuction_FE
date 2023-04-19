@@ -1,35 +1,34 @@
-import { useContext, useState } from 'react'
+import { Dispatch, SetStateAction, useContext, useState } from 'react'
 
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
-import { useRouter } from 'next/router'
 import { FieldErrors, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
-import Icon from '@/components/common/Icon'
 import Subtitle from '@/components/common/Subtitle'
-import { withdrawBySeller } from '@/services/api/auction'
-
-import { ModalContext } from '../AuctionDetailContainer.contexts'
-
-import * as S from './WithdrawModal.styled'
+import * as S from '@/components/views/Profile/DecodeModal/DecodeModal.styled'
+import { ModalContext } from '@/components/views/Profile/ProfileContainer.contexts'
+import { decode } from '@/services/api/wallet'
 
 interface FormValues {
   password: string
 }
 
-const BidModal = () => {
-  const { id } = useRouter().query
-  const queryClient = useQueryClient()
+interface Props {
+  setPrivateKey: Dispatch<SetStateAction<string>>
+}
+
+const DecodeModal = ({ setPrivateKey }: Props) => {
   const { register, handleSubmit, watch } = useForm<FormValues>()
-  const { setModal } = useContext(ModalContext)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const { mutate } = useMutation(() => withdrawBySeller(Number(id), watch('password')), {
-    onSuccess: () => {
-      toast.success('출금에 성공했습니다.')
-      queryClient.invalidateQueries(['auction', id])
-      setIsSubmitting(false)
+  const { setModal } = useContext(ModalContext)
+
+  const { mutate } = useMutation(() => decode(watch('password')), {
+    onSuccess: (data) => {
+      toast.success('복호화 되었습니다. Private Key를 확인해주세요.')
+      setPrivateKey(data.payload.privateKey)
       setModal(null)
+      setIsSubmitting(false)
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
@@ -38,7 +37,7 @@ const BidModal = () => {
         return
       }
 
-      toast.error('출금에 실패했습니다.')
+      toast.error('복호화에 실패했습니다.')
       setIsSubmitting(false)
     },
   })
@@ -49,7 +48,9 @@ const BidModal = () => {
   }
 
   const onError = ({ password }: FieldErrors<FormValues>) => {
-    toast.error(password?.message)
+    if (password) {
+      toast.error(password.message)
+    }
   }
 
   return (
@@ -68,23 +69,9 @@ const BidModal = () => {
                 required: '비밀번호를 입력해주세요.',
               })}
             />
-            <span>출금 진행을 위해 비밀번호를 입력해주세요.</span>
           </label>
           <S.ModalButton type='submit' disabled={isSubmitting}>
-            {isSubmitting ? (
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                }}
-              >
-                <Icon iconName='blocksWave' />
-                <span>출금 진행중...</span>
-              </div>
-            ) : (
-              <span>출금하기</span>
-            )}
+            <span>Private Key 복호화</span>
           </S.ModalButton>
         </S.ModalForm>
       </S.ModalWrapper>
@@ -92,4 +79,4 @@ const BidModal = () => {
   )
 }
 
-export default BidModal
+export default DecodeModal

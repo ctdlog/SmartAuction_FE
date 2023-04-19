@@ -10,7 +10,7 @@ import Icon from '@/components/common/Icon'
 import Subtitle from '@/components/common/Subtitle'
 import { signature } from '@/services/api/wallet'
 
-import { ModalContext } from '../AuctionDetailContainer.context'
+import { ModalContext } from '../AuctionDetailContainer.contexts'
 
 import * as S from './SignatureModal.styled'
 

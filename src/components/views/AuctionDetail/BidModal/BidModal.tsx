@@ -10,7 +10,7 @@ import Icon from '@/components/common/Icon/Icon'
 import Subtitle from '@/components/common/Subtitle'
 import { bidAuction, getAuctionDetail } from '@/services/api/auction'
 
-import { ModalContext } from '../AuctionDetailContainer.context'
+import { ModalContext } from '../AuctionDetailContainer.contexts'
 
 import * as S from './BidModal.styled'
 

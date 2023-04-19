@@ -6,7 +6,7 @@ import { toast } from 'react-toastify'
 
 import Layout from '@/components/common/Layout'
 import Subtitle from '@/components/common/Subtitle'
-import { AUCTION_STATUS, DEFAULT_THUMBNAIL } from '@/components/views/Auction/AuctionContainer.constants'
+import { AUCTION_STATUS, DEFAULT_THUMBNAIL } from '@/components/views/Auction/AuctionContainer.const'
 import * as S from '@/components/views/Auction/AuctionContainer.styled'
 import ROUTE from '@/constants/route'
 import { isLoggedIn } from '@/features/auth/token'
