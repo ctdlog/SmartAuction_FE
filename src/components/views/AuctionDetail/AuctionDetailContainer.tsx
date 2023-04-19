@@ -105,7 +105,7 @@ const AuctionDetailContainer = () => {
                 <Subtitle size='4'>즉시낙찰가</Subtitle>
                 <Subtitle> {auction?.maxPrice} MATIC</Subtitle>
               </S.PriceWrapper>
-              {auction?.status && auction?.status <= 2 && (
+              {auction?.status && auction?.status <= 2 && auction.writerEoa !== user?.publicKey && (
                 <S.MenuButton
                   onClick={() => {
                     if (!isLoggedIn) {
