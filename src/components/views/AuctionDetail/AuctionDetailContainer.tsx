@@ -8,6 +8,7 @@ import Layout from '@/components/common/Layout/Layout'
 import Subtitle from '@/components/common/Subtitle/Subtitle'
 import { AUCTION_STATUS } from '@/components/views/Auction/AuctionContainer.const'
 import { Modal, ModalContext } from '@/components/views/AuctionDetail/AuctionDetailContainer.contexts'
+import { useAuctionDetail, useFavorites } from '@/components/views/AuctionDetail/AuctionDetailContainer.queries'
 import * as S from '@/components/views/AuctionDetail/AuctionDetailContainer.styled'
 import { getTimeLeftByExpiredDate } from '@/components/views/AuctionDetail/AuctionDetailContainer.utils'
 import Bidders from '@/components/views/AuctionDetail/Bidders'
@@ -16,8 +17,6 @@ import SignatureModal from '@/components/views/AuctionDetail/SignatureModal'
 import WithdrawModal from '@/components/views/AuctionDetail/WithdrawModal'
 import { getAccessTokenFromLocalStorage, isLoggedIn } from '@/features/auth/token'
 import { getUserInfo } from '@/services/api/user'
-
-import { useAuctionDetail, useFavorites } from './AuctionDetailContainer.queries'
 
 const AuctionDetailContainer = () => {
   const {
@@ -66,7 +65,7 @@ const AuctionDetailContainer = () => {
           <S.Wrapper>
             <S.TitleWrapper>
               <S.AuctionTitle>{auction?.title}</S.AuctionTitle>
-              <S.Writer size='2'>작성자: {auction?.writerEmail}</S.Writer>
+              <S.Writer size='2'>작성자: {auction?.writerNickname}</S.Writer>
             </S.TitleWrapper>
             {/* TODO: remove as string */}
             <S.Description dangerouslySetInnerHTML={{ __html: auction?.description as string }} />

@@ -20,6 +20,7 @@ export interface AuctionDetail {
   description: string
   writerEoa: string
   writerEmail: string
+  writerNickname: string
   status: AuctionStatus
   minPrice: number
   maxPrice: number
