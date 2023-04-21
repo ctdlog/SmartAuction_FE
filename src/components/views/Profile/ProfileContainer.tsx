@@ -11,15 +11,15 @@ import { getStatusText } from '@/components/views/Profile/ProfileContainer.utils
 import ROUTE from '@/constants/route'
 import { getBiddedAuctionApi, getFavorites, getMyAuction } from '@/services/api/auction'
 import { Auction } from '@/services/api/auction/types'
-import { getUserInfo, myFavoriteAuctions } from '@/services/api/user'
+import { getUserInfo } from '@/services/api/user'
 
-const MyContainer = () => {
+const ProfileContainer = () => {
   const [MenuFlag, setMenuFlag] = useState(0)
   const [Content, setContent] = useState<Auction[]>([])
   const [modal, setModal] = useState<Modal>(null)
   const [privateKey, setPrivateKey] = useState<string>('')
 
-  const { data: user } = useQuery(['user'], () => getUserInfo(), {
+  const { data: user, isSuccess } = useQuery(['user'], () => getUserInfo(), {
     select: (data) => data.payload,
   })
 
@@ -58,6 +58,10 @@ const MyContainer = () => {
     }
   }
 
+  if (!isSuccess) {
+    return null
+  }
+
   return (
     <ModalContext.Provider
       value={{
@@ -69,39 +73,45 @@ const MyContainer = () => {
       <Layout>
         <S.Layout>
           {/* User Information Box */}
-          <S.Title>유저 프로필</S.Title>
+          <S.StyledTitle size='4'>프로필</S.StyledTitle>
 
           {user?.email && (
             <S.Table>
               <S.TableRow>
-                <S.TableRowName>[ 이메일 ]</S.TableRowName>
+                <S.TableRowName size='4'>이메일</S.TableRowName>
                 <span>{user.email}</span>
               </S.TableRow>
               <S.TableRow>
-                <S.TableRowName>[ 닉네임 ]</S.TableRowName>
+                <S.TableRowName size='4'>닉네임</S.TableRowName>
                 <span>{user.nickname}</span>
               </S.TableRow>
               <S.TableRow>
-                <S.TableRowName>[ 지갑주소 ]</S.TableRowName>
-                <span>Public Key : {user.publicKey}</span>
-                <S.PrivateKeyBlock>
-                  <span>Private Key : {privateKey || '******************************************'}</span>
-                  <button onClick={() => setModal('decode')}>Private Key 확인</button>
-                </S.PrivateKeyBlock>
+                <S.TableRowName size='4'>지갑주소</S.TableRowName>
+                <div
+                  style={{
+                    width: '90%',
+                  }}
+                >
+                  <span>Public Key : {user.publicKey}</span>
+                  <S.PrivateKeyBlock>
+                    <span>Private Key : {privateKey || '******************************************'}</span>
+                    <button onClick={() => setModal('decode')}>Private Key 확인</button>
+                  </S.PrivateKeyBlock>
+                </div>
               </S.TableRow>
               <S.TableRow>
-                <S.TableRowName>[ 잔액 ]</S.TableRowName>
+                <S.TableRowName size='4'>잔액</S.TableRowName>
                 <span>{user.balance} Matic</span>
               </S.TableRow>
               <S.TableRow>
-                <S.TableRowName>[ 가입일 ]</S.TableRowName>
+                <S.TableRowName size='4'>가입일</S.TableRowName>
                 <span>{user.registeredAt.split('T')[0]}</span>
               </S.TableRow>
             </S.Table>
           )}
 
           {/* User Board */}
-          <S.Title>유저 보드</S.Title>
+          <S.StyledTitle>유저 보드</S.StyledTitle>
 
           <S.UserBoard>
             {/* 메뉴 */}
@@ -110,54 +120,61 @@ const MyContainer = () => {
               <S.UserBoardMenuContent onClick={getAuction}>내 경매</S.UserBoardMenuContent>
               <S.UserBoardMenuContent onClick={getBiddedAuction}>입찰경매</S.UserBoardMenuContent>
             </S.UserBoardMenu>
+            <S.ContentLayout>
+              <S.ContentHeader>
+                <div>번호</div>
+                <div>제목</div>
+                <div>상태</div>
+                <div>등록일</div>
+              </S.ContentHeader>
+              {/* 여기 컨텐츠 (My Favorite) */}
+              <div>
+                {MenuFlag === 1 &&
+                  Content &&
+                  Content.map((item) => (
+                    <Link href={`${ROUTE.AUCTION}/${item.id}`} key={item.id}>
+                      <S.ContentBox>
+                        <div>{item.id}</div>
+                        <div>{item.title}</div>
+                        <div>{getStatusText(item.status)}</div>
+                        <div>{item.createdAt.split('T')[0]}</div>
+                      </S.ContentBox>
+                    </Link>
+                  ))}
+              </div>
 
-            {/* 여기 컨텐츠 (My Favorite) */}
-            <div>
-              {MenuFlag === 1 &&
-                Content &&
-                Content.map((item) => (
-                  <Link href={`${ROUTE.AUCTION}/${item.id}`} key={item.id}>
-                    <S.ContentBox>
-                      <div>{item.id}</div>
-                      <div>{item.title}</div>
-                      <div>{getStatusText(item.status)}</div>
-                      <div>{item.createdAt.split('T')[0]}</div>
-                    </S.ContentBox>
-                  </Link>
-                ))}
-            </div>
+              {/* 여기 컨텐츠 (My Auction) */}
+              <div>
+                {MenuFlag === 2 &&
+                  Content &&
+                  Content.map((item) => (
+                    <Link href={`${ROUTE.AUCTION}/${item.id}`} key={item.id}>
+                      <S.ContentBox>
+                        <div>{item.id}</div>
+                        <div>{item.title}</div>
+                        <div>{getStatusText(item.status)}</div>
+                        <div>{item.createdAt.split('T')[0]}</div>
+                      </S.ContentBox>
+                    </Link>
+                  ))}
+              </div>
 
-            {/* 여기 컨텐츠 (My Auction) */}
-            <div>
-              {MenuFlag === 2 &&
-                Content &&
-                Content.map((item) => (
-                  <Link href={`${ROUTE.AUCTION}/${item.id}`} key={item.id}>
-                    <S.ContentBox>
-                      <div>{item.id}</div>
-                      <div>{item.title}</div>
-                      <div>{getStatusText(item.status)}</div>
-                      <div>{item.createdAt.split('T')[0]}</div>
-                    </S.ContentBox>
-                  </Link>
-                ))}
-            </div>
-
-            {/* 여기 컨텐츠 (Bidded) */}
-            <div>
-              {MenuFlag === 3 &&
-                Content &&
-                Content.map((item) => (
-                  <Link href={`${ROUTE.AUCTION}/${item.id}`} key={item.id}>
-                    <S.ContentBox>
-                      <div>{item.id}</div>
-                      <div>{item.title}</div>
-                      <div>{getStatusText(item.status)}</div>
-                      <div>{item.createdAt.split('T')[0]}</div>
-                    </S.ContentBox>
-                  </Link>
-                ))}
-            </div>
+              {/* 여기 컨텐츠 (Bidded) */}
+              <div>
+                {MenuFlag === 3 &&
+                  Content &&
+                  Content.map((item) => (
+                    <Link href={`${ROUTE.AUCTION}/${item.id}`} key={item.id}>
+                      <S.ContentBox>
+                        <div>{item.id}</div>
+                        <div>{item.title}</div>
+                        <div>{getStatusText(item.status)}</div>
+                        <div>{item.createdAt.split('T')[0]}</div>
+                      </S.ContentBox>
+                    </Link>
+                  ))}
+              </div>
+            </S.ContentLayout>
           </S.UserBoard>
         </S.Layout>
       </Layout>
@@ -165,4 +182,4 @@ const MyContainer = () => {
   )
 }
 
-export default MyContainer
+export default ProfileContainer

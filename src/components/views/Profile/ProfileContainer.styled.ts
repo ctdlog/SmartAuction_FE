@@ -1,88 +1,68 @@
 import styled from '@emotion/styled'
 import tw from 'twin.macro'
 
+import Subtitle from '@/components/common/Subtitle'
+import Title from '@/components/common/Title/'
+
 export const Layout = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: white;
+  ${tw`mb-24 flex h-full flex-col items-center justify-center text-gray-100`}
 `
 
-export const Title = styled.h2`
-  font-size: 1.5rem;
-  font-weight: 800;
-  margin: 1.5rem 0;
+export const StyledTitle = styled(Title)`
+  ${tw`my-12 text-3xl`}
 `
 
 export const Table = styled.div`
-  border: 1px solid #111111;
-  width: 50%;
+  ${tw`flex flex-col items-center justify-center gap-4`}
+  width: 1000px;
 `
 
 export const TableRow = styled.div`
-  padding: 15px;
-  line-height: 2;
-  border-bottom: 0.1px solid gray;
+  ${tw`flex w-full items-center rounded-xl bg-zinc-800 p-8`}
+
+  span {
+    ${tw`text-lg`}
+  }
 `
 
-export const TableRowName = styled.div`
-  font-weight: 600;
-  /* background-color : blue; */
+export const TableRowName = styled(Subtitle)`
+  ${tw`mr-4 w-24`}
 `
 
 export const PrivateKeyBlock = styled.div`
-  ${tw`flex items-center justify-between`}
+  ${tw`flex w-full items-center justify-between`}
 
   button {
-    ${tw`rounded-md bg-blue-500 p-2 text-center text-xl`}
+    ${tw`rounded-md bg-blue-500 py-2 px-4 text-center text-xl`}
   }
 `
 
 export const UserBoard = styled.div`
-  width: 50%;
+  ${tw`w-1/2`}
 `
 
 export const UserBoardMenu = styled.div`
-  display: flex;
-  border: 1px solid gray;
-  justify-content: space-around;
-  font-size: 18px;
+  ${tw`flex justify-around rounded-lg bg-zinc-800 p-4`}
 `
 
-export const UserBoardMenuContent = styled.div`
-  user-select: none;
-  &:hover {
-    font-weight: 700;
-    cursor: pointer;
+export const UserBoardMenuContent = styled.button`
+  ${tw`text-xl`}
+`
+
+export const ContentLayout = styled.div`
+  ${tw`mt-4 mb-24 flex w-full flex-col rounded-lg bg-zinc-800 p-8`}
+`
+
+export const ContentHeader = styled.div`
+  ${tw`grid items-center justify-between border-zinc-700 border-b pb-4`}
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+
+  div {
+    ${tw`text-lg`}
   }
 `
 
 export const ContentBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  border-bottom: 0.1px solid lightgray;
-  padding-bottom: 2px;
-  user-select: none;
-  &:hover {
-    cursor: pointer;
-    font-weight: 600;
-  }
-  & > div:nth-child(1) {
-    width: 35px;
-  }
-
-  & > div:nth-child(2) {
-    width: 200px;
-  }
-
-  & > div:nth-child(3) {
-    width: 80px;
-  }
-
-  & > div:nth-child(4) {
-    width: 82px;
-  }
+  ${tw`grid items-center justify-between p-2`}
+  grid-template-columns: 1fr 1fr 1fr 1fr;
 `
-
-export const ContentRow = styled.div``
