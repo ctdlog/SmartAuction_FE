@@ -2,9 +2,8 @@ import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 
 import Subtitle from '@/components/common/Subtitle'
+import * as S from '@/components/views/AuctionDetail/Bidders/Bidders.styled'
 import { getAuctionBidders } from '@/services/api/auction'
-
-import * as S from './Bidders.styled'
 
 interface Props {
   contract: string | undefined

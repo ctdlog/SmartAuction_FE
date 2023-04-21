@@ -19,5 +19,5 @@ export const Skeleton = styled.div<{ width: number }>`
 `
 
 export const BidderInformation = styled.div`
-  ${tw`flex items-center gap-4`}
+  ${tw`flex w-full items-center justify-between gap-4`}
 `

@@ -9,6 +9,7 @@ import Subtitle from '@/components/common/Subtitle/Subtitle'
 import { AUCTION_STATUS } from '@/components/views/Auction/AuctionContainer.const'
 import { Modal, ModalContext } from '@/components/views/AuctionDetail/AuctionDetailContainer.contexts'
 import * as S from '@/components/views/AuctionDetail/AuctionDetailContainer.styled'
+import { getTimeLeftByExpiredDate } from '@/components/views/AuctionDetail/AuctionDetailContainer.utils'
 import Bidders from '@/components/views/AuctionDetail/Bidders'
 import BidModal from '@/components/views/AuctionDetail/BidModal'
 import Chat from '@/components/views/AuctionDetail/Chat'
@@ -17,8 +18,6 @@ import WithdrawModal from '@/components/views/AuctionDetail/WithdrawModal'
 import { getAccessTokenFromLocalStorage, isLoggedIn } from '@/features/auth/token'
 import { getAuctionBidders, getAuctionDetail } from '@/services/api/auction'
 import { getUserInfo } from '@/services/api/user'
-
-import { getTimeLeftByExpiredDate } from './AuctionDetailContainer.utils'
 
 const AuctionDetailContainer = () => {
   const { id } = useRouter().query
