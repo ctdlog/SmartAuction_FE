@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 
 import { AxiosError } from 'axios'
 import Link from 'next/link'
@@ -14,6 +14,8 @@ import { emailNotVerifiedRole, walletNotRegisteredRole } from '@/components/view
 import ROUTE from '@/constants/route'
 import { setAccessTokenToLocalStorage, setRefreshTokenToLocalStorage } from '@/features/auth/token'
 import { emailVerify, getUserInfo, resendEmailVerify, signIn } from '@/services/api/user'
+
+import { TokenContext } from '../SignInContainer.context'
 
 interface FormValues {
   email: string
@@ -35,8 +37,9 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
     getValues,
   } = useForm<FormValues>()
   const { push } = useRouter()
-  const [isRequiredEmailVerification, setIsRequiredEmailVerification] = useState(false)
   const { timeLeft, timerEnded, startTimer } = useTimer(180)
+  const { setAccessToken, setRefreshToken } = useContext(TokenContext)
+  const [isRequiredEmailVerification, setIsRequiredEmailVerification] = useState(false)
 
   const onSubmit = async ({ email, password }: FormValues) => {
     try {
@@ -46,10 +49,12 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
       } = await signIn(email, password)
       if (statusCode === 201) {
         setAccessTokenToLocalStorage(acToken)
-        setRefreshTokenToLocalStorage(rfToken)
+        setAccessToken(acToken)
+        setRefreshToken(rfToken)
         const {
           payload: { role },
         } = await getUserInfo()
+        setAccessTokenToLocalStorage('')
         if (role === emailNotVerifiedRole) {
           setIsRequiredEmailVerification(true)
           toast.info('이메일로 인증번호가 전송되었습니다. 이메일 입력 칸 아래에 인증번호를 입력해주세요.')
@@ -61,6 +66,9 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
           return
         }
 
+        setAccessTokenToLocalStorage(acToken)
+        setRefreshTokenToLocalStorage(rfToken)
+        toast.success('로그인에 성공했습니다.')
         push(ROUTE.AUCTION)
       }
     } catch (error) {

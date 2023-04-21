@@ -9,9 +9,9 @@ import Subtitle from '@/components/common/Subtitle'
 import Title from '@/components/common/Title'
 import * as S from '@/components/views/SignIn/MnemonicVerify/MnemonicVerify.styled'
 import { pickRandomNumbers } from '@/components/views/SignIn/MnemonicVerify/MnemonicVerify.utils'
-import { MnemonicContext } from '@/components/views/SignIn/SignInContainer.context'
+import { MnemonicContext, TokenContext } from '@/components/views/SignIn/SignInContainer.context'
 import ROUTE from '@/constants/route'
-import { setAccessTokenToLocalStorage } from '@/features/auth/token'
+import { setAccessTokenToLocalStorage, setRefreshTokenToLocalStorage } from '@/features/auth/token'
 import { verifyMnemonic } from '@/services/api/user'
 
 interface FormValues {
@@ -25,6 +25,7 @@ const MnemonicVerify = () => {
   const { push } = useRouter()
   const { register, handleSubmit } = useForm<FormValues>()
   const { mnemonic } = useContext(MnemonicContext)
+  const { accessToken, refreshToken } = useContext(TokenContext)
   const randomNumbers = pickRandomNumbers(1, 11)
 
   const onSubmit = async ({ mnemonic0, mnemonic1, mnemonic2, password }: FormValues) => {
@@ -43,6 +44,8 @@ const MnemonicVerify = () => {
       const { statusCode } = await verifyMnemonic(mnemonic, password)
       if (statusCode === 201) {
         toast.success('지갑이 등록되었습니다.')
+        setAccessTokenToLocalStorage(accessToken)
+        setRefreshTokenToLocalStorage(refreshToken)
         push(ROUTE.AUCTION)
       }
     } catch (error) {

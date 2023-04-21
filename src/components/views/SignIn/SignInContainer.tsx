@@ -4,11 +4,13 @@ import GenerateMnemonic from '@/components/views/SignIn/GenerateMnemonic'
 import LoginForm from '@/components/views/SignIn/LoginForm'
 import MnemonicVerify from '@/components/views/SignIn/MnemonicVerify'
 
-import { MnemonicContext } from './SignInContainer.context'
+import { MnemonicContext, TokenContext } from './SignInContainer.context'
 
 const SignInContainer = () => {
   const [signInState, setSignInState] = useState<'login' | 'generate' | 'verify'>('login')
   const [mnemonic, setMnemonic] = useState<string>(null as unknown as string)
+  const [accessToken, setAccessToken] = useState<string>(null as unknown as string)
+  const [refreshToken, setRefreshToken] = useState<string>(null as unknown as string)
 
   const setSignInStateToGenerate = () => {
     setSignInState('generate')
@@ -26,7 +28,16 @@ const SignInContainer = () => {
           setMnemonic,
         }}
       >
-        <GenerateMnemonic setSignInStateToVerify={setSignInStateToVerify} />
+        <TokenContext.Provider
+          value={{
+            accessToken,
+            setAccessToken,
+            refreshToken,
+            setRefreshToken,
+          }}
+        >
+          <GenerateMnemonic setSignInStateToVerify={setSignInStateToVerify} />
+        </TokenContext.Provider>
       </MnemonicContext.Provider>
     )
   }
@@ -44,7 +55,18 @@ const SignInContainer = () => {
     )
   }
 
-  return <LoginForm setSignInStateToGenerate={setSignInStateToGenerate} />
+  return (
+    <TokenContext.Provider
+      value={{
+        accessToken,
+        setAccessToken,
+        refreshToken,
+        setRefreshToken,
+      }}
+    >
+      <LoginForm setSignInStateToGenerate={setSignInStateToGenerate} />
+    </TokenContext.Provider>
+  )
 }
 
 export default SignInContainer
