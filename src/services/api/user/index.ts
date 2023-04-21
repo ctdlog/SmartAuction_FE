@@ -5,7 +5,7 @@ import type {
   EmailVerifyResponse,
   GenerateRandomMnemonicResponse,
 } from '@/services/api/user/types'
-import { User } from '@/types/common/auth'
+import type { User } from '@/types/common/auth'
 
 export const signUp = (email: string, nickname: string, password: string) => {
   return api.post<SignUpResponse>('/users/sign-up', { email, nickname, password })

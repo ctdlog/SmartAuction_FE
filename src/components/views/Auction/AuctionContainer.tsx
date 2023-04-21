@@ -1,3 +1,5 @@
+import { useContext } from 'react'
+
 import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -9,7 +11,7 @@ import Subtitle from '@/components/common/Subtitle'
 import { AUCTION_STATUS, DEFAULT_THUMBNAIL } from '@/components/views/Auction/AuctionContainer.const'
 import * as S from '@/components/views/Auction/AuctionContainer.styled'
 import ROUTE from '@/constants/route'
-import { isLoggedIn } from '@/features/auth/token'
+import { AuthContext } from '@/contexts/auth'
 import { getAuctions } from '@/services/api/auction'
 
 const AuctionContainer = () => {
@@ -17,9 +19,10 @@ const AuctionContainer = () => {
   const { data: auctions } = useQuery(['auctions'], () => getAuctions(15, 0), {
     select: (data) => data.payload,
   })
+  const { isLoggedIn } = useContext(AuthContext)
 
   const moveToCreateAuction = () => {
-    if (!isLoggedIn()) {
+    if (!isLoggedIn) {
       toast.error('로그인이 필요한 서비스입니다.')
       return
     }

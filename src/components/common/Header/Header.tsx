@@ -1,29 +1,29 @@
+import { useContext } from 'react'
+
 import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import Link from 'next/link'
 
 import Text from '@/components/common/Text'
 import ROUTE from '@/constants/route'
-import { removeAccessTokenFromLocalStorage } from '@/features/auth/token'
-import useLocalStorage from '@/features/auth/useLocalStorage'
+import { AuthContext } from '@/contexts/auth'
+import { getAccessTokenFromLocalStorage } from '@/features/auth/token'
 import { getUserInfo } from '@/services/api/user'
 
 import * as S from './Header.styled'
 
 const Header = () => {
-  const { accessToken, setAccessToken } = useLocalStorage()
+  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext)
   const { data: user, isSuccess } = useQuery(['user'], () => getUserInfo(), {
     select: (data) => data.payload,
-    enabled: !!accessToken,
+    enabled: !!getAccessTokenFromLocalStorage(),
     onError: () => {
-      setAccessToken('')
-      removeAccessTokenFromLocalStorage()
+      setIsLoggedIn(false)
     },
   })
 
   const handleClickLogout = () => {
-    setAccessToken('')
-    removeAccessTokenFromLocalStorage()
+    setIsLoggedIn(false)
   }
 
   return (
@@ -42,7 +42,7 @@ const Header = () => {
         </Link>
       </S.Nav>
       <S.AuthWrapper>
-        {accessToken ? (
+        {isLoggedIn ? (
           <S.UserInfoBlock>
             {isSuccess && (
               <S.User>

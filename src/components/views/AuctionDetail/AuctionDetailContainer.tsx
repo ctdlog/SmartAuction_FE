@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
@@ -15,7 +15,8 @@ import Bidders from '@/components/views/AuctionDetail/Bidders'
 import BidModal from '@/components/views/AuctionDetail/BidModal'
 import SignatureModal from '@/components/views/AuctionDetail/SignatureModal'
 import WithdrawModal from '@/components/views/AuctionDetail/WithdrawModal'
-import { getAccessTokenFromLocalStorage, isLoggedIn } from '@/features/auth/token'
+import { AuthContext } from '@/contexts/auth'
+import { getAccessTokenFromLocalStorage } from '@/features/auth/token'
 import { getUserInfo } from '@/services/api/user'
 
 const AuctionDetailContainer = () => {
@@ -28,6 +29,7 @@ const AuctionDetailContainer = () => {
     select: (data) => data.payload,
     enabled: !!getAccessTokenFromLocalStorage(),
   })
+  const { isLoggedIn } = useContext(AuthContext)
 
   const [modal, setModal] = useState<Modal>(null)
   const [remainingTime, setRemainingTime] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
