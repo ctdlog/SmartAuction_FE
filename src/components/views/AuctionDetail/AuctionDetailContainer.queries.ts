@@ -37,17 +37,17 @@ export const useAuctionDetail = () => {
 
 export const useFavorites = () => {
   const queryClient = useQueryClient()
-
   const {
     query: { id },
   } = useRouter()
+
   const [isFavorite, setIsFavorite] = useState(false)
 
   const { data: favorites } = useQuery(['favorites'], getFavorites, {
     select: (data) => data.payload.auctions,
     enabled: !!getAccessTokenFromLocalStorage(),
-    onSuccess: () => {
-      if (favorites?.find((favorite) => favorite.id === Number(id))) {
+    onSuccess: (newFavorites) => {
+      if (newFavorites?.find((favorite) => favorite.id === Number(id))) {
         setIsFavorite(true)
       } else {
         setIsFavorite(false)
