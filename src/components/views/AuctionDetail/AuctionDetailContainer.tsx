@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 
@@ -12,7 +12,6 @@ import * as S from '@/components/views/AuctionDetail/AuctionDetailContainer.styl
 import { getTimeLeftByExpiredDate } from '@/components/views/AuctionDetail/AuctionDetailContainer.utils'
 import Bidders from '@/components/views/AuctionDetail/Bidders'
 import BidModal from '@/components/views/AuctionDetail/BidModal'
-import Chat from '@/components/views/AuctionDetail/Chat'
 import SignatureModal from '@/components/views/AuctionDetail/SignatureModal'
 import WithdrawModal from '@/components/views/AuctionDetail/WithdrawModal'
 import { getAccessTokenFromLocalStorage, isLoggedIn } from '@/features/auth/token'
@@ -21,6 +20,9 @@ import { getUserInfo } from '@/services/api/user'
 import { useAuctionDetail, useFavorites } from './AuctionDetailContainer.queries'
 
 const AuctionDetailContainer = () => {
+  const {
+    query: { id },
+  } = useRouter()
   const { auction, bidders } = useAuctionDetail()
   const { isFavorite, updateFavoritesMutation } = useFavorites()
   const { data: user } = useQuery(['user'], () => getUserInfo(), {
