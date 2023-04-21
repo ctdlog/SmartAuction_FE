@@ -1,3 +1,5 @@
+import { useContext } from 'react'
+
 import { AxiosError } from 'axios'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -7,7 +9,9 @@ import { toast } from 'react-toastify'
 import Subtitle from '@/components/common/Subtitle'
 import Title from '@/components/common/Title'
 import ROUTE from '@/constants/route'
-import { signUp } from '@/services/api/user'
+import { AuthContext } from '@/contexts/auth'
+import { setAccessTokenToLocalStorage, setRefreshTokenToLocalStorage } from '@/features/auth/token'
+import { signIn, signUp } from '@/services/api/user'
 
 import * as S from './SignUpContainer.styled'
 
@@ -27,12 +31,20 @@ const SignUpContainer = () => {
     formState: { errors, isSubmitting },
   } = useForm<FormValues>()
   const { push } = useRouter()
+  const { setIsRequiredEmailVerification } = useContext(AuthContext)
 
   const onSubmit = async ({ email, nickname, password }: FormValues) => {
     try {
-      const { statusCode } = await signUp(email, nickname, password)
-      if (statusCode === 201) {
-        toast.success('회원가입에 성공했습니다. 로그인을 시도해주세요.')
+      const { statusCode: signUpStatusCode } = await signUp(email, nickname, password)
+      const {
+        statusCode: signInStatusCode,
+        payload: { acToken, rfToken },
+      } = await signIn(email, password)
+      if (signUpStatusCode === 201 && signInStatusCode === 201) {
+        setAccessTokenToLocalStorage(acToken)
+        setRefreshTokenToLocalStorage(rfToken)
+        toast.success('회원가입에 성공했습니다. 이메일 인증을 진행해주세요.')
+        setIsRequiredEmailVerification(true)
         push(ROUTE.SIGN_IN)
       }
     } catch (error) {

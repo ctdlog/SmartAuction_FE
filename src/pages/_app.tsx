@@ -31,6 +31,7 @@ const App = ({ Component, pageProps }: AppProps) => {
   )
 
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isRequiredEmailVerification, setIsRequiredEmailVerification] = useState(false)
 
   useEffect(() => {
     const getUser = async () => {
@@ -59,6 +60,8 @@ const App = ({ Component, pageProps }: AppProps) => {
           value={{
             isLoggedIn,
             setIsLoggedIn,
+            isRequiredEmailVerification,
+            setIsRequiredEmailVerification,
           }}
         >
           <Component {...pageProps} />

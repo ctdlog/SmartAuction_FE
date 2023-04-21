@@ -37,8 +37,7 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
   } = useForm<FormValues>()
   const { push } = useRouter()
   const { timeLeft, timerEnded, startTimer } = useTimer(180)
-  const { setIsLoggedIn } = useContext(AuthContext)
-  const [isRequiredEmailVerification, setIsRequiredEmailVerification] = useState(false)
+  const { setIsLoggedIn, isRequiredEmailVerification, setIsRequiredEmailVerification } = useContext(AuthContext)
 
   const onSubmit = async ({ email, password }: FormValues) => {
     try {
@@ -104,19 +103,11 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
       return
     }
 
-    const { statusCode } = await emailVerify(code)
-    if (statusCode === 201) {
-      toast.success('이메일 인증이 완료되었습니다.')
-      setSignInStateToGenerate()
-    }
-  }
-
-  const handleClickResendEmail = async () => {
     try {
-      const { statusCode } = await resendEmailVerify()
+      const { statusCode } = await emailVerify(code)
       if (statusCode === 201) {
-        startTimer()
-        toast.info('이메일로 인증번호가 전송되었습니다.')
+        toast.success('이메일 인증이 완료되었습니다.')
+        setSignInStateToGenerate()
       }
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -133,29 +124,39 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
     }
   }
 
+  const handleClickResendEmail = async () => {
+    const { statusCode } = await resendEmailVerify()
+    if (statusCode === 201) {
+      startTimer()
+      toast.info('이메일로 인증번호가 전송되었습니다.')
+    }
+  }
+
   return (
     <S.Container>
       <S.Form onSubmit={handleSubmit(onSubmit)}>
         <Title size='4'>{isRequiredEmailVerification ? '이메일 인증' : '로그인'}</Title>
-        <label>
-          <Subtitle size='4'>이메일</Subtitle>
-          <input
-            type='text'
-            placeholder='이메일을 입력해주세요.'
-            readOnly={isRequiredEmailVerification}
-            {...register('email', {
-              required: {
-                value: true,
-                message: '이메일을 입력해주세요.',
-              },
-              pattern: {
-                value: /^([a-zA-Z0-9.]+)@([a-zA-Z0-9]+)\.([a-zA-Z]{2,})$/,
-                message: '이메일 형식이 올바르지 않습니다.',
-              },
-            })}
-          />
-          <small>{errors.email?.message}</small>
-        </label>
+        {!isRequiredEmailVerification && (
+          <label>
+            <Subtitle size='4'>이메일</Subtitle>
+            <input
+              type='text'
+              placeholder='이메일을 입력해주세요.'
+              readOnly={isRequiredEmailVerification}
+              {...register('email', {
+                required: {
+                  value: true,
+                  message: '이메일을 입력해주세요.',
+                },
+                pattern: {
+                  value: /^([a-zA-Z0-9.]+)@([a-zA-Z0-9]+)\.([a-zA-Z]{2,})$/,
+                  message: '이메일 형식이 올바르지 않습니다.',
+                },
+              })}
+            />
+            <small>{errors.email?.message}</small>
+          </label>
+        )}
         {isRequiredEmailVerification && (
           <S.VerificationCodeBlock>
             <S.VerificationCodeInputWrapper>
