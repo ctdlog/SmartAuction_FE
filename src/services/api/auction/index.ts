@@ -45,12 +45,12 @@ export const getAuctionBidders = (contractAdrs: string) => {
   return api.post<{ bidders: Bidder[] }>(`/auctions/bidders`, { contractAdrs })
 }
 
-export const getMyAuction = (userId: number | undefined, page: number, limit: number) => {
-  return api.get<GetMyAuction>(`/auctions/${userId}/${page}/${limit}`)
+export const getMyAuction = (page: number, limit: number) => {
+  return api.get<GetMyAuction>(`/auctions/my/${page}/${limit}`)
 }
 
-export const getBiddedAuctionApi = (userId: number | undefined, page: number, limit: number) => {
-  return api.get<GetMyAuction>(`auctions/bids/${userId}/${page}/${limit}`)
+export const getBiddedAuctionApi = (page: number, limit: number) => {
+  return api.get<GetMyAuction>(`auctions/my/bids/${page}/${limit}`)
 }
 
 export const withdrawBySeller = (auctionId: number, password: string) => {
