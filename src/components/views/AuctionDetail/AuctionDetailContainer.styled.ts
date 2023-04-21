@@ -38,7 +38,11 @@ export const AuctionInfo = styled.div`
 `
 
 export const AuctionTitleWrapper = styled.div`
-  ${tw`mb-4 flex items-center justify-between`}
+  ${tw`flex justify-between`}
+
+  i {
+    ${tw`text-2xl`}
+  }
 `
 
 export const Menu = styled.div`

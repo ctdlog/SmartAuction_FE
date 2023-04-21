@@ -48,3 +48,7 @@ export const getBiddedAuctionApi = (userId: number | undefined, page: number, li
 export const withdrawBySeller = (auctionId: number, password: string) => {
   return api.post(`/auctions/withdraw/seller`, { auctionId, password })
 }
+
+export const updateFavorites = (auctionId: number) => {
+  return api.post(`/auctions/favorites`, { auctionId })
+}

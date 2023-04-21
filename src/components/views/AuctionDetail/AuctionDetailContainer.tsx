@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 
@@ -16,12 +16,11 @@ import Chat from '@/components/views/AuctionDetail/Chat'
 import SignatureModal from '@/components/views/AuctionDetail/SignatureModal'
 import WithdrawModal from '@/components/views/AuctionDetail/WithdrawModal'
 import { getAccessTokenFromLocalStorage, isLoggedIn } from '@/features/auth/token'
-import { getAuctionBidders, getAuctionDetail } from '@/services/api/auction'
+import { getAuctionBidders, getAuctionDetail, updateFavorites } from '@/services/api/auction'
 import { getUserInfo } from '@/services/api/user'
 
 const AuctionDetailContainer = () => {
   const { id } = useRouter().query
-
   const { data: auction } = useQuery(['auction', id], () => getAuctionDetail(Number(id)), {
     select: (data) => data.payload,
     enabled: !!id,
@@ -50,6 +49,15 @@ const AuctionDetailContainer = () => {
   const isChatAvailable =
     (auction?.status === 3 || auction?.status === 4) &&
     (auction?.writerEoa === user?.publicKey || bidders?.at(-1)?.bidder === user?.publicKey)
+
+  const { mutate } = useMutation(updateFavorites, {
+    onSuccess: () => {
+      toast.success('즐겨찾기에 추가되었습니다.')
+    },
+    onError: () => {
+      toast.error('즐겨찾기 추가에 실패했습니다.')
+    },
+  })
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -89,13 +97,16 @@ const AuctionDetailContainer = () => {
             <S.Menu>
               <S.AuctionTitleWrapper>
                 <S.StatusTitle size='4'>{AUCTION_STATUS[auction?.status || 404]}</S.StatusTitle>
-                {auction?.status && auction?.status <= 2 && (
-                  <S.RemainTime size='1'>
-                    경매 종료까지 {remainingTime.days}일 {remainingTime.hours}시간 {remainingTime.minutes}분{' '}
-                    {remainingTime.seconds}초 남았습니다.
-                  </S.RemainTime>
-                )}
+                <button onClick={() => mutate(Number(id))}>
+                  <i className='ri-heart-add-line' />
+                </button>
               </S.AuctionTitleWrapper>
+              {auction?.status && auction?.status <= 2 && (
+                <S.RemainTime size='1'>
+                  경매 종료까지 {remainingTime.days}일 {remainingTime.hours}시간 {remainingTime.minutes}분{' '}
+                  {remainingTime.seconds}초 남았습니다.
+                </S.RemainTime>
+              )}
               <S.PriceWrapper>
                 <Subtitle size='4'>입찰시작가</Subtitle>
                 <Subtitle>{auction?.minPrice} MATIC</Subtitle>
