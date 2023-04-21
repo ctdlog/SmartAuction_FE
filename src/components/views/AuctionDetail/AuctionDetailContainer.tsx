@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 
@@ -16,28 +16,13 @@ import Chat from '@/components/views/AuctionDetail/Chat'
 import SignatureModal from '@/components/views/AuctionDetail/SignatureModal'
 import WithdrawModal from '@/components/views/AuctionDetail/WithdrawModal'
 import { getAccessTokenFromLocalStorage, isLoggedIn } from '@/features/auth/token'
-import { getAuctionBidders, getAuctionDetail, updateFavorites } from '@/services/api/auction'
 import { getUserInfo } from '@/services/api/user'
 
+import { useAuctionDetail, useFavorites } from './AuctionDetailContainer.queries'
+
 const AuctionDetailContainer = () => {
-  const { id } = useRouter().query
-  const { data: auction } = useQuery(['auction', id], () => getAuctionDetail(Number(id)), {
-    select: (data) => data.payload,
-    enabled: !!id,
-  })
-  const { data: bidders } = useQuery(
-    ['bidders', id],
-    () => {
-      if (!auction?.contract) {
-        throw new Error('Auction contract is not defined')
-      }
-      return getAuctionBidders(auction?.contract)
-    },
-    {
-      select: (data) => data?.payload.bidders,
-      enabled: !!auction?.contract,
-    }
-  )
+  const { auction, bidders } = useAuctionDetail()
+  const { isFavorite, updateFavoritesMutation } = useFavorites()
   const { data: user } = useQuery(['user'], () => getUserInfo(), {
     select: (data) => data.payload,
     enabled: !!getAccessTokenFromLocalStorage(),
@@ -49,15 +34,6 @@ const AuctionDetailContainer = () => {
   const isChatAvailable =
     (auction?.status === 3 || auction?.status === 4) &&
     (auction?.writerEoa === user?.publicKey || bidders?.at(-1)?.bidder === user?.publicKey)
-
-  const { mutate } = useMutation(updateFavorites, {
-    onSuccess: () => {
-      toast.success('즐겨찾기에 추가되었습니다.')
-    },
-    onError: () => {
-      toast.error('즐겨찾기 추가에 실패했습니다.')
-    },
-  })
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -97,8 +73,8 @@ const AuctionDetailContainer = () => {
             <S.Menu>
               <S.AuctionTitleWrapper>
                 <S.StatusTitle size='4'>{AUCTION_STATUS[auction?.status || 404]}</S.StatusTitle>
-                <button onClick={() => mutate(Number(id))}>
-                  <i className='ri-heart-add-line' />
+                <button onClick={() => updateFavoritesMutation(Number(id))}>
+                  {isFavorite ? <i className='ri-heart-3-fill' /> : <i className='ri-heart-add-line' />}
                 </button>
               </S.AuctionTitleWrapper>
               {auction?.status && auction?.status <= 2 && (

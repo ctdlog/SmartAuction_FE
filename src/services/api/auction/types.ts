@@ -48,3 +48,12 @@ export interface Bidder {
 export interface GetMyAuction {
   auctions: Auction[]
 }
+
+export interface UpdateFavorites {
+  userId: number
+  isCreated: boolean
+}
+
+export interface GetFavorites {
+  auctions: Auction[]
+}

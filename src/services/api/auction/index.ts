@@ -1,5 +1,13 @@
 import api from '@/services/api'
-import { Auction, AuctionDetail, AuctionParams, Bidder, GetMyAuction } from '@/services/api/auction/types'
+import {
+  Auction,
+  AuctionDetail,
+  AuctionParams,
+  Bidder,
+  GetFavorites,
+  GetMyAuction,
+  UpdateFavorites,
+} from '@/services/api/auction/types'
 
 export const getAuctions = (page: number, limit: number) => {
   return api.get<{ auctions: Auction[]; total: number }>(`/auctions/${page}/${limit}`)
@@ -50,5 +58,9 @@ export const withdrawBySeller = (auctionId: number, password: string) => {
 }
 
 export const updateFavorites = (auctionId: number) => {
-  return api.post(`/auctions/favorites`, { auctionId })
+  return api.post<UpdateFavorites>(`/auctions/favorites`, { auctionId })
+}
+
+export const getFavorites = () => {
+  return api.get<GetFavorites>('/auctions/favorites')
 }

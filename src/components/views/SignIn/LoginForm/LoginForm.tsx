@@ -73,7 +73,7 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
       }
     } catch (error) {
       if (error instanceof AxiosError) {
-        const message = error.response?.data.messsage
+        const message = error.response?.data.message
         if (message === 'USER NOT EXIST') {
           setError('email', {
             type: 'manual',
