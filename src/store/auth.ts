@@ -2,7 +2,7 @@ import { create } from 'zustand'
 
 import { User } from '@/types/common/auth'
 
-export const useAuthStore = create<User>((set) => ({
+export const useAuthStore = create((set) => ({
   id: 0,
   email: '',
   nickname: '',
