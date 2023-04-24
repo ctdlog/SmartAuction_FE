@@ -1,9 +1,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
+import * as S from '@/components/views/Landing/LandingHeader/LandingHeader.styled'
 import ROUTE from '@/constants/route'
-
-import * as S from './LandingHeader.styled'
 
 interface Props {
   scrollToIndex: (index: number) => void
@@ -32,25 +31,12 @@ const LandingHeader = ({ scrollToIndex }: Props) => {
           <li onClick={() => scrollToIndex(3)}>
             <span>Roadmap</span>
           </li>
-          {/* <li>
-            <a href='#'>Contact</a>
-          </li> */}
         </ul>
       </S.Nav>
-      <S.AuthWrapper>
-        <Link href={ROUTE.SIGN_IN}>
-          <S.Button>
-            <i className='ri-login-box-line'></i>
-            <span>Sign In</span>
-          </S.Button>
-        </Link>
-        <Link href={ROUTE.SIGN_UP}>
-          <S.Button>
-            <i className='ri-user-add-line'></i>
-            <span>Sign Up</span>
-          </S.Button>
-        </Link>
-      </S.AuthWrapper>
+      <S.StyledLink href={ROUTE.AUCTION}>
+        <span>Go to Auction</span>
+        <i className='ri-arrow-right-line' />
+      </S.StyledLink>
     </S.Header>
   )
 }

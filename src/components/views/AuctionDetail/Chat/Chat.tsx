@@ -37,13 +37,13 @@ const Chat = () => {
         userId: 'test',
       })
 
-      socket.on('setNickname', (nickname) => {
-        socket.nickname = nickname
-      })
+      // socket.on('setNickname', (nickname) => {
+      //   socket.nickname = nickname
+      // })
 
-      socket.on('chat', (message) => {
-        const userNickname = socket.nickname
-      })
+      // socket.on('chat', (message) => {
+      //   const userNickname = socket.nickname
+      // })
     }
 
     joinRoom()
@@ -59,11 +59,11 @@ const Chat = () => {
         <input type='text' value={roomId} onChange={(e) => setRoomId(e.currentTarget.value)} />
         <button onClick={exitRoom}>나가기</button>
         <h2>Chats</h2>
-        <div>
+        {/* <div>
           {chats?.map((chat) => (
             <div key={chat.id}>{chat}</div>
           ))}
-        </div>
+        </div> */}
       </div>
     </S.Container>
   )

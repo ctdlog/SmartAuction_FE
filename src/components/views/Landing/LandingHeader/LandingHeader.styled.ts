@@ -1,7 +1,8 @@
 import styled from '@emotion/styled'
+import Link from 'next/link'
 import tw from 'twin.macro'
 
-const Header = styled.header`
+export const Header = styled.header`
   ${tw`fixed flex h-24 w-full items-center justify-between bg-black px-12 py-4 font-bold text-stone-100 text-lg`}
   font-family: 'Poppins';
 
@@ -14,14 +15,13 @@ const Header = styled.header`
   }
 `
 
-const Nav = styled.div([tw`flex`])
-
-const AuthWrapper = styled.div`
-  ${tw`flex items-center gap-2`}
+export const Nav = styled.div`
+  ${tw`flex self-center`}
 `
+export const StyledLink = styled(Link)`
+  ${tw`flex items-center justify-center gap-2 rounded-md bg-zinc-800 py-2 px-4`}
 
-const Button = styled.button`
-  ${tw`flex items-center gap-2 rounded-md bg-stone-600 px-4 py-2 text-sm text-stone-100`}
+  span {
+    ${tw`pt-0.5`}
+  }
 `
-
-export { Header, Nav, AuthWrapper, Button }

@@ -20,14 +20,17 @@ export const Button = styled.button`
 `
 
 export const AuctionWrapper = styled.div`
-  ${tw`grid w-full grid-cols-3 gap-8 rounded-md py-4 text-gray-100`}
+  ${tw`grid w-full grid-cols-4 gap-8 rounded-md py-4 text-gray-100`}
 `
 
 export const AuctionBlock = styled.div`
   ${tw`flex w-full flex-col rounded-lg border border-zinc-700`}
 
   img {
-    ${tw`w-full rounded-t-lg`}
+    ${tw`rounded-t-lg`}
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 `
 

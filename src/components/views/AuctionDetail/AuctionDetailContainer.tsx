@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
@@ -6,44 +6,30 @@ import { toast } from 'react-toastify'
 
 import Layout from '@/components/common/Layout/Layout'
 import Subtitle from '@/components/common/Subtitle/Subtitle'
-import { AUCTION_STATUS } from '@/components/views/Auction/AuctionContainer.constants'
-import { Modal, ModalContext } from '@/components/views/AuctionDetail/AuctionDetailContainer.context'
+import { AUCTION_STATUS } from '@/components/views/Auction/AuctionContainer.const'
+import { Modal, ModalContext } from '@/components/views/AuctionDetail/AuctionDetailContainer.contexts'
+import { useAuctionDetail, useFavorites } from '@/components/views/AuctionDetail/AuctionDetailContainer.queries'
 import * as S from '@/components/views/AuctionDetail/AuctionDetailContainer.styled'
+import { getTimeLeftByExpiredDate } from '@/components/views/AuctionDetail/AuctionDetailContainer.utils'
 import Bidders from '@/components/views/AuctionDetail/Bidders'
 import BidModal from '@/components/views/AuctionDetail/BidModal'
-import Chat from '@/components/views/AuctionDetail/Chat'
 import SignatureModal from '@/components/views/AuctionDetail/SignatureModal'
 import WithdrawModal from '@/components/views/AuctionDetail/WithdrawModal'
-import { getAccessTokenFromLocalStorage, isLoggedIn } from '@/features/auth/token'
-import { getAuctionBidders, getAuctionDetail } from '@/services/api/auction'
+import { AuthContext } from '@/contexts/auth'
+import { getAccessTokenFromLocalStorage } from '@/features/auth/token'
 import { getUserInfo } from '@/services/api/user'
 
-import { getTimeLeftByExpiredDate } from './AuctionDetailContainer.utils'
-
 const AuctionDetailContainer = () => {
-  const { id } = useRouter().query
-
-  const { data: auction } = useQuery(['auction', id], () => getAuctionDetail(Number(id)), {
-    select: (data) => data.payload,
-    enabled: !!id,
-  })
-  const { data: bidders } = useQuery(
-    ['bidders', id],
-    () => {
-      if (!auction?.contract) {
-        throw new Error('Auction contract is not defined')
-      }
-      return getAuctionBidders(auction?.contract)
-    },
-    {
-      select: (data) => data?.payload.bidders,
-      enabled: !!auction?.contract,
-    }
-  )
+  const {
+    query: { id },
+  } = useRouter()
+  const { auction, bidders } = useAuctionDetail()
+  const { isFavorite, updateFavoritesMutation } = useFavorites()
   const { data: user } = useQuery(['user'], () => getUserInfo(), {
     select: (data) => data.payload,
     enabled: !!getAccessTokenFromLocalStorage(),
   })
+  const { isLoggedIn } = useContext(AuthContext)
 
   const [modal, setModal] = useState<Modal>(null)
   const [remainingTime, setRemainingTime] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
@@ -81,7 +67,7 @@ const AuctionDetailContainer = () => {
           <S.Wrapper>
             <S.TitleWrapper>
               <S.AuctionTitle>{auction?.title}</S.AuctionTitle>
-              <S.Writer size='2'>작성자: {auction?.writerEmail}</S.Writer>
+              <S.Writer size='2'>작성자: {auction?.writerNickname}</S.Writer>
             </S.TitleWrapper>
             {/* TODO: remove as string */}
             <S.Description dangerouslySetInnerHTML={{ __html: auction?.description as string }} />
@@ -90,13 +76,16 @@ const AuctionDetailContainer = () => {
             <S.Menu>
               <S.AuctionTitleWrapper>
                 <S.StatusTitle size='4'>{AUCTION_STATUS[auction?.status || 404]}</S.StatusTitle>
-                {auction?.status && auction?.status <= 2 && (
-                  <S.RemainTime size='1'>
-                    경매 종료까지 {remainingTime.days}일 {remainingTime.hours}시간 {remainingTime.minutes}분{' '}
-                    {remainingTime.seconds}초 남았습니다.
-                  </S.RemainTime>
-                )}
+                <button onClick={() => updateFavoritesMutation(Number(id))}>
+                  {isFavorite ? <i className='ri-heart-3-fill' /> : <i className='ri-heart-add-line' />}
+                </button>
               </S.AuctionTitleWrapper>
+              {auction?.status && auction?.status <= 2 && (
+                <S.RemainTime size='1'>
+                  경매 종료까지 {remainingTime.days}일 {remainingTime.hours}시간 {remainingTime.minutes}분{' '}
+                  {remainingTime.seconds}초 남았습니다.
+                </S.RemainTime>
+              )}
               <S.PriceWrapper>
                 <Subtitle size='4'>입찰시작가</Subtitle>
                 <Subtitle>{auction?.minPrice} MATIC</Subtitle>
@@ -105,7 +94,7 @@ const AuctionDetailContainer = () => {
                 <Subtitle size='4'>즉시낙찰가</Subtitle>
                 <Subtitle> {auction?.maxPrice} MATIC</Subtitle>
               </S.PriceWrapper>
-              {auction?.status && auction?.status <= 2 && (
+              {auction?.status && auction?.status <= 2 && auction.writerEoa !== user?.publicKey && (
                 <S.MenuButton
                   onClick={() => {
                     if (!isLoggedIn) {

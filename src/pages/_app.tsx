@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
@@ -7,6 +7,9 @@ import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { ToastContainer } from 'react-toastify'
 
+import { AuthContext } from '@/contexts/auth'
+import { getAccessTokenFromLocalStorage } from '@/features/auth/token'
+import { getUserInfo } from '@/services/api/user'
 import GlobalStyles from '@/styles/GlobalStyles'
 
 import '@/styles/app.css'
@@ -27,6 +30,23 @@ const App = ({ Component, pageProps }: AppProps) => {
       })
   )
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isRequiredEmailVerification, setIsRequiredEmailVerification] = useState(false)
+
+  useEffect(() => {
+    const getUser = async () => {
+      const {
+        payload: { role },
+      } = await getUserInfo()
+      if (role >= 2) {
+        setIsLoggedIn(true)
+      }
+    }
+    if (getAccessTokenFromLocalStorage()) {
+      getUser()
+    }
+  }, [])
+
   return (
     <QueryClientProvider client={queryClient}>
       <Head>
@@ -36,7 +56,16 @@ const App = ({ Component, pageProps }: AppProps) => {
       <Hydrate state={pageProps.dehydratedState}>
         <GlobalStyles />
         <ToastContainer theme='dark' />
-        <Component {...pageProps} />
+        <AuthContext.Provider
+          value={{
+            isLoggedIn,
+            setIsLoggedIn,
+            isRequiredEmailVerification,
+            setIsRequiredEmailVerification,
+          }}
+        >
+          <Component {...pageProps} />
+        </AuthContext.Provider>
         <Analytics />
       </Hydrate>
     </QueryClientProvider>

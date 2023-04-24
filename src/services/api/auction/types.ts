@@ -20,6 +20,7 @@ export interface AuctionDetail {
   description: string
   writerEoa: string
   writerEmail: string
+  writerNickname: string
   status: AuctionStatus
   minPrice: number
   maxPrice: number
@@ -46,5 +47,14 @@ export interface Bidder {
 }
 
 export interface GetMyAuction {
+  auctions: Auction[]
+}
+
+export interface UpdateFavorites {
+  userId: number
+  isCreated: boolean
+}
+
+export interface GetFavorites {
   auctions: Auction[]
 }

@@ -19,5 +19,12 @@ export const Skeleton = styled.div<{ width: number }>`
 `
 
 export const BidderInformation = styled.div`
-  ${tw`flex items-center gap-4`}
+  ${tw`flex w-full items-center justify-between gap-4`}
+
+  span {
+    &:first-of-type {
+      ${tw`overflow-hidden text-ellipsis whitespace-nowrap`}
+      width: 150px;
+    }
+  }
 `

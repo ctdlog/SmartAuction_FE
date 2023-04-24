@@ -2,9 +2,9 @@ import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 
 import Subtitle from '@/components/common/Subtitle'
+import * as S from '@/components/views/AuctionDetail/Bidders/Bidders.styled'
+import { formatDate } from '@/components/views/AuctionDetail/Bidders/Bidders.utils'
 import { getAuctionBidders } from '@/services/api/auction'
-
-import * as S from './Bidders.styled'
 
 interface Props {
   contract: string | undefined
@@ -33,7 +33,7 @@ const Bidders = ({ contract }: Props) => {
             <S.BidderInformation key={bidder.biddedAt}>
               <span>{bidder.bidder}</span>
               <span>{bidder.price} MATIC</span>
-              <span>{new Date(Number(bidder.biddedAt) * 1000).toLocaleDateString()}</span>
+              <span>{formatDate(Number(bidder.biddedAt))}</span>
             </S.BidderInformation>
           ))}
     </S.BiddersBlock>

@@ -11,7 +11,7 @@ import * as S from '@/components/views/SignIn/MnemonicVerify/MnemonicVerify.styl
 import { pickRandomNumbers } from '@/components/views/SignIn/MnemonicVerify/MnemonicVerify.utils'
 import { MnemonicContext } from '@/components/views/SignIn/SignInContainer.context'
 import ROUTE from '@/constants/route'
-import { setAccessTokenToLocalStorage } from '@/features/auth/token'
+import { AuthContext } from '@/contexts/auth'
 import { verifyMnemonic } from '@/services/api/user'
 
 interface FormValues {
@@ -25,6 +25,7 @@ const MnemonicVerify = () => {
   const { push } = useRouter()
   const { register, handleSubmit } = useForm<FormValues>()
   const { mnemonic } = useContext(MnemonicContext)
+  const { setIsLoggedIn } = useContext(AuthContext)
   const randomNumbers = pickRandomNumbers(1, 11)
 
   const onSubmit = async ({ mnemonic0, mnemonic1, mnemonic2, password }: FormValues) => {
@@ -42,6 +43,7 @@ const MnemonicVerify = () => {
     try {
       const { statusCode } = await verifyMnemonic(mnemonic, password)
       if (statusCode === 201) {
+        setIsLoggedIn(true)
         toast.success('지갑이 등록되었습니다.')
         push(ROUTE.AUCTION)
       }

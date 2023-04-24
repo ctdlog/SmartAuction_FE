@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from 'react'
+import { useContext, useLayoutEffect, useState } from 'react'
 
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
@@ -11,10 +11,11 @@ import Layout from '@/components/common/Layout'
 import Subtitle from '@/components/common/Subtitle'
 import * as S from '@/components/views/AuctionWrite/AuctionWriteContainer.styled'
 import ROUTE from '@/constants/route'
-import { isLoggedIn } from '@/features/auth/token'
+import { AuthContext } from '@/contexts/auth'
 import { createAuction } from '@/services/api/auction'
 
 import 'react-datepicker/dist/react-datepicker.css'
+
 import { getThumbnailFromHTML } from './AuctionWriteContainer.utils'
 
 const ToastUIEditor = dynamic(() => import('@/components/common/ToastUIEditor'), {
@@ -31,6 +32,7 @@ interface FormValues {
 const AuctionWriteContainer = () => {
   const { register, handleSubmit, watch } = useForm<FormValues>()
   const { push } = useRouter()
+  const { isLoggedIn } = useContext(AuthContext)
   const [content, setContent] = useState('')
   const [endDate, setEndDate] = useState<Date | null>(new Date())
 
@@ -76,11 +78,11 @@ const AuctionWriteContainer = () => {
   }
 
   useLayoutEffect(() => {
-    if (!isLoggedIn()) {
+    if (!isLoggedIn) {
       toast.error('로그인이 필요한 서비스입니다.')
       push(ROUTE.AUCTION)
     }
-  }, [push])
+  }, [isLoggedIn, push])
 
   return (
     <Layout>

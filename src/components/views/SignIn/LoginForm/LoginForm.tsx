@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 
 import { AxiosError } from 'axios'
 import Link from 'next/link'
@@ -12,6 +12,7 @@ import { useTimer } from '@/components/views/SignIn/LoginForm/LoginForm.hooks'
 import * as S from '@/components/views/SignIn/LoginForm/LoginForm.styled'
 import { emailNotVerifiedRole, walletNotRegisteredRole } from '@/components/views/SignIn/SignInContainer.constants'
 import ROUTE from '@/constants/route'
+import { AuthContext } from '@/contexts/auth'
 import { setAccessTokenToLocalStorage, setRefreshTokenToLocalStorage } from '@/features/auth/token'
 import { emailVerify, getUserInfo, resendEmailVerify, signIn } from '@/services/api/user'
 
@@ -35,8 +36,8 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
     getValues,
   } = useForm<FormValues>()
   const { push } = useRouter()
-  const [isRequiredEmailVerification, setIsRequiredEmailVerification] = useState(false)
   const { timeLeft, timerEnded, startTimer } = useTimer(180)
+  const { setIsLoggedIn, isRequiredEmailVerification, setIsRequiredEmailVerification } = useContext(AuthContext)
 
   const onSubmit = async ({ email, password }: FormValues) => {
     try {
@@ -61,11 +62,13 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
           return
         }
 
+        setIsLoggedIn(true)
+        toast.success('로그인에 성공했습니다.')
         push(ROUTE.AUCTION)
       }
     } catch (error) {
       if (error instanceof AxiosError) {
-        const message = error.response?.data.messsage
+        const message = error.response?.data.message
         if (message === 'USER NOT EXIST') {
           setError('email', {
             type: 'manual',
@@ -100,10 +103,24 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
       return
     }
 
-    const { statusCode } = await emailVerify(code)
-    if (statusCode === 201) {
-      toast.success('이메일 인증이 완료되었습니다.')
-      setSignInStateToGenerate()
+    try {
+      const { statusCode } = await emailVerify(code)
+      if (statusCode === 201) {
+        toast.success('이메일 인증이 완료되었습니다.')
+        setSignInStateToGenerate()
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        const message = error.response?.data.message
+        if (message === 'NOT MATCH') {
+          toast.error('인증번호가 일치하지 않습니다.')
+          return
+        }
+
+        if (message === 'EMAIL ALREADY VERIFIED') {
+          toast.info('이미 인증된 이메일입니다.')
+        }
+      }
     }
   }
 
@@ -118,26 +135,28 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
   return (
     <S.Container>
       <S.Form onSubmit={handleSubmit(onSubmit)}>
-        <Title size='4'>로그인</Title>
-        <label>
-          <Subtitle size='4'>이메일</Subtitle>
-          <input
-            type='text'
-            placeholder='이메일을 입력해주세요.'
-            readOnly={isRequiredEmailVerification}
-            {...register('email', {
-              required: {
-                value: true,
-                message: '이메일을 입력해주세요.',
-              },
-              pattern: {
-                value: /^([a-zA-Z0-9.]+)@([a-zA-Z0-9]+)\.([a-zA-Z]{2,})$/,
-                message: '이메일 형식이 올바르지 않습니다.',
-              },
-            })}
-          />
-          <small>{errors.email?.message}</small>
-        </label>
+        <Title size='4'>{isRequiredEmailVerification ? '이메일 인증' : '로그인'}</Title>
+        {!isRequiredEmailVerification && (
+          <label>
+            <Subtitle size='4'>이메일</Subtitle>
+            <input
+              type='text'
+              placeholder='이메일을 입력해주세요.'
+              readOnly={isRequiredEmailVerification}
+              {...register('email', {
+                required: {
+                  value: true,
+                  message: '이메일을 입력해주세요.',
+                },
+                pattern: {
+                  value: /^([a-zA-Z0-9.]+)@([a-zA-Z0-9]+)\.([a-zA-Z]{2,})$/,
+                  message: '이메일 형식이 올바르지 않습니다.',
+                },
+              })}
+            />
+            <small>{errors.email?.message}</small>
+          </label>
+        )}
         {isRequiredEmailVerification && (
           <S.VerificationCodeBlock>
             <S.VerificationCodeInputWrapper>
@@ -164,35 +183,39 @@ const LoginForm = ({ setSignInStateToGenerate }: Props) => {
             </S.ResendEmailWrapper>
           </S.VerificationCodeBlock>
         )}
-        <label>
-          <Subtitle size='4'>비밀번호</Subtitle>
-          <input
-            type='password'
-            placeholder='비밀번호를 입력해주세요.'
-            readOnly={isRequiredEmailVerification}
-            {...register('password', {
-              required: {
-                value: true,
-                message: '비밀번호를 입력해주세요.',
-              },
-              minLength: {
-                value: 6,
-                message: '비밀번호는 6자 이상이어야 합니다.',
-              },
-              maxLength: {
-                value: 20,
-                message: '비밀번호는 20자 이하여야 합니다.',
-              },
-            })}
-          />
-          <small>{errors.password?.message}</small>
-        </label>
-        <S.Button type='submit' disabled={isSubmitting || isRequiredEmailVerification}>
-          로그인
-        </S.Button>
-        <S.LinkWrapper>
-          계정이 없으신가요?<Link href={ROUTE.SIGN_UP}>회원가입</Link>
-        </S.LinkWrapper>
+        {!isRequiredEmailVerification && (
+          <>
+            <label>
+              <Subtitle size='4'>비밀번호</Subtitle>
+              <input
+                type='password'
+                placeholder='비밀번호를 입력해주세요.'
+                readOnly={isRequiredEmailVerification}
+                {...register('password', {
+                  required: {
+                    value: true,
+                    message: '비밀번호를 입력해주세요.',
+                  },
+                  minLength: {
+                    value: 6,
+                    message: '비밀번호는 6자 이상이어야 합니다.',
+                  },
+                  maxLength: {
+                    value: 20,
+                    message: '비밀번호는 20자 이하여야 합니다.',
+                  },
+                })}
+              />
+              <small>{errors.password?.message}</small>
+            </label>
+            <S.Button type='submit' disabled={isSubmitting || isRequiredEmailVerification}>
+              로그인
+            </S.Button>
+            <S.LinkWrapper>
+              계정이 없으신가요?<Link href={ROUTE.SIGN_UP}>회원가입</Link>
+            </S.LinkWrapper>
+          </>
+        )}
       </S.Form>
     </S.Container>
   )
