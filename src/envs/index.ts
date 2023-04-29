@@ -5,10 +5,10 @@ const getAppEnv = (): AppEnv => (process.env.NEXT_PUBLIC_APP_ENV as Exclude<AppE
 export const getApiEndpoint = () => {
   switch (getAppEnv()) {
     case 'production':
-      return 'https://server.bclh.link'
+      return 'https://backend.bclh.link'
     case 'development':
     default:
-      return 'https://server.bclh.link'
+      return 'https://backend.bclh.link'
   }
 }
 
