@@ -51,7 +51,7 @@ const Header = () => {
                 </Link>
                 <div>
                   <Text size='2'>{user.nickname}님, 안녕하세요!</Text>
-                  <Text size='1'>Balance: {Number(user.balance).toFixed(3)} MATIC</Text>
+                  <Text size='1'>Balance: {Number(user.balance).toFixed(3)} BCH</Text>
                 </div>
               </S.User>
             )}
@@ -76,6 +76,10 @@ const Header = () => {
             </Link>
           </>
         )}
+        <S.Anchor href='http://52.78.209.196:3000' target='_blank' rel='noreferrer'>
+          <i className='ri-rss-fill' />
+          <span>Blockchain Network</span>
+        </S.Anchor>
       </S.AuthWrapper>
     </S.Header>
   )

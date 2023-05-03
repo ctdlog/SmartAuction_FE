@@ -88,11 +88,11 @@ const AuctionDetailContainer = () => {
               )}
               <S.PriceWrapper>
                 <Subtitle size='4'>입찰시작가</Subtitle>
-                <Subtitle>{auction?.minPrice} MATIC</Subtitle>
+                <Subtitle>{auction?.minPrice} BCH</Subtitle>
               </S.PriceWrapper>
               <S.PriceWrapper>
                 <Subtitle size='4'>즉시낙찰가</Subtitle>
-                <Subtitle> {auction?.maxPrice} MATIC</Subtitle>
+                <Subtitle> {auction?.maxPrice} BCH</Subtitle>
               </S.PriceWrapper>
               {auction?.status && auction?.status <= 2 && auction.writerEoa !== user?.publicKey && (
                 <S.MenuButton
@@ -107,7 +107,7 @@ const AuctionDetailContainer = () => {
                   입찰하기
                 </S.MenuButton>
               )}
-              {auction?.status === 3 && bidders?.at(-1)?.bidder === user?.publicKey && (
+              {auction?.status === 3 && bidders?.at(-1)?.bidder === user?.nickname && (
                 <S.MenuButton onClick={() => setModal('signature')}>서명하기</S.MenuButton>
               )}
               {auction?.status === 4 && auction.writerEoa === user?.publicKey && (
